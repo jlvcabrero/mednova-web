@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MEDNOVA — Portal Administrativo</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f4f3f1;
+  --bg2:#ebebea;
+  --bg3:#e0dfdd;
+  --card:#fff;
+  --ink:#0d0d0d;
+  --ink2:#3d3d3d;
+  --red:#c0392b;
+  --red2:#a93226;
+  --red-lt:#e74c3c;
+  --red-bg:rgba(192,57,43,.07);
+  --green:#15803d;
+  --green-bg:rgba(21,128,61,.08);
+  --amber:#b45309;
+  --amber-bg:rgba(180,83,9,.08);
+  --blue:#1e40af;
+  --blue-bg:rgba(30,64,175,.08);
+  --purple:#6d28d9;
+  --purple-bg:rgba(109,40,217,.08);
+  --muted:#828282;
+  --muted2:#b8b8b8;
+  --bord:rgba(0,0,0,.07);
+  --bord2:rgba(0,0,0,.12);
+  --sidebar:56px;
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:13px;display:flex}
+
+/* SIDEBAR */
+.sb{width:var(--sidebar);background:#0d0d0d;display:flex;flex-direction:column;align-items:center;padding:.7rem 0;height:100vh;flex-shrink:0;gap:.15rem}
+.sb-logo{padding:.5rem;margin-bottom:.5rem}
+.sb-logo svg{display:block}
+.sb-item{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:all .18s;position:relative;background:none;border:none;color:rgba(255,255,255,.35)}
+.sb-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.75)}
+.sb-item.active{background:var(--red);color:#fff;box-shadow:0 4px 14px rgba(192,57,43,.45)}
+.sb-item .tip{position:absolute;left:calc(100% + 10px);background:#0d0d0d;color:#fff;font-size:.68rem;padding:.3rem .65rem;white-space:nowrap;opacity:0;transform:translateX(-4px);transition:all .18s;border-radius:3px;pointer-events:none;z-index:200;letter-spacing:.03em}
+.sb-item:hover .tip{opacity:1;transform:translateX(0)}
+.sb-badge{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--red)}
+.sb-sp{flex:1}
+.sb-user{width:36px;height:36px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:.85rem;color:#fff;cursor:pointer;margin-bottom:.3rem;border:2px solid rgba(255,255,255,.12)}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;min-width:0}
+
+/* TOPBAR */
+.tb{background:var(--card);border-bottom:1px solid var(--bord);padding:.75rem 1.4rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.tb-left{display:flex;flex-direction:column;gap:.1rem}
+.tb-tag{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.tb-title{font-family:var(--serif);font-size:1.1rem;font-weight:300}
+.tb-title em{font-style:italic;color:var(--red-lt)}
+.tb-right{display:flex;align-items:center;gap:.65rem}
+.tb-date{font-size:.72rem;color:var(--muted)}
+.tb-btn{display:flex;align-items:center;gap:.35rem;border:1px solid var(--bord2);background:none;padding:.4rem .85rem;font-size:.72rem;cursor:pointer;font-family:var(--sans);color:var(--ink);transition:all .2s;letter-spacing:.03em}
+.tb-btn:hover{border-color:var(--red);color:var(--red)}
+.tb-btn.red{background:var(--red);color:#fff;border-color:var(--red)}
+.tb-btn.red:hover{background:var(--red2)}
+.notif{width:32px;height:32px;border:1px solid var(--bord2);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;position:relative}
+.notif-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:var(--red)}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:1.3rem 1.4rem;display:flex;flex-direction:column;gap:1.1rem}
+
+/* VIEWS */
+.view{display:none;flex-direction:column;gap:1.1rem}
+.view.active{display:flex}
+
+/* SECTION HEADER */
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem}
+.sh-title{font-family:var(--serif);font-size:.95rem;font-weight:300}
+.sh-title em{font-style:italic;color:var(--red-lt)}
+.sh-actions{display:flex;gap:.5rem}
+
+/* CARD */
+.card{background:var(--card);border:1px solid var(--bord);padding:1.1rem}
+.card-hd{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;display:flex;align-items:center;justify-content:space-between}
+.card-hd-left{display:flex;align-items:center;gap:.4rem}
+.card-hd-left::before{content:'';width:14px;height:2px;background:var(--red)}
+.lnk{font-size:.68rem;color:var(--red);cursor:pointer;letter-spacing:.03em}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:.9rem}
+.kpi{background:var(--card);border:1px solid var(--bord);padding:1rem;transition:box-shadow .2s;position:relative;overflow:hidden}
+.kpi:hover{box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red)}
+.kpi-label{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem}
+.kpi-value{font-family:var(--serif);font-size:1.9rem;font-weight:300;color:var(--ink);line-height:1;margin-bottom:.3rem}
+.kpi-value span{font-size:1rem}
+.kpi-delta{font-size:.7rem;display:flex;align-items:center;gap:.25rem}
+.kpi-delta.up{color:var(--green)}
+.kpi-delta.down{color:var(--red-lt)}
+.kpi-delta.flat{color:var(--muted)}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+.g13{display:grid;grid-template-columns:1fr 2fr;gap:1.1rem}
+.g31{display:grid;grid-template-columns:2fr 1fr;gap:1.1rem}
+
+/* TABLES */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{padding:.65rem .9rem;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:2px solid var(--bord);font-weight:500;white-space:nowrap}
+.tbl td{padding:.75rem .9rem;border-bottom:1px solid var(--bord);font-size:.8rem;vertical-align:middle}
+.tbl tr:hover td{background:var(--bg)}
+.tbl tr:last-child td{border-bottom:none}
+
+/* BADGES */
+.badge{font-size:.62rem;padding:.18rem .58rem;border-radius:100px;font-weight:500;letter-spacing:.03em;white-space:nowrap}
+.badge.active{background:var(--green-bg);color:var(--green)}
+.badge.pending{background:var(--amber-bg);color:var(--amber)}
+.badge.new{background:var(--blue-bg);color:var(--blue)}
+.badge.inactive{background:var(--bg3);color:var(--muted)}
+.badge.cancelled{background:var(--red-bg);color:var(--red)}
+.badge.paid{background:var(--green-bg);color:var(--green)}
+.badge.refunded{background:var(--purple-bg);color:var(--purple)}
+
+/* MINI BAR CHARTS */
+.sparkbar{display:flex;align-items:flex-end;gap:2px;height:40px}
+.sbar{flex:1;background:var(--red-bg);border-top:1.5px solid var(--red);border-radius:1px 1px 0 0;transition:all .3s;cursor:pointer}
+.sbar:hover{background:var(--red-bg);filter:brightness(.9)}
+
+/* LINE CHART (SVG) */
+.chart-wrap{width:100%;height:110px;position:relative;margin-top:.5rem}
+.chart-wrap svg{position:absolute;inset:0;width:100%;height:100%}
+
+/* REVENUE STREAM BARS */
+.rev-bars{display:flex;flex-direction:column;gap:.55rem}
+.rev-item{display:flex;align-items:center;gap:.7rem}
+.rev-label{font-size:.74rem;color:var(--ink2);min-width:110px}
+.rev-track{flex:1;height:6px;background:var(--bg2);overflow:hidden}
+.rev-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--red-lt));transition:width 1.2s ease}
+.rev-val{font-size:.74rem;font-weight:500;color:var(--ink);min-width:52px;text-align:right}
+
+/* FUNNEL */
+.funnel{display:flex;flex-direction:column;gap:.5rem}
+.funnel-item{display:flex;align-items:center;gap:.7rem}
+.funnel-bar{height:8px;background:linear-gradient(90deg,var(--red),var(--red-lt));transition:width 1.2s ease}
+.funnel-label{font-size:.72rem;color:var(--muted);min-width:110px}
+.funnel-val{font-size:.72rem;font-weight:500;color:var(--ink)}
+.funnel-pct{font-size:.68rem;color:var(--muted2)}
+
+/* ALERT ITEMS */
+.alert-row{display:flex;align-items:center;gap:.8rem;padding:.75rem .9rem;background:var(--bg);transition:background .18s;cursor:pointer}
+.alert-row:hover{background:var(--bg2)}
+.alert-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.alert-dot.high{background:var(--red-lt)}
+.alert-dot.med{background:#f59e0b}
+.alert-dot.low{background:var(--green)}
+.alert-info{flex:1}
+.alert-title{font-size:.8rem;font-weight:500;margin-bottom:.1rem}
+.alert-sub{font-size:.7rem;color:var(--muted)}
+.alert-time{font-size:.68rem;color:var(--muted2);white-space:nowrap}
+.alert-action{font-size:.68rem;font-weight:500;color:var(--red);white-space:nowrap;letter-spacing:.03em}
+
+/* PROGRESS DONUT */
+.donut-row{display:flex;align-items:center;gap:1.2rem}
+.donut-wrap{position:relative;width:80px;height:80px;flex-shrink:0}
+.donut-svg{transform:rotate(-90deg)}
+.donut-bg{fill:none;stroke:var(--bg2);stroke-width:8}
+.donut-arc{fill:none;stroke:var(--red);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.4s ease}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut-pct{font-family:var(--serif);font-size:1.1rem;font-weight:300;line-height:1}
+.donut-lbl{font-size:.52rem;color:var(--muted);letter-spacing:.07em;text-transform:uppercase}
+.donut-metrics{flex:1;display:flex;flex-direction:column;gap:.4rem}
+.dm{display:flex;justify-content:space-between;align-items:center;font-size:.74rem}
+.dm-k{color:var(--muted)}
+.dm-v{font-weight:500}
+
+/* ACTIVITY FEED */
+.feed{display:flex;flex-direction:column;gap:0}
+.feed-item{display:flex;gap:.7rem;padding:.6rem 0;border-bottom:1px solid var(--bord)}
+.feed-item:last-child{border-bottom:none}
+.feed-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.feed-text{font-size:.76rem;color:var(--ink2);line-height:1.5;flex:1}
+.feed-text strong{color:var(--ink);font-weight:500}
+.feed-time{font-size:.66rem;color:var(--muted2);white-space:nowrap;margin-top:2px}
+
+/* STATUS TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:.7rem;padding:.5rem 0}
+.tl-dot-wrap{display:flex;flex-direction:column;align-items:center;gap:0}
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:2px solid var(--bord2)}
+.tl-dot.done{background:var(--green);border-color:var(--green)}
+.tl-dot.active{background:var(--red);border-color:var(--red);box-shadow:0 0 0 3px var(--red-bg)}
+.tl-line{width:1px;flex:1;background:var(--bord);min-height:20px}
+.tl-content{flex:1;padding-bottom:.6rem}
+.tl-title{font-size:.8rem;font-weight:500;margin-bottom:.1rem}
+.tl-sub{font-size:.7rem;color:var(--muted)}
+
+/* SEARCH BAR */
+.search-row{display:flex;gap:.6rem;margin-bottom:.9rem}
+.search-input{flex:1;border:1px solid var(--bord2);padding:.55rem .85rem;font-size:.82rem;font-family:var(--sans);outline:none;background:var(--card);transition:border-color .18s;color:var(--ink)}
+.search-input:focus{border-color:var(--red)}
+.filter-sel{border:1px solid var(--bord2);padding:.55rem .85rem;font-size:.78rem;font-family:var(--sans);background:var(--card);outline:none;cursor:pointer;color:var(--ink)}
+
+/* ACTION BUTTONS */
+.ac-btns{display:flex;gap:.35rem}
+.ac{width:26px;height:26px;border:1px solid var(--bord2);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:all .18s}
+.ac:hover{border-color:var(--red);background:var(--red-bg)}
+
+/* TOGGLE */
+.tog{width:36px;height:20px;border-radius:100px;position:relative;cursor:pointer;transition:background .2s;border:none}
+.tog.on{background:var(--red)}
+.tog.off{background:var(--bg3)}
+.tog::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:3px;transition:left .2s}
+.tog.on::after{left:19px}
+.tog.off::after{left:3px}
+
+/* PLAN PILLS */
+.plan-pill{font-size:.62rem;border:1px solid var(--bord2);padding:.15rem .5rem;color:var(--muted);letter-spacing:.03em}
+
+/* MINI MAP */
+.mexico-map{background:var(--bg2);display:flex;align-items:center;justify-content:center;height:130px;font-size:.8rem;color:var(--muted);position:relative;overflow:hidden}
+.city-dot{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--red);border:2px solid #fff;cursor:pointer;transition:transform .2s}
+.city-dot:hover{transform:scale(1.4)}
+.city-dot .city-tip{position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:.62rem;padding:.25rem .55rem;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .18s}
+.city-dot:hover .city-tip{opacity:1}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.4rem;right:1.4rem;background:var(--ink);color:#fff;padding:.7rem 1rem;font-size:.76rem;z-index:999;transform:translateY(60px);opacity:0;transition:all .3s;display:flex;align-items:center;gap:.45rem}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:200;display:none;align-items:center;justify-content:center}
+.modal-ov.open{display:flex}
+.modal{background:var(--card);padding:1.6rem;width:380px;animation:popIn .2s ease}
+@keyframes popIn{from{transform:scale(.97);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-title{font-family:var(--serif);font-size:1.1rem;font-weight:300;margin-bottom:1.1rem}
+.modal-field{display:flex;flex-direction:column;gap:.25rem;margin-bottom:.8rem}
+.modal-field label{font-size:.68rem;font-weight:500;letter-spacing:.03em}
+.modal-field input,.modal-field select,.modal-field textarea{border:1px solid var(--bord2);padding:.65rem .8rem;font-size:.85rem;font-family:var(--sans);color:var(--ink);outline:none;background:var(--card);width:100%;transition:border-color .18s}
+.modal-field input:focus,.modal-field select:focus{border-color:var(--red)}
+.modal-actions{display:flex;gap:.6rem;margin-top:1.2rem}
+.modal-cancel{flex:1;border:1px solid var(--bord2);background:none;padding:.7rem;font-size:.78rem;cursor:pointer;font-family:var(--sans)}
+.modal-save{flex:1;background:var(--red);color:#fff;border:none;padding:.7rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:var(--sans);transition:background .2s}
+.modal-save:hover{background:var(--red2)}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sb">
+  <div class="sb-logo">
+    <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+      <line x1="6" y1="3" x2="6" y2="25" stroke="rgba(255,255,255,.6)" stroke-width="2.2" stroke-linecap="square"/>
+      <line x1="6" y1="3" x2="16" y2="25" stroke="#c0392b" stroke-width="2.2" stroke-linecap="square"/>
+      <line x1="16" y1="3" x2="16" y2="25" stroke="rgba(255,255,255,.6)" stroke-width="2.2" stroke-linecap="square"/>
+    </svg>
+  </div>
+  <button class="sb-item active" onclick="showView('dashboard',this)">📊<span class="tip">Dashboard</span></button>
+  <button class="sb-item" onclick="showView('pacientes',this)">👥<span class="tip">Pacientes</span></button>
+  <button class="sb-item" onclick="showView('medicos',this)">👨‍⚕️<span class="tip">Médicos</span></button>
+  <button class="sb-item" onclick="showView('finanzas',this)">💰<span class="tip">Finanzas</span></button>
+  <button class="sb-item" onclick="showView('marketing',this)">📣<span class="tip">Marketing</span></button>
+  <button class="sb-item" onclick="showView('operaciones',this)">⚙️<span class="tip">Operaciones</span><div class="sb-badge"></div></button>
+  <button class="sb-item" onclick="showView('reportes',this)">📈<span class="tip">Reportes</span></button>
+  <button class="sb-item" onclick="showView('configuracion',this)">🔧<span class="tip">Configuración</span></button>
+  <div class="sb-sp"></div>
+  <div class="sb-user" onclick="toast('Administrador Joel Navarro')">JN</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="tb">
+    <div class="tb-left">
+      <span class="tb-tag">MEDNOVA SAS DE CV · Portal Administrativo</span>
+      <div class="tb-title" id="tb-title">Dashboard <em>ejecutivo</em></div>
+    </div>
+    <div class="tb-right">
+      <span class="tb-date" id="tb-date"></span>
+      <button class="tb-btn" onclick="toast('Exportando reporte...')">⬇ Exportar</button>
+      <button class="tb-btn" onclick="openModal('nuevo-paciente')">+ Nuevo paciente</button>
+      <button class="notif" onclick="toast('5 alertas pendientes')">🔔<div class="notif-dot"></div></button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ════ DASHBOARD ════ -->
+    <div class="view active" id="view-dashboard">
+
+      <!-- KPIs -->
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-label">Pacientes activos</div><div class="kpi-value">247<span></span></div><div class="kpi-delta up">↑ 18 este mes</div></div>
+        <div class="kpi"><div class="kpi-label">MRR</div><div class="kpi-value">$371<span>k</span></div><div class="kpi-delta up">↑ 23% vs mes ant.</div></div>
+        <div class="kpi"><div class="kpi-label">ARR proyectado</div><div class="kpi-value">$4.4<span>M</span></div><div class="kpi-delta up">↑ Camino al objetivo</div></div>
+        <div class="kpi"><div class="kpi-label">Tasa de retención</div><div class="kpi-value">71<span>%</span></div><div class="kpi-delta up">↑ +4pp vs Q1</div></div>
+        <div class="kpi"><div class="kpi-label">CAC promedio</div><div class="kpi-value">$1.4<span>k</span></div><div class="kpi-delta down">↑ $200 este mes</div></div>
+      </div>
+
+      <!-- ROW: CHART + ALERTS -->
+      <div class="g31">
+        <!-- REVENUE CHART -->
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Ingresos mensuales MXN</div><span class="lnk" onclick="showView('finanzas',null)">Ver detalle →</span></div>
+          <div class="chart-wrap" id="rev-chart"></div>
+          <div style="display:flex;justify-content:space-between;margin-top:.4rem" id="rev-chart-x"></div>
+        </div>
+        <!-- ALERTS -->
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Alertas operativas</div><span style="font-size:.68rem;color:var(--red)">5 nuevas</span></div>
+          <div style="display:flex;flex-direction:column;gap:.3rem">
+            <div class="alert-row"><div class="alert-dot high"></div><div class="alert-info"><div class="alert-title">Receta vencida · Roberto Morales</div><div class="alert-sub">Renovación pendiente hace 2 días</div></div><span class="alert-action">Resolver →</span></div>
+            <div class="alert-row"><div class="alert-dot high"></div><div class="alert-info"><div class="alert-title">Pago fallido · Carlos Fuentes</div><div class="alert-sub">Cargo rechazado · $1,499 MXN</div></div><span class="alert-action">Reintentar →</span></div>
+            <div class="alert-row"><div class="alert-dot med"></div><div class="alert-info"><div class="alert-title">7 evaluaciones sin asignar médico</div><div class="alert-sub">Pendientes desde hace +24h</div></div><span class="alert-action">Asignar →</span></div>
+            <div class="alert-row"><div class="alert-dot med"></div><div class="alert-info"><div class="alert-title">Churn potencial · 12 pacientes</div><div class="alert-sub">Sin actividad en la plataforma 7+ días</div></div><span class="alert-action">Reactivar →</span></div>
+            <div class="alert-row"><div class="alert-dot low"></div><div class="alert-info"><div class="alert-title">Stock bajo en farmacia aliada</div><div class="alert-sub">Semaglutida 0.5mg · Reordenar</div></div><span class="alert-action">Contactar →</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW: FUNNELS + MAP + FEED -->
+      <div class="g3">
+        <!-- CONVERSION FUNNEL -->
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Embudo de conversión</div></div>
+          <div class="funnel">
+            <div class="funnel-item"><span class="funnel-label">Visitantes</span><div style="flex:1;height:8px;background:var(--bg2)"><div style="height:100%;width:100%;background:linear-gradient(90deg,var(--red),var(--red-lt))"></div></div><span class="funnel-val">18,420</span><span class="funnel-pct">100%</span></div>
+            <div class="funnel-item"><span class="funnel-label">Iniciaron eval.</span><div style="flex:1;height:8px;background:var(--bg2)"><div style="height:100%;width:54%;background:linear-gradient(90deg,var(--red),var(--red-lt))"></div></div><span class="funnel-val">9,947</span><span class="funnel-pct">54%</span></div>
+            <div class="funnel-item"><span class="funnel-label">Completaron eval.</span><div style="flex:1;height:8px;background:var(--bg2)"><div style="height:100%;width:38%;background:linear-gradient(90deg,var(--red),var(--red-lt))"></div></div><span class="funnel-val">6,990</span><span class="funnel-pct">38%</span></div>
+            <div class="funnel-item"><span class="funnel-label">Calificados</span><div style="flex:1;height:8px;background:var(--bg2)"><div style="height:100%;width:28%;background:linear-gradient(90deg,var(--red),var(--red-lt))"></div></div><span class="funnel-val">5,152</span><span class="funnel-pct">28%</span></div>
+            <div class="funnel-item"><span class="funnel-label">1ª consulta</span><div style="flex:1;height:8px;background:var(--bg2)"><div style="height:100%;width:8%;background:linear-gradient(90deg,var(--red),var(--red-lt))"></div></div><span class="funnel-val">1,474</span><span class="funnel-pct">8%</span></div>
+            <div class="funnel-item"><span class="funnel-label">Suscripción activa</span><div style="flex:1;height:8px;background:var(--bg2)"><div style="height:100%;width:5%;background:linear-gradient(90deg,var(--red),var(--red-lt))"></div></div><span class="funnel-val">920</span><span class="funnel-pct">4.9%</span></div>
+          </div>
+        </div>
+
+        <!-- GEOGRAPHIC DIST -->
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Distribución geográfica</div></div>
+          <div class="mexico-map" id="mex-map">
+            <div style="font-size:.72rem;color:var(--muted2)">México</div>
+            <div class="city-dot" style="top:45%;left:28%"><div class="city-tip">CDMX · 98 pac.</div></div>
+            <div class="city-dot" style="top:35%;left:55%;background:#e74c3c"><div class="city-tip">Monterrey · 62 pac.</div></div>
+            <div class="city-dot" style="top:55%;left:22%;background:#e74c3c"><div class="city-tip">Guadalajara · 48 pac.</div></div>
+            <div class="city-dot" style="top:50%;left:38%;background:#c0392b;width:8px;height:8px"><div class="city-tip">Puebla · 21 pac.</div></div>
+            <div class="city-dot" style="top:40%;left:12%;background:#c0392b;width:8px;height:8px"><div class="city-tip">Tijuana · 18 pac.</div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:.3rem;margin-top:.6rem">
+            <div style="display:flex;justify-content:space-between;font-size:.72rem"><span style="color:var(--muted)">CDMX</span><span style="font-weight:500">98 · <span style="color:var(--muted)">40%</span></span></div>
+            <div style="display:flex;justify-content:space-between;font-size:.72rem"><span style="color:var(--muted)">Monterrey</span><span style="font-weight:500">62 · <span style="color:var(--muted)">25%</span></span></div>
+            <div style="display:flex;justify-content:space-between;font-size:.72rem"><span style="color:var(--muted)">Guadalajara</span><span style="font-weight:500">48 · <span style="color:var(--muted)">19%</span></span></div>
+            <div style="display:flex;justify-content:space-between;font-size:.72rem"><span style="color:var(--muted)">Resto del país</span><span style="font-weight:500">39 · <span style="color:var(--muted)">16%</span></span></div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY FEED -->
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Actividad reciente</div></div>
+          <div class="feed">
+            <div class="feed-item"><div class="feed-dot" style="background:var(--green)"></div><div><div class="feed-text"><strong>Ana Sánchez</strong> completó su evaluación IA — calificada</div><div class="feed-time">Hace 8 min</div></div></div>
+            <div class="feed-item"><div class="feed-dot" style="background:var(--red-lt)"></div><div><div class="feed-text"><strong>Pago procesado</strong> · Plan Seguimiento · $1,499 · Claudia Padilla</div><div class="feed-time">Hace 22 min</div></div></div>
+            <div class="feed-item"><div class="feed-dot" style="background:var(--blue)"></div><div><div class="feed-text"><strong>Dr. Valverde</strong> completó 3 consultas del día</div><div class="feed-time">Hace 45 min</div></div></div>
+            <div class="feed-item"><div class="feed-dot" style="background:var(--green)"></div><div><div class="feed-text"><strong>Luis Vargas</strong> registró pérdida de 1.3 kg esta semana</div><div class="feed-time">Hace 1h</div></div></div>
+            <div class="feed-item"><div class="feed-dot" style="background:#f59e0b"></div><div><div class="feed-text"><strong>Alerta:</strong> Roberto Morales — receta por vencer</div><div class="feed-time">Hace 2h</div></div></div>
+            <div class="feed-item"><div class="feed-dot" style="background:var(--red-lt)"></div><div><div class="feed-text"><strong>Nuevo registro</strong> · Patricia Nava · CDMX · Plan Premium</div><div class="feed-time">Hace 3h</div></div></div>
+            <div class="feed-item"><div class="feed-dot" style="background:var(--green)"></div><div><div class="feed-text"><strong>Meta alcanzada</strong> · María Rodríguez llegó a 8.4 kg de pérdida</div><div class="feed-time">Hace 4h</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLAN DISTRIBUTION -->
+      <div class="g2">
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Distribución por plan</div></div>
+          <div class="rev-bars">
+            <div class="rev-item"><span class="rev-label">Plan Seguimiento</span><div class="rev-track"><div class="rev-fill" style="width:58%"></div></div><span class="rev-val">143 pac. · 58%</span></div>
+            <div class="rev-item"><span class="rev-label">Plan Premium</span><div class="rev-track"><div class="rev-fill" style="width:27%"></div></div><span class="rev-val">67 pac. · 27%</span></div>
+            <div class="rev-item"><span class="rev-label">Plan Básico</span><div class="rev-track"><div class="rev-fill" style="width:15%"></div></div><span class="rev-val">37 pac. · 15%</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Métricas de retención</div></div>
+          <div class="donut-row">
+            <div class="donut-wrap">
+              <svg class="donut-svg" width="80" height="80" viewBox="0 0 80 80">
+                <circle class="donut-bg" cx="40" cy="40" r="32"/>
+                <circle class="donut-arc" cx="40" cy="40" r="32" stroke-dasharray="201" stroke-dashoffset="58"/>
+              </svg>
+              <div class="donut-center"><div class="donut-pct">71%</div><div class="donut-lbl">retención</div></div>
+            </div>
+            <div class="donut-metrics">
+              <div class="dm"><span class="dm-k">Retención anual</span><span class="dm-v">71%</span></div>
+              <div class="dm"><span class="dm-k">Churn mensual</span><span class="dm-v">4.2%</span></div>
+              <div class="dm"><span class="dm-k">LTV promedio</span><span class="dm-v">$26,400</span></div>
+              <div class="dm"><span class="dm-k">CAC payback</span><span class="dm-v">1.8 meses</span></div>
+              <div class="dm"><span class="dm-k">NPS score</span><span class="dm-v">72 pts</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PACIENTES ════ -->
+    <div class="view" id="view-pacientes">
+      <div class="search-row">
+        <input type="text" class="search-input" placeholder="🔍  Buscar paciente..."/>
+        <select class="filter-sel"><option>Todos los planes</option><option>Básico</option><option>Seguimiento</option><option>Premium</option></select>
+        <select class="filter-sel"><option>Todos los estados</option><option>Activo</option><option>Nuevo</option><option>Pendiente</option><option>Inactivo</option></select>
+        <select class="filter-sel"><option>Todas las ciudades</option><option>CDMX</option><option>Monterrey</option><option>Guadalajara</option></select>
+        <button class="tb-btn red" onclick="openModal('nuevo-paciente')">+ Agregar</button>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--bord);overflow:auto">
+        <table class="tbl" id="patients-tbl"></table>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:.74rem;color:var(--muted);padding:.4rem 0">
+        <span>Mostrando 1–10 de 247 pacientes</span>
+        <div style="display:flex;gap:.4rem">
+          <button class="tb-btn">← Anterior</button>
+          <button class="tb-btn">Siguiente →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ MÉDICOS ════ -->
+    <div class="view" id="view-medicos">
+      <div class="sh"><div class="sh-title">Equipo <em>médico</em></div><div class="sh-actions"><button class="tb-btn red" onclick="openModal('nuevo-medico')">+ Agregar médico</button></div></div>
+      <div id="medicos-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem"></div>
+    </div>
+
+    <!-- ════ FINANZAS ════ -->
+    <div class="view" id="view-finanzas">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-label">Ingresos totales</div><div class="kpi-value">$371<span>k</span></div><div class="kpi-delta up">↑ 23% MoM</div></div>
+        <div class="kpi"><div class="kpi-label">Cobros exitosos</div><div class="kpi-value">96<span>%</span></div><div class="kpi-delta up">↑ 2pp este mes</div></div>
+        <div class="kpi"><div class="kpi-label">Reembolsos</div><div class="kpi-value">3<span></span></div><div class="kpi-delta flat">= Sin cambio</div></div>
+        <div class="kpi"><div class="kpi-label">ARPU</div><div class="kpi-value">$1.5<span>k</span></div><div class="kpi-delta up">↑ $200 MoM</div></div>
+        <div class="kpi"><div class="kpi-label">Pagos fallidos</div><div class="kpi-value">8<span></span></div><div class="kpi-delta down">↑ 3 este mes</div></div>
+      </div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Ingresos por fuente</div></div>
+          <div class="rev-bars">
+            <div class="rev-item"><span class="rev-label">Plan Seguimiento</span><div class="rev-track"><div class="rev-fill" style="width:54%"></div></div><span class="rev-val">$200,457</span></div>
+            <div class="rev-item"><span class="rev-label">Plan Premium</span><div class="rev-track"><div class="rev-fill" style="width:35%"></div></div><span class="rev-val">$129,933</span></div>
+            <div class="rev-item"><span class="rev-label">Plan Básico</span><div class="rev-track"><div class="rev-fill" style="width:11%"></div></div><span class="rev-val">$40,763</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Método de pago</div></div>
+          <div class="rev-bars">
+            <div class="rev-item"><span class="rev-label">Tarjeta de crédito</span><div class="rev-track"><div class="rev-fill" style="width:72%"></div></div><span class="rev-val">72%</span></div>
+            <div class="rev-item"><span class="rev-label">Tarjeta de débito</span><div class="rev-track"><div class="rev-fill" style="width:18%"></div></div><span class="rev-val">18%</span></div>
+            <div class="rev-item"><span class="rev-label">SPEI</span><div class="rev-track"><div class="rev-fill" style="width:7%"></div></div><span class="rev-val">7%</span></div>
+            <div class="rev-item"><span class="rev-label">OXXO Pay</span><div class="rev-track"><div class="rev-fill" style="width:3%"></div></div><span class="rev-val">3%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><div class="card-hd-left">Transacciones recientes</div></div>
+        <table class="tbl" id="trans-tbl"></table>
+      </div>
+    </div>
+
+    <!-- ════ MARKETING ════ -->
+    <div class="view" id="view-marketing">
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-label">Sesiones web</div><div class="kpi-value">18.4<span>k</span></div><div class="kpi-delta up">↑ 34% MoM</div></div>
+        <div class="kpi"><div class="kpi-label">Tasa de conversión</div><div class="kpi-value">4.9<span>%</span></div><div class="kpi-delta up">↑ 0.8pp</div></div>
+        <div class="kpi"><div class="kpi-label">CAC</div><div class="kpi-value">$1.4<span>k</span></div><div class="kpi-delta down">↑ $200 MoM</div></div>
+        <div class="kpi"><div class="kpi-label">ROAS Meta Ads</div><div class="kpi-value">4.2<span>x</span></div><div class="kpi-delta up">↑ 0.4x MoM</div></div>
+        <div class="kpi"><div class="kpi-label">Leads orgánicos</div><div class="kpi-value">847<span></span></div><div class="kpi-delta up">↑ 22%</div></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Canal de adquisición</div></div>
+          <div class="rev-bars">
+            <div class="rev-item"><span class="rev-label">Meta Ads</span><div class="rev-track"><div class="rev-fill" style="width:52%"></div></div><span class="rev-val">52%</span></div>
+            <div class="rev-item"><span class="rev-label">TikTok Ads</span><div class="rev-track"><div class="rev-fill" style="width:21%"></div></div><span class="rev-val">21%</span></div>
+            <div class="rev-item"><span class="rev-label">SEO orgánico</span><div class="rev-track"><div class="rev-fill" style="width:14%"></div></div><span class="rev-val">14%</span></div>
+            <div class="rev-item"><span class="rev-label">Referidos</span><div class="rev-track"><div class="rev-fill" style="width:8%"></div></div><span class="rev-val">8%</span></div>
+            <div class="rev-item"><span class="rev-label">Influencers</span><div class="rev-track"><div class="rev-fill" style="width:5%"></div></div><span class="rev-val">5%</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Campañas activas</div></div>
+          <div style="display:flex;flex-direction:column;gap:.5rem" id="campaigns"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ OPERACIONES ════ -->
+    <div class="view" id="view-operaciones">
+      <div class="g2">
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Estado del sistema</div></div>
+          <div class="timeline" id="sys-timeline"></div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Pendientes operativos</div></div>
+          <div style="display:flex;flex-direction:column;gap:.35rem" id="ops-pending"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div class="card-hd-left">Configuración de integraciones</div></div>
+        <div id="integrations-list" style="display:flex;flex-direction:column;gap:.4rem"></div>
+      </div>
+    </div>
+
+    <!-- ════ REPORTES ════ -->
+    <div class="view" id="view-reportes">
+      <div class="g3">
+        <div class="card" style="cursor:pointer" onclick="toast('Generando reporte...')">
+          <div style="font-size:1.5rem;margin-bottom:.6rem">📊</div>
+          <div style="font-size:.88rem;font-weight:500;margin-bottom:.25rem">Reporte mensual ejecutivo</div>
+          <div style="font-size:.74rem;color:var(--muted)">KPIs, ingresos, pacientes y proyecciones. PDF listo en 30 seg.</div>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="toast('Generando reporte...')">
+          <div style="font-size:1.5rem;margin-bottom:.6rem">🏥</div>
+          <div style="font-size:.88rem;font-weight:500;margin-bottom:.25rem">Reporte clínico COFEPRIS</div>
+          <div style="font-size:.74rem;color:var(--muted)">Estadísticas de atención y cumplimiento regulatorio.</div>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="toast('Generando reporte...')">
+          <div style="font-size:1.5rem;margin-bottom:.6rem">💰</div>
+          <div style="font-size:.88rem;font-weight:500;margin-bottom:.25rem">Reporte financiero SAT</div>
+          <div style="font-size:.74rem;color:var(--muted)">Ingresos, facturas y datos para declaración fiscal.</div>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="toast('Generando reporte...')">
+          <div style="font-size:1.5rem;margin-bottom:.6rem">📣</div>
+          <div style="font-size:.88rem;font-weight:500;margin-bottom:.25rem">Reporte de marketing</div>
+          <div style="font-size:.74rem;color:var(--muted)">ROAS, CAC, conversiones y análisis de campañas.</div>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="toast('Generando reporte...')">
+          <div style="font-size:1.5rem;margin-bottom:.6rem">😊</div>
+          <div style="font-size:.88rem;font-weight:500;margin-bottom:.25rem">Reporte de satisfacción NPS</div>
+          <div style="font-size:.74rem;color:var(--muted)">Resultados de encuestas y análisis de testimonios.</div>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="toast('Generando reporte...')">
+          <div style="font-size:1.5rem;margin-bottom:.6rem">🔬</div>
+          <div style="font-size:.88rem;font-weight:500;margin-bottom:.25rem">Resultados clínicos</div>
+          <div style="font-size:.74rem;color:var(--muted)">Pérdida de peso promedio, HbA1c y adherencia.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ CONFIGURACIÓN ════ -->
+    <div class="view" id="view-configuracion">
+      <div class="g2">
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Datos de la empresa</div></div>
+          <div style="display:flex;flex-direction:column;gap:.65rem">
+            <div style="display:flex;justify-content:space-between;font-size:.8rem;padding:.5rem 0;border-bottom:1px solid var(--bord)"><span style="color:var(--muted)">Razón social</span><strong>MEDNOVA SAS DE CV</strong></div>
+            <div style="display:flex;justify-content:space-between;font-size:.8rem;padding:.5rem 0;border-bottom:1px solid var(--bord)"><span style="color:var(--muted)">RFC</span><strong>MED250401XXX</strong></div>
+            <div style="display:flex;justify-content:space-between;font-size:.8rem;padding:.5rem 0;border-bottom:1px solid var(--bord)"><span style="color:var(--muted)">COFEPRIS</span><strong>Trámite en proceso</strong></div>
+            <div style="display:flex;justify-content:space-between;font-size:.8rem;padding:.5rem 0;border-bottom:1px solid var(--bord)"><span style="color:var(--muted)">Responsable Sanitario</span><strong>Dr. Andrés Valverde</strong></div>
+            <div style="display:flex;justify-content:space-between;font-size:.8rem;padding:.5rem 0"><span style="color:var(--muted)">Cédula Resp. Sanitario</span><strong>12467420</strong></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><div class="card-hd-left">Accesos del sistema</div></div>
+          <div id="users-cfg" style="display:flex;flex-direction:column;gap:.4rem"></div>
+          <button class="tb-btn" style="margin-top:.8rem;width:100%" onclick="openModal('nuevo-usuario')">+ Agregar usuario</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-ov" id="modal-ov" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-body"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// DATE
+document.getElementById('tb-date').textContent = new Date().toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+// ── VIEW SWITCHING ──
+const titles = {
+  dashboard:'Dashboard <em>ejecutivo</em>',
+  pacientes:'Gestión de <em>pacientes</em>',
+  medicos:'Equipo <em>médico</em>',
+  finanzas:'Finanzas y <em>facturación</em>',
+  marketing:'Marketing y <em>adquisición</em>',
+  operaciones:'Operaciones y <em>sistema</em>',
+  reportes:'Reportes y <em>exportaciones</em>',
+  configuracion:'Configuración <em>del sistema</em>'
+};
+function showView(id, btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  document.getElementById('tb-title').innerHTML = titles[id]||id;
+}
+
+// ── PATIENTS TABLE ──
+const patients = [
+  {name:'María Rodríguez',email:'maria.r@gmail.com',init:'MR',color:'#e74c3c',plan:'Premium',status:'active',ciudad:'CDMX',imc:28.1,adh:96,mrr:2499,semanas:8},
+  {name:'Roberto Morales',email:'roberto.m@hotmail.com',init:'RM',color:'#2563eb',plan:'Seguimiento',status:'active',ciudad:'MTY',imc:31.4,adh:88,mrr:1499,semanas:12},
+  {name:'Ana Sánchez',email:'ana.s@gmail.com',init:'AS',color:'#16a34a',plan:'Seguimiento',status:'new',ciudad:'GDL',imc:33.2,adh:100,mrr:1499,semanas:0},
+  {name:'Jorge Hernández',email:'jorge.h@corp.mx',init:'JH',color:'#d97706',plan:'Premium',status:'active',ciudad:'PUE',imc:29.8,adh:79,mrr:2499,semanas:20},
+  {name:'Claudia Padilla',email:'claudia.p@gmail.com',init:'CP',color:'#7c3aed',plan:'Básico',status:'pending',ciudad:'CDMX',imc:27.4,adh:0,mrr:799,semanas:0},
+  {name:'Luis Vargas',email:'luis.v@startup.io',init:'LV',color:'#059669',plan:'Seguimiento',status:'active',ciudad:'CDMX',imc:34.1,adh:92,mrr:1499,semanas:16},
+  {name:'Patricia Nava',email:'patricia.n@gmail.com',init:'PN',color:'#db2777',plan:'Premium',status:'new',ciudad:'MTY',imc:30.9,adh:0,mrr:2499,semanas:0},
+  {name:'Miguel Torres',email:'miguel.t@empresa.com',init:'MT',color:'#0891b2',plan:'Seguimiento',status:'active',ciudad:'GDL',imc:32.7,adh:84,mrr:1499,semanas:6},
+  {name:'Sofía Paredes',email:'sofia.p@hotmail.com',init:'SP',color:'#ea580c',plan:'Básico',status:'active',ciudad:'QRO',imc:28.8,adh:91,mrr:799,semanas:4},
+  {name:'Eduardo Ruiz',email:'eduardo.r@gmail.com',init:'ER',color:'#64748b',plan:'Básico',status:'inactive',ciudad:'CDMX',imc:26.1,adh:0,mrr:0,semanas:3},
+];
+function renderPatients(){
+  const tbl = document.getElementById('patients-tbl');
+  const stMap = {active:'<span class="badge active">Activo</span>',new:'<span class="badge new">Nuevo</span>',pending:'<span class="badge pending">Pendiente</span>',inactive:'<span class="badge inactive">Inactivo</span>'};
+  tbl.innerHTML = `<thead><tr>
+    <th>Paciente</th><th>Plan</th><th>Ciudad</th><th>IMC</th><th>Adherencia</th><th>MRR</th><th>Estado</th><th>Semanas</th><th>Acciones</th>
+  </tr></thead><tbody>${patients.map(p=>`<tr>
+    <td><div style="display:flex;align-items:center;gap:.6rem"><div style="width:30px;height:30px;border-radius:50%;background:${p.color}20;color:${p.color};display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:600;flex-shrink:0">${p.init}</div><div><div style="font-weight:500;font-size:.82rem">${p.name}</div><div style="font-size:.68rem;color:var(--muted)">${p.email}</div></div></div></td>
+    <td><span class="plan-pill">${p.plan}</span></td>
+    <td style="color:var(--muted)">${p.ciudad}</td>
+    <td style="font-size:.8rem;font-weight:600;color:${p.imc>30?'var(--red)':'var(--amber)'}">${p.imc}</td>
+    <td><div style="display:flex;align-items:center;gap:.4rem"><div style="width:60px;height:4px;background:var(--bg2);overflow:hidden"><div style="height:100%;width:${p.adh}%;background:${p.adh>85?'var(--green)':p.adh>60?'var(--amber)':'var(--red)'}"></div></div><span style="font-size:.72rem;font-weight:500">${p.adh}%</span></div></td>
+    <td style="font-size:.82rem;font-weight:500">$${p.mrr.toLocaleString()}</td>
+    <td>${stMap[p.status]}</td>
+    <td style="color:var(--muted);font-size:.78rem">${p.semanas>0?p.semanas+' sem':'—'}</td>
+    <td><div class="ac-btns"><button class="ac" onclick="toast('Perfil de ${p.name}')">👁</button><button class="ac" onclick="toast('Chat con ${p.name}')">💬</button><button class="ac" onclick="toast('Editar ${p.name}')">✏️</button></div></td>
+  </tr>`).join('')}</tbody>`;
+}
+
+// ── DOCTORS GRID ──
+const doctors = [
+  {name:'Dr. Andrés Valverde',spec:'Endocrinólogo',school:'UNAM',ced:'12467420',init:'AV',color:'#c0392b',patients:87,consults:312,rating:4.9,active:true},
+  {name:'Dra. Laura Castillo',spec:'Medicina Interna',school:'IPN · CMN',ced:'11983741',init:'LC',color:'#2563eb',patients:64,consults:218,rating:4.8,active:true},
+  {name:'Dr. Miguel Reyes',spec:'Nutriología Clínica',school:'UAG · H. Civil',ced:'13512089',init:'MR',color:'#16a34a',patients:52,consults:187,rating:4.7,active:true},
+  {name:'Dra. Sofía Paredes',spec:'Psicología de la Salud',school:'UDEM',ced:'14231657',init:'SP',color:'#7c3aed',patients:44,consults:142,rating:4.9,active:true},
+];
+function renderDoctors(){
+  const el = document.getElementById('medicos-grid');
+  el.innerHTML = doctors.map(d=>`
+    <div class="card" style="cursor:pointer" onclick="toast('Perfil de ${d.name}')">
+      <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.9rem;padding-bottom:.8rem;border-bottom:1px solid var(--bord)">
+        <div style="width:44px;height:44px;border-radius:50%;background:${d.color}15;color:${d.color};display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;font-weight:400;flex-shrink:0">${d.init}</div>
+        <div style="flex:1">
+          <div style="font-size:.86rem;font-weight:500">${d.name}</div>
+          <div style="font-size:.7rem;color:var(--red);letter-spacing:.04em">${d.spec}</div>
+          <div style="font-size:.68rem;color:var(--muted)">${d.school} · Céd. ${d.ced}</div>
+        </div>
+        <button class="tog ${d.active?'on':'off'}" onclick="event.stopPropagation();this.classList.toggle('on');this.classList.toggle('off');toast('Estado actualizado')"></button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;text-align:center">
+        <div><div style="font-family:var(--serif);font-size:1.2rem;font-weight:300;color:var(--ink)">${d.patients}</div><div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Pacientes</div></div>
+        <div><div style="font-family:var(--serif);font-size:1.2rem;font-weight:300;color:var(--ink)">${d.consults}</div><div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Consultas</div></div>
+        <div><div style="font-family:var(--serif);font-size:1.2rem;font-weight:300;color:var(--ink)">${d.rating}★</div><div style="font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Rating</div></div>
+      </div>
+    </div>`).join('');
+}
+
+// ── TRANSACTIONS ──
+function renderTransactions(){
+  const txs=[
+    {patient:'Claudia Padilla',plan:'Seguimiento',amount:1499,method:'Visa •4521',date:'22 Abr',status:'paid'},
+    {patient:'Patricia Nava',plan:'Premium',amount:2499,method:'Mastercard •9834',date:'22 Abr',status:'paid'},
+    {patient:'Carlos Fuentes',plan:'Seguimiento',amount:1499,method:'Visa •2341',date:'21 Abr',status:'cancelled'},
+    {patient:'Luis Vargas',plan:'Seguimiento',amount:1499,method:'SPEI',date:'20 Abr',status:'paid'},
+    {patient:'Jorge Hernández',plan:'Premium',amount:2499,method:'Visa •7890',date:'20 Abr',status:'paid'},
+    {patient:'Ana López',plan:'Básico',amount:799,method:'OXXO Pay',date:'19 Abr',status:'paid'},
+    {patient:'Marcos Ruiz',plan:'Seguimiento',amount:1499,method:'Mastercard •1234',date:'18 Abr',status:'refunded'},
+  ];
+  const stMap={paid:'<span class="badge paid">Pagado</span>',cancelled:'<span class="badge cancelled">Fallido</span>',refunded:'<span class="badge refunded">Reembolso</span>'};
+  document.getElementById('trans-tbl').innerHTML=`<thead><tr><th>Paciente</th><th>Plan</th><th>Monto</th><th>Método</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${txs.map(t=>`<tr>
+    <td style="font-size:.8rem;font-weight:500">${t.patient}</td>
+    <td><span class="plan-pill">${t.plan}</span></td>
+    <td style="font-size:.82rem;font-weight:600">$${t.amount.toLocaleString()}</td>
+    <td style="font-size:.76rem;color:var(--muted)">${t.method}</td>
+    <td style="font-size:.76rem;color:var(--muted)">${t.date}</td>
+    <td>${stMap[t.status]}</td>
+    <td><button class="ac" onclick="toast('Abriendo recibo...')">🧾</button></td>
+  </tr>`).join('')}</tbody>`;
+}
+
+// ── CAMPAIGNS ──
+function renderCampaigns(){
+  const camps=[
+    {name:'Meta · GLP-1 CDMX',budget:'$25,000',spent:'$18,420',roas:'4.8x',status:'active'},
+    {name:'TikTok · Pérdida de peso',budget:'$12,000',spent:'$9,100',roas:'3.9x',status:'active'},
+    {name:'Google · Semaglutida México',budget:'$8,000',spent:'$4,200',roas:'5.2x',status:'active'},
+    {name:'Influencer @drsalud_mx',budget:'$6,000',spent:'$6,000',roas:'2.1x',status:'inactive'},
+  ];
+  document.getElementById('campaigns').innerHTML=camps.map(c=>`
+    <div style="display:flex;align-items:center;gap:.7rem;padding:.65rem .8rem;background:var(--bg);transition:background .18s" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background='var(--bg)'">
+      <div style="flex:1">
+        <div style="font-size:.8rem;font-weight:500">${c.name}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${c.spent} / ${c.budget} · ROAS: ${c.roas}</div>
+      </div>
+      <span class="badge ${c.status==='active'?'active':'inactive'}">${c.status==='active'?'Activa':'Pausada'}</span>
+    </div>`).join('');
+}
+
+// ── OPERATIONS ──
+function renderOperations(){
+  const sys=[
+    {title:'Plataforma web',sub:'mymednova.com · Tiempo activo 99.8%',done:true},
+    {title:'API Claude (evaluación IA)',sub:'Conectada · Latencia media: 1.4s',done:true},
+    {title:'Pasarela Conekta',sub:'Operacional · Cobros procesando',done:true},
+    {title:'WhatsApp Business API',sub:'Conectado · 247 conversaciones activas',active:true},
+    {title:'Aviso COFEPRIS',sub:'Trámite en revisión · ETA: 10 días hábiles',done:false},
+  ];
+  document.getElementById('sys-timeline').innerHTML=sys.map((s,i)=>`
+    <div class="tl-item">
+      <div class="tl-dot-wrap">
+        <div class="tl-dot ${s.done?'done':s.active?'active':''}"></div>
+        ${i<sys.length-1?'<div class="tl-line"></div>':''}
+      </div>
+      <div class="tl-content">
+        <div class="tl-title">${s.title}</div>
+        <div class="tl-sub">${s.sub}</div>
+      </div>
+    </div>`).join('');
+
+  const pending=[
+    {text:'7 evaluaciones IA sin médico asignado',priority:'high'},
+    {text:'12 pacientes sin actividad en 7+ días',priority:'med'},
+    {text:'Receta vencida · Roberto Morales',priority:'high'},
+    {text:'Pago fallido · Carlos Fuentes · $1,499',priority:'high'},
+    {text:'Stock bajo semaglutida en farmacia aliada',priority:'med'},
+  ];
+  document.getElementById('ops-pending').innerHTML=pending.map(p=>`
+    <div class="alert-row" style="cursor:pointer" onclick="toast('Abriendo tarea...')">
+      <div class="alert-dot ${p.priority}"></div>
+      <div class="alert-info"><div class="alert-title">${p.text}</div></div>
+      <span class="alert-action">Resolver →</span>
+    </div>`).join('');
+
+  const integrations=[
+    {name:'Claude API (IA evaluación)',icon:'🤖',status:'Conectado',active:true},
+    {name:'Conekta (pagos)',icon:'💳',status:'Operacional',active:true},
+    {name:'Medikit (recetas electrónicas)',icon:'📄',status:'Conectado',active:true},
+    {name:'WhatsApp Business',icon:'💬',status:'Activo',active:true},
+    {name:'Chopo / Salud Digna (laboratorios)',icon:'🧪',status:'Alianza activa',active:true},
+    {name:'Google Analytics 4',icon:'📊',status:'Rastreando',active:true},
+    {name:'Farmacia aliada (Benavides)',icon:'🏥',status:'Negociación en curso',active:false},
+  ];
+  document.getElementById('integrations-list').innerHTML=integrations.map(i=>`
+    <div style="display:flex;align-items:center;gap:.8rem;padding:.65rem .9rem;background:var(--bg)">
+      <span style="font-size:1rem">${i.icon}</span>
+      <div style="flex:1"><div style="font-size:.8rem;font-weight:500">${i.name}</div><div style="font-size:.7rem;color:var(--muted)">${i.status}</div></div>
+      <button class="tog ${i.active?'on':'off'}" onclick="this.classList.toggle('on');this.classList.toggle('off');toast('Integración actualizada')"></button>
+    </div>`).join('');
+}
+
+// ── CONFIG USERS ──
+function renderConfigUsers(){
+  const users=[
+    {name:'Joel Navarro',role:'Super Admin',email:'joel@mymednova.com',active:true},
+    {name:'Dr. Andrés Valverde',role:'Médico · Panel médico',email:'avalverde@mymednova.com',active:true},
+    {name:'Ops Manager',role:'Operaciones',email:'ops@mymednova.com',active:true},
+  ];
+  document.getElementById('users-cfg').innerHTML=users.map(u=>`
+    <div style="display:flex;align-items:center;gap:.7rem;padding:.65rem .8rem;background:var(--bg)">
+      <div style="flex:1">
+        <div style="font-size:.8rem;font-weight:500">${u.name}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${u.role} · ${u.email}</div>
+      </div>
+      <button class="tog ${u.active?'on':'off'}" onclick="this.classList.toggle('on');this.classList.toggle('off');toast('Acceso actualizado')"></button>
+    </div>`).join('');
+}
+
+// ── REVENUE CHART ──
+function renderRevChart(){
+  const data=[148,192,221,258,281,307,349,371];
+  const labels=['Sep','Oct','Nov','Dic','Ene','Feb','Mar','Abr'];
+  const el=document.getElementById('rev-chart');
+  const W=el.offsetWidth||500, H=110;
+  const min=Math.min(...data)-20, max=Math.max(...data)+20;
+  const px=i=>(i/(data.length-1))*(W-20)+10;
+  const py=v=>H-((v-min)/(max-min))*(H-10)-5;
+  const pts=data.map((d,i)=>`${px(i).toFixed(1)},${py(d).toFixed(1)}`).join(' ');
+  const area=`M${px(0).toFixed(1)},${H} `+data.map((d,i)=>`L${px(i).toFixed(1)},${py(d).toFixed(1)}`).join(' ')+` L${px(data.length-1).toFixed(1)},${H} Z`;
+  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <defs><linearGradient id="rg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c0392b" stop-opacity=".12"/><stop offset="100%" stop-color="#c0392b" stop-opacity="0"/></linearGradient></defs>
+    <path d="${area}" fill="url(#rg)"/>
+    <polyline points="${pts}" fill="none" stroke="#c0392b" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${data.map((d,i)=>`<circle cx="${px(i).toFixed(1)}" cy="${py(d).toFixed(1)}" r="${i===data.length-1?5:3}" fill="${i===data.length-1?'#c0392b':'#e74c3c'}" stroke="white" stroke-width="1.5"/>
+    <text x="${px(i).toFixed(1)}" y="${(py(d)-8).toFixed(1)}" text-anchor="middle" font-size="9" fill="#888">$${d}k</text>`).join('')}
+  </svg>`;
+  document.getElementById('rev-chart-x').innerHTML=labels.map(l=>`<span style="font-size:.6rem;color:var(--muted);flex:1;text-align:center">${l}</span>`).join('');
+}
+
+// ── MODALS ──
+const modals = {
+  'nuevo-paciente': `<div class="modal-title">Nuevo paciente</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+      <div class="modal-field"><label>Nombre</label><input type="text" placeholder="María"/></div>
+      <div class="modal-field"><label>Apellido</label><input type="text" placeholder="González"/></div>
+    </div>
+    <div class="modal-field"><label>Email</label><input type="email" placeholder="maria@gmail.com"/></div>
+    <div class="modal-field"><label>WhatsApp</label><input type="tel" placeholder="+52 55 1234 5678"/></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+      <div class="modal-field"><label>Plan</label><select><option>Básico</option><option selected>Seguimiento</option><option>Premium</option></select></div>
+      <div class="modal-field"><label>Ciudad</label><select><option>CDMX</option><option>Monterrey</option><option>Guadalajara</option><option>Otra</option></select></div>
+    </div>
+    <div class="modal-field"><label>Médico asignado</label><select><option>Dr. Andrés Valverde</option><option>Dra. Laura Castillo</option></select></div>
+    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal()">Cancelar</button><button class="modal-save" onclick="toast('Paciente creado');closeModal()">Crear paciente</button></div>`,
+
+  'nuevo-medico': `<div class="modal-title">Agregar médico</div>
+    <div class="modal-field"><label>Nombre completo</label><input type="text" placeholder="Dr. Ana Torres"/></div>
+    <div class="modal-field"><label>Especialidad</label><select><option>Endocrinología</option><option>Medicina Interna</option><option>Nutriología</option><option>Psicología</option></select></div>
+    <div class="modal-field"><label>Cédula profesional</label><input type="text" placeholder="12345678"/></div>
+    <div class="modal-field"><label>Universidad</label><input type="text" placeholder="UNAM"/></div>
+    <div class="modal-field"><label>Email institucional</label><input type="email" placeholder="doctor@mymednova.com"/></div>
+    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal()">Cancelar</button><button class="modal-save" onclick="toast('Médico registrado');closeModal()">Registrar médico</button></div>`,
+
+  'nuevo-usuario': `<div class="modal-title">Nuevo usuario del sistema</div>
+    <div class="modal-field"><label>Nombre</label><input type="text" placeholder="Nombre del usuario"/></div>
+    <div class="modal-field"><label>Email</label><input type="email" placeholder="usuario@mymednova.com"/></div>
+    <div class="modal-field"><label>Rol</label><select><option>Administrador</option><option>Operaciones</option><option>Marketing</option><option>Finanzas</option><option>Soporte</option></select></div>
+    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal()">Cancelar</button><button class="modal-save" onclick="toast('Usuario creado');closeModal()">Crear usuario</button></div>`,
+};
+
+function openModal(type){
+  document.getElementById('modal-body').innerHTML = modals[type] || '<p>Modal no encontrado</p>';
+  document.getElementById('modal-ov').classList.add('open');
+}
+function closeModal(){
+  document.getElementById('modal-ov').classList.remove('open');
+}
+
+// ── TOAST ──
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.innerHTML='<span style="color:#fc9090">●</span> '+msg;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2600);
+}
+
+// ── INIT ──
+renderPatients();
+renderDoctors();
+renderTransactions();
+renderCampaigns();
+renderOperations();
+renderConfigUsers();
+setTimeout(renderRevChart, 100);
+</script>
+</body>
+</html>

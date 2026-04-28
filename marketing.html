@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MEDNOVA — Estrategia de Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#fafaf8;--bg2:#f3f3f1;--card:#fff;--ink:#111;--red:#c0392b;--red2:#a93226;
+  --red-lt:#e74c3c;--red-bg:rgba(192,57,43,.07);--green:#16a34a;--green-bg:rgba(22,163,74,.08);
+  --amber:#b45309;--amber-bg:rgba(180,83,9,.08);--blue:#1d4ed8;--blue-bg:rgba(29,78,216,.08);
+  --muted:#888;--bord:rgba(0,0,0,.07);--bord2:rgba(0,0,0,.12);
+  --serif:'Fraunces',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7}
+
+/* NAV */
+nav{background:var(--ink);padding:1rem 5%;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-family:var(--serif);font-size:1.1rem;color:#fff;font-weight:300}
+.nav-logo span{color:var(--red-lt)}
+.nav-tabs{display:flex;gap:.3rem}
+.nav-tab{background:none;border:none;color:rgba(255,255,255,.45);padding:.4rem .85rem;font-size:.75rem;cursor:pointer;font-family:var(--sans);border-radius:100px;transition:all .2s;letter-spacing:.03em}
+.nav-tab:hover{color:#fff;background:rgba(255,255,255,.08)}
+.nav-tab.active{background:var(--red);color:#fff}
+
+/* HERO */
+.hero{background:var(--ink);padding:4rem 5% 3rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(192,57,43,.2),transparent 70%)}
+.hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:var(--red-bg);border:1px solid rgba(192,57,43,.3);color:var(--red-lt);padding:.28rem .9rem;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.5rem}
+.hero h1{font-family:var(--serif);font-size:clamp(2rem,4vw,3.5rem);font-weight:300;color:#fff;line-height:1.1;margin-bottom:1rem}
+.hero h1 em{font-style:italic;color:#fc9090}
+.hero-sub{color:rgba(255,255,255,.5);font-size:.95rem;max-width:560px;margin-bottom:2.5rem}
+.hero-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:700px}
+.hk{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);padding:1rem}
+.hk-n{font-family:var(--serif);font-size:2rem;font-weight:300;color:#fff;line-height:1}
+.hk-n span{color:var(--red-lt);font-size:1.2rem}
+.hk-l{font-size:.65rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-top:.3rem}
+
+/* CONTENT */
+.content{padding:3rem 5%}
+
+/* SECTION */
+.section{margin-bottom:4rem}
+.section-hd{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid var(--bord)}
+.section-title{font-family:var(--serif);font-size:1.8rem;font-weight:300}
+.section-title em{font-style:italic;color:var(--red-lt)}
+.section-tag{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+/* CARD */
+.card{background:var(--card);border:1px solid var(--bord);padding:1.4rem;margin-bottom:1rem}
+.card-hd{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.9rem;display:flex;align-items:center;gap:.4rem}
+.card-hd::before{content:'';width:14px;height:2px;background:var(--red)}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+
+/* PHASE CARDS */
+.phase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem}
+.phase-card{border:1px solid var(--bord);overflow:hidden;transition:transform .2s}
+.phase-card:hover{transform:translateY(-3px)}
+.phase-header{padding:1.2rem;background:var(--ink);position:relative}
+.phase-num{font-family:var(--serif);font-size:3rem;font-weight:300;color:rgba(255,255,255,.08);position:absolute;top:.5rem;right:1rem;line-height:1}
+.phase-tag{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red-lt);margin-bottom:.4rem}
+.phase-name{font-family:var(--serif);font-size:1.2rem;font-weight:300;color:#fff}
+.phase-weeks{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:.2rem}
+.phase-body{padding:1.2rem;background:var(--card)}
+.phase-budget{font-family:var(--serif);font-size:1.6rem;font-weight:300;color:var(--red);margin-bottom:.6rem}
+.phase-goal{font-size:.8rem;color:var(--muted);margin-bottom:.8rem;line-height:1.6}
+.phase-items{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.phase-items li{font-size:.78rem;color:var(--ink);display:flex;gap:.5rem;align-items:flex-start}
+.phase-items li::before{content:'→';color:var(--red);font-size:.7rem;flex-shrink:0;margin-top:2px}
+
+/* CHANNEL CARDS */
+.channel-card{border:1px solid var(--bord);overflow:hidden}
+.channel-top{padding:1.1rem;background:var(--card);border-bottom:1px solid var(--bord)}
+.channel-icon{font-size:1.6rem;margin-bottom:.6rem}
+.channel-name{font-size:.92rem;font-weight:600;margin-bottom:.2rem}
+.channel-role{font-size:.72rem;color:var(--muted)}
+.channel-budget{font-family:var(--serif);font-size:1.4rem;font-weight:300;color:var(--red);margin-top:.5rem}
+.channel-pct{font-size:.7rem;color:var(--muted)}
+.channel-body{padding:1rem 1.1rem;background:var(--bg);font-size:.78rem;color:var(--ink2);line-height:1.7}
+.channel-kpis{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding:.8rem 1.1rem;background:var(--card);border-top:1px solid var(--bord)}
+.ck{text-align:center}
+.ck-n{font-size:.9rem;font-weight:600;color:var(--ink)}
+.ck-l{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:.4rem;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--red),transparent)}
+.tl-item{position:relative;padding-bottom:2rem}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-1.6rem;top:.3rem;width:12px;height:12px;border-radius:50%;background:var(--red);border:2px solid var(--bg)}
+.tl-week{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:.3rem}
+.tl-title{font-size:.92rem;font-weight:600;margin-bottom:.4rem}
+.tl-items{display:flex;flex-direction:column;gap:.25rem}
+.tl-item-txt{font-size:.78rem;color:var(--muted);display:flex;gap:.4rem}
+.tl-item-txt::before{content:'·';color:var(--red)}
+
+/* CREATIVE GRID */
+.creative-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.creative-card{background:var(--card);border:1px solid var(--bord);overflow:hidden}
+.creative-preview{height:120px;display:flex;align-items:center;justify-content:center;font-size:.8rem;text-align:center;padding:1rem;position:relative}
+.creative-label{position:absolute;top:.5rem;left:.5rem;font-size:.6rem;background:var(--red);color:#fff;padding:.15rem .55rem;letter-spacing:.06em;text-transform:uppercase}
+.creative-info{padding:.8rem 1rem;border-top:1px solid var(--bord)}
+.creative-title{font-size:.82rem;font-weight:600;margin-bottom:.2rem}
+.creative-hook{font-size:.72rem;color:var(--muted);font-style:italic;margin-bottom:.3rem}
+.creative-stats{display:flex;gap:.5rem}
+.cstat{font-size:.65rem;color:var(--muted);background:var(--bg2);padding:.18rem .5rem}
+
+/* AUDIENCE CARDS */
+.audience-card{background:var(--card);border:1px solid var(--bord);padding:1.1rem}
+.aud-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.8rem;padding-bottom:.8rem;border-bottom:1px solid var(--bord)}
+.aud-icon{font-size:1.4rem}
+.aud-name{font-size:.88rem;font-weight:600}
+.aud-size{font-size:.7rem;color:var(--muted)}
+.aud-row{display:flex;justify-content:space-between;font-size:.76rem;padding:.3rem 0;border-bottom:1px solid var(--bord)}
+.aud-row:last-child{border-bottom:none}
+.aud-key{color:var(--muted)}
+.aud-val{font-weight:500}
+
+/* BUDGET TABLE */
+.budget-table{width:100%;border-collapse:collapse}
+.budget-table th{padding:.65rem .9rem;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:2px solid var(--bord);font-weight:500}
+.budget-table td{padding:.75rem .9rem;border-bottom:1px solid var(--bord);font-size:.82rem;vertical-align:middle}
+.budget-table tr:hover td{background:var(--bg)}
+.budget-table tr:last-child td{border-bottom:none;font-weight:600}
+.bar-cell{display:flex;align-items:center;gap:.6rem}
+.bar-mini{height:5px;background:var(--bg2);overflow:hidden;flex:1;min-width:80px}
+.bar-mini-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--red-lt))}
+
+/* KPI TABLE */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.kpi-card{background:var(--card);border:1px solid var(--bord);border-top:3px solid var(--red);padding:1.1rem;text-align:center}
+.kpi-num{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--red);line-height:1;margin-bottom:.2rem}
+.kpi-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.kpi-bench{font-size:.72rem;color:var(--ink);margin-top:.3rem;font-weight:500}
+
+/* INFLUENCER */
+.inf-card{background:var(--card);border:1px solid var(--bord);padding:1.1rem;display:flex;gap:.8rem;align-items:flex-start}
+.inf-av{width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.inf-name{font-size:.84rem;font-weight:600;margin-bottom:.1rem}
+.inf-handle{font-size:.72rem;color:var(--muted);margin-bottom:.3rem}
+.inf-tags{display:flex;gap:.3rem;flex-wrap:wrap}
+.inf-tag{font-size:.62rem;background:var(--bg2);color:var(--muted);padding:.15rem .45rem}
+.inf-fee{font-size:.8rem;font-weight:600;color:var(--red);margin-left:auto;white-space:nowrap}
+
+/* SEO TABLE */
+.seo-row{display:flex;align-items:center;gap:1rem;padding:.75rem;border-bottom:1px solid var(--bord);background:var(--card)}
+.seo-row:last-child{border-bottom:none}
+.seo-kw{flex:1;font-size:.82rem;font-weight:500}
+.seo-vol{font-size:.75rem;color:var(--green);font-weight:600;min-width:60px}
+.seo-diff{font-size:.72rem;padding:.15rem .5rem;border-radius:100px;min-width:50px;text-align:center}
+.seo-diff.easy{background:var(--green-bg);color:var(--green)}
+.seo-diff.med{background:var(--amber-bg);color:var(--amber)}
+.seo-type{font-size:.68rem;color:var(--muted);min-width:80px;text-align:right}
+
+/* TABS */
+.tabs{display:flex;gap:.3rem;margin-bottom:1.5rem;border-bottom:1px solid var(--bord);padding-bottom:.3rem}
+.tab{background:none;border:none;padding:.5rem 1rem;font-size:.78rem;cursor:pointer;font-family:var(--sans);color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
+.tab.active{color:var(--red);border-bottom-color:var(--red);font-weight:500}
+
+/* MISC */
+.badge{font-size:.62rem;padding:.18rem .58rem;border-radius:100px;font-weight:500}
+.badge.green{background:var(--green-bg);color:var(--green)}
+.badge.red{background:var(--red-bg);color:var(--red)}
+.badge.amber{background:var(--amber-bg);color:var(--amber)}
+.badge.blue{background:var(--blue-bg);color:var(--blue)}
+.alert-box{background:var(--red-bg);border-left:3px solid var(--red);padding:1rem 1.2rem;font-size:.82rem;color:var(--ink);line-height:1.7;margin-bottom:1rem}
+.tip-box{background:var(--green-bg);border-left:3px solid var(--green);padding:.9rem 1.1rem;font-size:.8rem;color:var(--ink);line-height:1.7}
+
+@media(max-width:768px){
+  .phase-grid,.g3,.g4,.creative-grid,.kpi-grid{grid-template-columns:1fr}
+  .g2,.channel-grid{grid-template-columns:1fr}
+  .hero-kpis{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">MED<span>NOVA</span> · Marketing</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="scrollTo('fases')">Fases</button>
+    <button class="nav-tab" onclick="scrollTo('canales')">Canales</button>
+    <button class="nav-tab" onclick="scrollTo('creativos')">Creativos</button>
+    <button class="nav-tab" onclick="scrollTo('audiencias')">Audiencias</button>
+    <button class="nav-tab" onclick="scrollTo('seo')">SEO</button>
+    <button class="nav-tab" onclick="scrollTo('presupuesto')">Presupuesto</button>
+    <button class="nav-tab" onclick="scrollTo('kpis')">KPIs</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Estrategia · 100 pacientes en 90 días</div>
+  <h1>De 0 a 100 pacientes<br/><em>en tres meses.</em></h1>
+  <p class="hero-sub">Presupuesto $500k MXN · Cobertura nacional · Canales digitales · CAC objetivo $1,500 MXN</p>
+  <div class="hero-kpis">
+    <div class="hk"><div class="hk-n">100<span>+</span></div><div class="hk-l">Pacientes meta</div></div>
+    <div class="hk"><div class="hk-n">$1.5<span>k</span></div><div class="hk-l">CAC objetivo MXN</div></div>
+    <div class="hk"><div class="hk-n">4.9<span>%</span></div><div class="hk-l">Conv. esperada</div></div>
+    <div class="hk"><div class="hk-n">$500<span>k</span></div><div class="hk-l">Presupuesto total</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- FASES -->
+<div class="section" id="fases">
+  <div class="section-hd">
+    <div class="section-title">Las tres <em>fases del plan</em></div>
+    <span class="section-tag">Días 1 — 90</span>
+  </div>
+
+  <div class="phase-grid">
+    <div class="phase-card">
+      <div class="phase-header">
+        <div class="phase-num">1</div>
+        <div class="phase-tag">Días 1–30</div>
+        <div class="phase-name">Cimientos y primeros leads</div>
+        <div class="phase-weeks">Semanas 1 a 4</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-budget">$120,000 MXN</div>
+        <div class="phase-goal">Crear la presencia digital desde cero y generar los primeros 300 leads calificados.</div>
+        <ul class="phase-items">
+          <li>Crear perfiles en Meta, TikTok, Instagram y YouTube</li>
+          <li>Publicar 15 contenidos orgánicos educativos</li>
+          <li>Lanzar primeras campañas Meta Ads (prueba)</li>
+          <li>Configurar pixel de seguimiento y analytics</li>
+          <li>Contactar 10 micro-influencers de salud</li>
+          <li>Publicar 3 artículos SEO piloto en blog</li>
+          <li>Meta: 300 leads · 20 evaluaciones completadas</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-header">
+        <div class="phase-num">2</div>
+        <div class="phase-tag">Días 31–60</div>
+        <div class="phase-name">Adquisición agresiva</div>
+        <div class="phase-weeks">Semanas 5 a 8</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-budget">$220,000 MXN</div>
+        <div class="phase-goal">Escalar los canales que funcionaron. Convertir leads en primeros pacientes de pago.</div>
+        <ul class="phase-items">
+          <li>Duplicar inversión en Meta Ads con mejores creativos</li>
+          <li>Lanzar TikTok Ads con videos testimoniales</li>
+          <li>Activar 5 influencers con modelo de comisión</li>
+          <li>Retargeting a quienes iniciaron evaluación y no convirtieron</li>
+          <li>Email marketing + WhatsApp secuencias automáticas</li>
+          <li>Meta: 50 pacientes activos pagando</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-header">
+        <div class="phase-num">3</div>
+        <div class="phase-tag">Días 61–90</div>
+        <div class="phase-name">Optimización y tracción</div>
+        <div class="phase-weeks">Semanas 9 a 12</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-budget">$160,000 MXN</div>
+        <div class="phase-goal">Reducir CAC, activar referidos y preparar métricas para levantar inversión.</div>
+        <ul class="phase-items">
+          <li>Programa de referidos: $300 MXN descuento por referido</li>
+          <li>Primeros testimonios en video de pacientes reales</li>
+          <li>Google Ads: keywords de alta intención</li>
+          <li>SEO: 10 artículos publicados, posición 1-3 en 3 keywords</li>
+          <li>Analizar y optimizar el embudo completo</li>
+          <li>Meta: 100 pacientes activos · métricas para inversión</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE SEMANAL -->
+  <div class="card">
+    <div class="card-hd">Plan semana por semana</div>
+    <div class="g2">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-week">Semana 1</div>
+          <div class="tl-title">Setup digital completo</div>
+          <div class="tl-items">
+            <div class="tl-item-txt">Crear Facebook Business Manager + Instagram Business</div>
+            <div class="tl-item-txt">Crear cuenta de TikTok for Business</div>
+            <div class="tl-item-txt">Instalar Meta Pixel en landing page</div>
+            <div class="tl-item-txt">Configurar Google Analytics 4 y Search Console</div>
+            <div class="tl-item-txt">Crear cuenta de Mailchimp o Brevo para email</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-week">Semana 2</div>
+          <div class="tl-title">Primeros 10 contenidos + Meta Ads prueba</div>
+          <div class="tl-items">
+            <div class="tl-item-txt">Publicar 10 posts educativos (reels + carruseles)</div>
+            <div class="tl-item-txt">Lanzar campaña prueba Meta: $5,000/día · 3 creativos</div>
+            <div class="tl-item-txt">Audiencia: mujeres 30-55 CDMX/MTY/GDL interesadas en salud</div>
+            <div class="tl-item-txt">Objetivo: tráfico a evaluación gratuita</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-week">Semana 3</div>
+          <div class="tl-title">Optimizar + contactar influencers</div>
+          <div class="tl-items">
+            <div class="tl-item-txt">Analizar resultados semana 2 — matar creativos con CPL alto</div>
+            <div class="tl-item-txt">Escalar creativos ganadores x2</div>
+            <div class="tl-item-txt">Contactar 10 micro-influencers (lista abajo)</div>
+            <div class="tl-item-txt">Publicar 3 artículos SEO en el blog</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-week">Semana 4</div>
+          <div class="tl-title">Primeras conversiones</div>
+          <div class="tl-items">
+            <div class="tl-item-txt">Lanzar TikTok Ads con video educativo #1</div>
+            <div class="tl-item-txt">Activar secuencia de WhatsApp para leads que no convirtieron</div>
+            <div class="tl-item-txt">Primera evaluación médica con influencer como testimonio</div>
+            <div class="tl-item-txt">Meta: 300 leads · 20 evaluaciones · 5-10 pacientes</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-week">Semana 5–6</div>
+          <div class="tl-title">Escalar agresivamente</div>
+          <div class="tl-items">
+            <div class="tl-item-txt">Aumentar presupuesto Meta a $15,000/día</div>
+            <div class="tl-item-txt">Lanzar lookalike audiences de primeros pacientes</div>
+            <div class="tl-item-txt">5 influencers publicando contenido patrocinado</div>
+            <div class="tl-item-txt">Retargeting: 70% del presupuesto a visitantes que no convirtieron</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-week">Semana 7–8</div>
+          <div class="tl-title">Testimonios + Google Ads</div>
+          <div class="tl-items">
+            <div class="tl-item-txt">Grabar testimonios en video de primeros 10 pacientes</div>
+            <div class="tl-item-txt">Lanzar Google Ads: keywords como "semaglutida México", "perder peso médico"</div>
+            <div class="tl-item-txt">Email nurturing: secuencia de 7 días para leads fríos</div>
+            <div class="tl-item-txt">Meta: 50 pacientes activos</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-week">Semana 9–10</div>
+          <div class="tl-title">Programa de referidos</div>
+          <div class="tl-items">
+            <div class="tl-item-txt">Lanzar programa: paciente refiere → $300 MXN de descuento</div>
+            <div class="tl-item-txt">Email a los 50 primeros pacientes con código personalizado</div>
+            <div class="tl-item-txt">WhatsApp automático con link de referido</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-week">Semana 11–12</div>
+          <div class="tl-title">Cierre de los 100 pacientes</div>
+          <div class="tl-items">
+            <div class="tl-item-txt">Optimizar embudo completo basado en datos reales</div>
+            <div class="tl-item-txt">SEO: 10 artículos publicados — primeras posiciones orgánicas</div>
+            <div class="tl-item-txt">Documentar LTV, CAC, churn para deck de inversión</div>
+            <div class="tl-item-txt">Meta: 100 pacientes activos ✅</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="alert-box">
+          <strong>La regla de oro del presupuesto:</strong> Nunca escales un canal que no ha demostrado un CPL (Costo por Lead) menor a $150 MXN. Prueba primero con $5,000/día por 3 días. Si el CPL está bien, duplica. Si no, cambia el creativo antes de aumentar el gasto.
+        </div>
+        <div class="tip-box" style="margin-bottom:1rem">
+          <strong>El hack de MEDVi que nadie menciona:</strong> Gallagher no usó una sola imagen de banco en sus anuncios. Usó videos crudos de él mismo hablando frente a cámara. En México, ese tipo de contenido auténtico convierte 3x mejor que producción profesional en temas de salud.
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-hd">Embudo de conversión objetivo</div>
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <span style="font-size:.76rem;color:var(--muted);min-width:130px">Visitantes landing</span>
+              <div style="flex:1;height:7px;background:var(--bg2);overflow:hidden"><div style="height:100%;width:100%;background:linear-gradient(90deg,var(--red),var(--red-lt))"></div></div>
+              <span style="font-size:.76rem;font-weight:600;min-width:55px">20,000</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <span style="font-size:.76rem;color:var(--muted);min-width:130px">Inician evaluación</span>
+              <div style="flex:1;height:7px;background:var(--bg2);overflow:hidden"><div style="height:100%;width:55%;background:linear-gradient(90deg,var(--red),var(--red-lt))"></div></div>
+              <span style="font-size:.76rem;font-weight:600;min-width:55px">11,000 · 55%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <span style="font-size:.76rem;color:var(--muted);min-width:130px">Completan eval. IA</span>
+              <div style="flex:1;height:7px;background:var(--bg2);overflow:hidden"><div style="height:100%;width:36%;background:linear-gradient(90deg,var(--red),var(--red-lt))"></div></div>
+              <span style="font-size:.76rem;font-weight:600;min-width:55px">7,200 · 36%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <span style="font-size:.76rem;color:var(--muted);min-width:130px">Calificados IA</span>
+              <div style="flex:1;height:7px;background:var(--bg2);overflow:hidden"><div style="height:100%;width:26%;background:linear-gradient(90deg,var(--red),var(--red-lt))"></div></div>
+              <span style="font-size:.76rem;font-weight:600;min-width:55px">5,200 · 26%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <span style="font-size:.76rem;color:var(--muted);min-width:130px">1ª consulta médica</span>
+              <div style="flex:1;height:7px;background:var(--bg2);overflow:hidden"><div style="height:100%;width:8%;background:linear-gradient(90deg,var(--red),var(--red-lt))"></div></div>
+              <span style="font-size:.76rem;font-weight:600;min-width:55px">1,560 · 8%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <span style="font-size:.76rem;color:var(--muted);min-width:130px">✅ Suscripción activa</span>
+              <div style="flex:1;height:7px;background:var(--bg2);overflow:hidden"><div style="height:100%;width:5%;background:var(--green)"></div></div>
+              <span style="font-size:.76rem;font-weight:700;color:var(--green);min-width:55px">100 · 0.5%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CANALES -->
+<div class="section" id="canales">
+  <div class="section-hd">
+    <div class="section-title">Los 5 <em>canales de adquisición</em></div>
+    <span class="section-tag">Distribución del presupuesto</span>
+  </div>
+
+  <div class="g2" style="margin-bottom:1rem">
+    <div class="channel-card">
+      <div class="channel-top">
+        <div class="channel-icon">📘</div>
+        <div class="channel-name">Meta Ads (Facebook + Instagram)</div>
+        <div class="channel-role">Canal principal · Mayor volumen de leads</div>
+        <div class="channel-budget">$200,000 MXN <span class="channel-pct">· 40% del presupuesto</span></div>
+      </div>
+      <div class="channel-body">
+        <strong>Por qué es el canal #1:</strong> El 72% del mercado objetivo (mujeres 30-55) está activo en Facebook e Instagram a diario. En salud, el CPL (Costo por Lead) promedio en México es de $80-$150 MXN — el más bajo de todos los canales pagados.<br/><br/>
+        <strong>Estrategia:</strong> Iniciar con campaña de tráfico al flujo de evaluación. Semana 3: agregar retargeting. Semana 6: lookalike audiences basados en primeros pacientes.<br/><br/>
+        <strong>Creativos que funcionan en salud:</strong> Videos de 15-30 seg tipo "antes/después" + testimonios reales + videos educativos del médico hablando a cámara.
+      </div>
+      <div class="channel-kpis">
+        <div class="ck"><div class="ck-n">$100</div><div class="ck-l">CPL objetivo</div></div>
+        <div class="ck"><div class="ck-n">2,000</div><div class="ck-l">Leads esperados</div></div>
+        <div class="ck"><div class="ck-n">4.2x</div><div class="ck-l">ROAS objetivo</div></div>
+        <div class="ck"><div class="ck-n">40%</div><div class="ck-l">De pacientes</div></div>
+      </div>
+    </div>
+
+    <div class="channel-card">
+      <div class="channel-top">
+        <div class="channel-icon">🎵</div>
+        <div class="channel-name">TikTok Ads + Orgánico</div>
+        <div class="channel-role">Canal de alcance · Público joven 25-40</div>
+        <div class="channel-budget">$100,000 MXN <span class="channel-pct">· 20% del presupuesto</span></div>
+      </div>
+      <div class="channel-body">
+        <strong>Por qué TikTok:</strong> La obesidad y pérdida de peso son los temas de salud con más viralidad en TikTok México. Un video orgánico bien hecho puede generar miles de leads gratis. #GLP1 tiene millones de vistas globales.<br/><br/>
+        <strong>Estrategia:</strong> 3 videos orgánicos por semana educativos (¿qué es la semaglutida? ¿cómo funciona el GLP-1?). Amplificar los que superen 10k vistas con TikTok Ads Spark Ads.<br/><br/>
+        <strong>Formato ganador:</strong> "El médico explica en 60 segundos por qué no has podido bajar de peso" — este tipo de hook convierte muy bien.
+      </div>
+      <div class="channel-kpis">
+        <div class="ck"><div class="ck-n">$80</div><div class="ck-l">CPL objetivo</div></div>
+        <div class="ck"><div class="ck-n">1,250</div><div class="ck-l">Leads esperados</div></div>
+        <div class="ck"><div class="ck-n">500k</div><div class="ck-l">Impresiones est.</div></div>
+        <div class="ck"><div class="ck-n">25%</div><div class="ck-l">De pacientes</div></div>
+      </div>
+    </div>
+
+    <div class="channel-card">
+      <div class="channel-top">
+        <div class="channel-icon">🌟</div>
+        <div class="channel-name">Micro-influencers de salud</div>
+        <div class="channel-role">Credibilidad + comunidades calificadas</div>
+        <div class="channel-budget">$80,000 MXN <span class="channel-pct">· 16% del presupuesto</span></div>
+      </div>
+      <div class="channel-body">
+        <strong>Por qué micro (10k-100k seguidores):</strong> Su audiencia confía más en ellos que en macro-influencers. En salud, el engagement es 3x mayor y el costo es 10x menor. Un micro-influencer de nutrición puede generar 50-100 leads calificados por post.<br/><br/>
+        <strong>Modelo de pago:</strong> $3,000-$8,000 MXN por publicación + $300 MXN por cada paciente que se suscriba con su código. Así alineas incentivos.<br/><br/>
+        <strong>Perfiles a buscar:</strong> nutriólogos con cuenta personal, médicos con contenido educativo, personas que documentan su pérdida de peso, mamás que hablan de salud familiar.
+      </div>
+      <div class="channel-kpis">
+        <div class="ck"><div class="ck-n">10</div><div class="ck-l">Influencers</div></div>
+        <div class="ck"><div class="ck-n">$120</div><div class="ck-l">CPL objetivo</div></div>
+        <div class="ck"><div class="ck-n">20%</div><div class="ck-l">De pacientes</div></div>
+        <div class="ck"><div class="ck-n">3x</div><div class="ck-l">Mayor confianza</div></div>
+      </div>
+    </div>
+
+    <div class="channel-card">
+      <div class="channel-top">
+        <div class="channel-icon">🔍</div>
+        <div class="channel-name">Google Ads (Búsqueda)</div>
+        <div class="channel-role">Alta intención · Mejor calidad de lead</div>
+        <div class="channel-budget">$60,000 MXN <span class="channel-pct">· 12% del presupuesto</span></div>
+      </div>
+      <div class="channel-body">
+        <strong>Por qué Google:</strong> Alguien que busca "semaglutida México precio" o "médico para perder peso online" ya tiene intención de compra. Estos leads convierten 2-3x mejor que los de redes sociales, aunque son más caros.<br/><br/>
+        <strong>Keywords iniciales:</strong> semaglutida México, ozempic para bajar de peso, telesalud obesidad, médico online pérdida de peso, GLP-1 precio México.<br/><br/>
+        <strong>Estrategia:</strong> Iniciar en semana 5-6 cuando ya tengas data real del CAC de Meta para comparar.
+      </div>
+      <div class="channel-kpis">
+        <div class="ck"><div class="ck-n">$200</div><div class="ck-l">CPL objetivo</div></div>
+        <div class="ck"><div class="ck-n">300</div><div class="ck-l">Leads esperados</div></div>
+        <div class="ck"><div class="ck-n">8%</div><div class="ck-l">CTR objetivo</div></div>
+        <div class="ck"><div class="ck-n">15%</div><div class="ck-l">De pacientes</div></div>
+      </div>
+    </div>
+
+    <div class="channel-card" style="grid-column:span 2">
+      <div class="channel-top">
+        <div class="channel-icon">✍️</div>
+        <div class="channel-name">SEO + Blog + Contenido orgánico</div>
+        <div class="channel-role">Canal de largo plazo · Costo cero por lead después de 3 meses</div>
+        <div class="channel-budget">$60,000 MXN <span class="channel-pct">· 12% del presupuesto · Producción de contenido</span></div>
+      </div>
+      <div class="channel-body">
+        <strong>Por qué invertir en SEO desde el día 1:</strong> El SEO tarda 3-6 meses en dar resultados, pero cuando los da, los leads son gratuitos. Clivi posiciona para "diabetes online México" y recibe miles de visitas mensuales sin pagar por clic. Tú puedes hacer lo mismo para "semaglutida México" y "pérdida de peso médico".<br/><br/>
+        <strong>Plan de 10 artículos:</strong> "¿Qué es la semaglutida y cómo funciona?", "Ozempic vs Wegovy: diferencias", "Pérdida de peso con GLP-1 en México", "¿Cuánto cuesta la semaglutida en México?", "Telesalud para bajar de peso: guía completa", "¿Soy candidato para semaglutida?", "Efectos secundarios del GLP-1: lo que nadie te dice", "Tirzepatida vs Semaglutida: ¿cuál es mejor?", "Control de diabetes desde casa", "Historia real: perdí 15 kg con MEDNOVA".<br/><br/>
+        <strong>Herramientas gratuitas:</strong> Google Search Console, Ubersuggest (gratis), Answer The Public para keywords long-tail. Todos los artículos se escriben con Claude IA en 1-2 horas cada uno.
+      </div>
+      <div class="channel-kpis">
+        <div class="ck"><div class="ck-n">10</div><div class="ck-l">Artículos mes 1-3</div></div>
+        <div class="ck"><div class="ck-n">$0</div><div class="ck-l">CPL orgánico</div></div>
+        <div class="ck"><div class="ck-n">3-6</div><div class="ck-l">Meses resultados</div></div>
+        <div class="ck"><div class="ck-n">∞</div><div class="ck-l">ROI largo plazo</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CREATIVOS -->
+<div class="section" id="creativos">
+  <div class="section-hd">
+    <div class="section-title">Creativos que <em>convierten</em></div>
+    <span class="section-tag">6 formatos probados</span>
+  </div>
+  <div class="alert-box">
+    <strong>Regla #1:</strong> En salud, la autenticidad siempre gana a la producción. Un video del médico hablando en su consultorio convierte mejor que una producción de $50k. Empieza con iPhone y luz natural.
+  </div>
+  <div class="creative-grid">
+    <div class="creative-card">
+      <div class="creative-preview" style="background:linear-gradient(135deg,#0d0d0d,#1a0a08)">
+        <span class="creative-label">Video · 30s</span>
+        <div style="color:#fff;font-family:Georgia,serif;font-size:1.1rem;font-style:italic;line-height:1.4">"¿Por qué no puedes bajar de peso aunque hagas dieta?"</div>
+      </div>
+      <div class="creative-info">
+        <div class="creative-title">Hook de problema</div>
+        <div class="creative-hook">Médico explica la resistencia a la insulina en 30 seg</div>
+        <div class="creative-stats">
+          <span class="cstat">Meta + TikTok</span>
+          <span class="cstat">CPL estimado: $80</span>
+        </div>
+      </div>
+    </div>
+    <div class="creative-card">
+      <div class="creative-preview" style="background:linear-gradient(135deg,#fafaf8,#f3f3f1)">
+        <span class="creative-label">Carrusel · 5 slides</span>
+        <div style="color:#111;font-family:Georgia,serif;font-size:1rem;line-height:1.4">"María perdió 14 kg en 3 meses. Su historia →"</div>
+      </div>
+      <div class="creative-info">
+        <div class="creative-title">Caso de éxito</div>
+        <div class="creative-hook">Antes/durante/después + resultados de laboratorio reales</div>
+        <div class="creative-stats">
+          <span class="cstat">Instagram</span>
+          <span class="cstat">CPL estimado: $95</span>
+        </div>
+      </div>
+    </div>
+    <div class="creative-card">
+      <div class="creative-preview" style="background:linear-gradient(135deg,#c0392b,#e74c3c)">
+        <span class="creative-label">Video · 15s · Urgencia</span>
+        <div style="color:#fff;font-family:Georgia,serif;font-size:1rem;line-height:1.4">"Evaluación médica GRATIS — solo por esta semana"</div>
+      </div>
+      <div class="creative-info">
+        <div class="creative-title">Oferta directa con CTA</div>
+        <div class="creative-hook">Crear urgencia con la evaluación gratuita</div>
+        <div class="creative-stats">
+          <span class="cstat">Meta Retargeting</span>
+          <span class="cstat">CPL estimado: $60</span>
+        </div>
+      </div>
+    </div>
+    <div class="creative-card">
+      <div class="creative-preview" style="background:#f0f9ff">
+        <span class="creative-label">Imagen · Educativa</span>
+        <div style="color:#111;font-size:.85rem;line-height:1.6;text-align:left;width:100%">
+          <strong>Semaglutida en México:</strong><br/>
+          ✓ Con receta médica<br/>
+          ✓ Pérdida promedio: 15%<br/>
+          ✓ Médico online incluido<br/>
+          ✓ Desde $1,499/mes
+        </div>
+      </div>
+      <div class="creative-info">
+        <div class="creative-title">Comparativa de precio</div>
+        <div class="creative-hook">Mostrar el valor vs clínica tradicional ($8k/mes)</div>
+        <div class="creative-stats">
+          <span class="cstat">Facebook</span>
+          <span class="cstat">CPL estimado: $110</span>
+        </div>
+      </div>
+    </div>
+    <div class="creative-card">
+      <div class="creative-preview" style="background:#0d0d0d">
+        <span class="creative-label">Video · 60s · TikTok</span>
+        <div style="color:#fff;font-size:.85rem;line-height:1.5">"POV: llevas 5 años intentando bajar de peso y descubres que NO es tu culpa"</div>
+      </div>
+      <div class="creative-info">
+        <div class="creative-title">POV empático · TikTok</div>
+        <div class="creative-hook">Conectar con la frustración del paciente antes de la solución</div>
+        <div class="creative-stats">
+          <span class="cstat">TikTok Orgánico</span>
+          <span class="cstat">Potencial viral</span>
+        </div>
+      </div>
+    </div>
+    <div class="creative-card">
+      <div class="creative-preview" style="background:linear-gradient(135deg,#f3f3f1,#e5e3e0)">
+        <span class="creative-label">Video · Testimonio real</span>
+        <div style="color:#111;font-family:Georgia,serif;font-size:.95rem;font-style:italic;line-height:1.4">"En 3 meses con MEDNOVA bajé 14 kg. Lo que nadie me dijo es que..."</div>
+      </div>
+      <div class="creative-info">
+        <div class="creative-title">Testimonio auténtico</div>
+        <div class="creative-hook">Paciente real grabado con iPhone, sin guión, sin edición</div>
+        <div class="creative-stats">
+          <span class="cstat">Meta + TikTok</span>
+          <span class="cstat">CPL estimado: $70</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUDIENCIAS -->
+<div class="section" id="audiencias">
+  <div class="section-hd">
+    <div class="section-title">Audiencias <em>objetivo</em></div>
+    <span class="section-tag">Segmentación en Meta Ads</span>
+  </div>
+  <div class="g3">
+    <div class="audience-card">
+      <div class="aud-header">
+        <div class="aud-icon">👩</div>
+        <div>
+          <div class="aud-name">Mujer con sobrepeso 30-50</div>
+          <div class="aud-size">~4.2 millones en México · Audiencia principal</div>
+        </div>
+      </div>
+      <div class="aud-row"><span class="aud-key">Edad</span><span class="aud-val">30–50 años</span></div>
+      <div class="aud-row"><span class="aud-key">Género</span><span class="aud-val">Femenino</span></div>
+      <div class="aud-row"><span class="aud-key">Intereses</span><span class="aud-val">Dieta, nutrición, salud, bienestar</span></div>
+      <div class="aud-row"><span class="aud-key">Comportamiento</span><span class="aud-val">Compras online, salud activa</span></div>
+      <div class="aud-row"><span class="aud-key">Excluyendo</span><span class="aud-val">Embarazadas, menores de 18</span></div>
+      <div class="aud-row"><span class="aud-key">Presupuesto</span><span class="aud-val">55% del total Meta</span></div>
+    </div>
+    <div class="audience-card">
+      <div class="aud-header">
+        <div class="aud-icon">👨</div>
+        <div>
+          <div class="aud-name">Hombre con diabetes/obesidad 35-60</div>
+          <div class="aud-size">~2.8 millones en México · Audiencia secundaria</div>
+        </div>
+      </div>
+      <div class="aud-row"><span class="aud-key">Edad</span><span class="aud-val">35–60 años</span></div>
+      <div class="aud-row"><span class="aud-key">Género</span><span class="aud-val">Masculino</span></div>
+      <div class="aud-row"><span class="aud-key">Intereses</span><span class="aud-val">Diabetes, salud masculina, fitness</span></div>
+      <div class="aud-row"><span class="aud-key">Comportamiento</span><span class="aud-val">Compradores salud, tecnología</span></div>
+      <div class="aud-row"><span class="aud-key">Nivel</span><span class="aud-val">Clase media-alta, profesionistas</span></div>
+      <div class="aud-row"><span class="aud-key">Presupuesto</span><span class="aud-val">30% del total Meta</span></div>
+    </div>
+    <div class="audience-card">
+      <div class="aud-header">
+        <div class="aud-icon">🎯</div>
+        <div>
+          <div class="aud-name">Retargeting — Visitantes no convertidos</div>
+          <div class="aud-size">Audiencia custom · Mayor conversión</div>
+        </div>
+      </div>
+      <div class="aud-row"><span class="aud-key">Fuente</span><span class="aud-val">Meta Pixel · Visitantes landing</span></div>
+      <div class="aud-row"><span class="aud-key">Ventana</span><span class="aud-val">Últimos 30 días</span></div>
+      <div class="aud-row"><span class="aud-key">Segmento</span><span class="aud-val">Iniciaron eval. pero no terminaron</span></div>
+      <div class="aud-row"><span class="aud-key">Creativo</span><span class="aud-val">Oferta + urgencia + testimonio</span></div>
+      <div class="aud-row"><span class="aud-key">CPL esperado</span><span class="aud-val">$40–$60 MXN (más bajo)</span></div>
+      <div class="aud-row"><span class="aud-key">Presupuesto</span><span class="aud-val">15% del total Meta</span></div>
+    </div>
+  </div>
+
+  <!-- INFLUENCERS -->
+  <div class="card-hd" style="margin-top:2rem">Lista de micro-influencers a contactar</div>
+  <div class="g2">
+    <div class="inf-card">
+      <div class="inf-av" style="background:#fff0ee">👩‍⚕️</div>
+      <div style="flex:1">
+        <div class="inf-name">Nutrióloga con contenido educativo</div>
+        <div class="inf-handle">@nutricion.mx tipo · 25k-80k seguidores</div>
+        <div class="inf-tags"><span class="inf-tag">Nutrición</span><span class="inf-tag">Salud</span><span class="inf-tag">Recetas</span></div>
+      </div>
+      <div class="inf-fee">$4,000–$6,000/post</div>
+    </div>
+    <div class="inf-card">
+      <div class="inf-av" style="background:#f0fff4">🏃‍♀️</div>
+      <div style="flex:1">
+        <div class="inf-name">Mujer documentando pérdida de peso</div>
+        <div class="inf-handle">@mitransformacion tipo · 15k-50k seguidores</div>
+        <div class="inf-tags"><span class="inf-tag">Transformación</span><span class="inf-tag">Motivación</span></div>
+      </div>
+      <div class="inf-fee">$2,500–$4,000/post</div>
+    </div>
+    <div class="inf-card">
+      <div class="inf-av" style="background:#eff6ff">👨‍⚕️</div>
+      <div style="flex:1">
+        <div class="inf-name">Médico con contenido divulgativo</div>
+        <div class="inf-handle">@doctorsalud tipo · 30k-100k seguidores</div>
+        <div class="inf-tags"><span class="inf-tag">Medicina</span><span class="inf-tag">Educación</span></div>
+      </div>
+      <div class="inf-fee">$5,000–$8,000/post</div>
+    </div>
+    <div class="inf-card">
+      <div class="inf-av" style="background:#fdf4ff">👩</div>
+      <div style="flex:1">
+        <div class="inf-name">Mamá lifestyle con enfoque salud</div>
+        <div class="inf-handle">@mamaymama tipo · 20k-60k seguidores</div>
+        <div class="inf-tags"><span class="inf-tag">Familia</span><span class="inf-tag">Bienestar</span><span class="inf-tag">Lifestyle</span></div>
+      </div>
+      <div class="inf-fee">$3,000–$5,000/post</div>
+    </div>
+  </div>
+</div>
+
+<!-- SEO -->
+<div class="section" id="seo">
+  <div class="section-hd">
+    <div class="section-title">Plan SEO — <em>10 artículos clave</em></div>
+    <span class="section-tag">Posicionamiento orgánico</span>
+  </div>
+  <div class="card">
+    <div style="display:flex;flex-direction:column">
+      <div class="seo-row" style="background:var(--bg2)">
+        <span style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);flex:1">Keyword / Artículo</span>
+        <span style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);min-width:60px">Búsq/mes</span>
+        <span style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);min-width:50px">Dificultad</span>
+        <span style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);min-width:80px;text-align:right">Intención</span>
+      </div>
+      <div class="seo-row"><span class="seo-kw">semaglutida México precio</span><span class="seo-vol">8,100/mes</span><span class="seo-diff med">Media</span><span class="seo-type">Comercial</span></div>
+      <div class="seo-row"><span class="seo-kw">ozempic para bajar de peso</span><span class="seo-vol">6,600/mes</span><span class="seo-diff med">Media</span><span class="seo-type">Comercial</span></div>
+      <div class="seo-row"><span class="seo-kw">¿qué es la semaglutida?</span><span class="seo-vol">5,400/mes</span><span class="seo-diff easy">Baja</span><span class="seo-type">Informativa</span></div>
+      <div class="seo-row"><span class="seo-kw">médico online pérdida de peso México</span><span class="seo-vol">2,900/mes</span><span class="seo-diff easy">Baja</span><span class="seo-type">Transaccional</span></div>
+      <div class="seo-row"><span class="seo-kw">GLP-1 efectos secundarios</span><span class="seo-vol">3,200/mes</span><span class="seo-diff easy">Baja</span><span class="seo-type">Informativa</span></div>
+      <div class="seo-row"><span class="seo-kw">telesalud obesidad México</span><span class="seo-vol">1,800/mes</span><span class="seo-diff easy">Baja</span><span class="seo-type">Transaccional</span></div>
+      <div class="seo-row"><span class="seo-kw">soy candidato para semaglutida</span><span class="seo-vol">1,200/mes</span><span class="seo-diff easy">Baja</span><span class="seo-type">Transaccional</span></div>
+      <div class="seo-row"><span class="seo-kw">tirzepatida vs semaglutida</span><span class="seo-vol">2,400/mes</span><span class="seo-diff easy">Baja</span><span class="seo-type">Comparativa</span></div>
+      <div class="seo-row"><span class="seo-kw">control diabetes desde casa México</span><span class="seo-vol">1,600/mes</span><span class="seo-diff easy">Baja</span><span class="seo-type">Transaccional</span></div>
+      <div class="seo-row"><span class="seo-kw">cuánto cuesta tratamiento obesidad México</span><span class="seo-vol">1,100/mes</span><span class="seo-diff easy">Baja</span><span class="seo-type">Comercial</span></div>
+    </div>
+  </div>
+  <div class="tip-box" style="margin-top:.75rem">
+    Todos estos artículos puedes escribirlos con Claude en 1-2 horas cada uno. La clave es que sean artículos completos de 1,500+ palabras con información médica real verificada por tu Responsable Sanitario antes de publicar.
+  </div>
+</div>
+
+<!-- PRESUPUESTO -->
+<div class="section" id="presupuesto">
+  <div class="section-hd">
+    <div class="section-title">Distribución del <em>presupuesto</em></div>
+    <span class="section-tag">$500,000 MXN · 90 días</span>
+  </div>
+  <div class="card">
+    <table class="budget-table">
+      <thead><tr><th>Canal</th><th>Mes 1</th><th>Mes 2</th><th>Mes 3</th><th>Total</th><th>% del total</th><th>CPL objetivo</th></tr></thead>
+      <tbody>
+        <tr><td>Meta Ads (Facebook/Instagram)</td><td>$50,000</td><td>$90,000</td><td>$60,000</td><td><strong>$200,000</strong></td><td><div class="bar-cell"><div class="bar-mini"><div class="bar-mini-fill" style="width:40%"></div></div>40%</div></td><td>$100</td></tr>
+        <tr><td>TikTok Ads + producción video</td><td>$20,000</td><td>$45,000</td><td>$35,000</td><td><strong>$100,000</strong></td><td><div class="bar-cell"><div class="bar-mini"><div class="bar-mini-fill" style="width:20%"></div></div>20%</div></td><td>$80</td></tr>
+        <tr><td>Micro-influencers (fees + comisiones)</td><td>$20,000</td><td>$35,000</td><td>$25,000</td><td><strong>$80,000</strong></td><td><div class="bar-cell"><div class="bar-mini"><div class="bar-mini-fill" style="width:16%"></div></div>16%</div></td><td>$120</td></tr>
+        <tr><td>Google Ads (búsqueda)</td><td>$0</td><td>$35,000</td><td>$25,000</td><td><strong>$60,000</strong></td><td><div class="bar-cell"><div class="bar-mini"><div class="bar-mini-fill" style="width:12%"></div></div>12%</div></td><td>$200</td></tr>
+        <tr><td>Producción de contenido SEO/blog</td><td>$15,000</td><td>$25,000</td><td>$20,000</td><td><strong>$60,000</strong></td><td><div class="bar-cell"><div class="bar-mini"><div class="bar-mini-fill" style="width:12%"></div></div>12%</div></td><td>$0 (orgánico)</td></tr>
+        <tr style="background:var(--bg)"><td><strong>TOTAL</strong></td><td><strong>$105,000</strong></td><td><strong>$230,000</strong></td><td><strong>$165,000</strong></td><td><strong>$500,000</strong></td><td><strong>100%</strong></td><td><strong>~$100 promedio</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="g2" style="margin-top:1rem">
+    <div class="card">
+      <div class="card-hd">Proyección de pacientes por mes</div>
+      <div style="display:flex;flex-direction:column;gap:.6rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--bord)"><span style="font-size:.82rem">Mes 1 (días 1-30)</span><span style="font-family:Georgia,serif;font-size:1.2rem;color:var(--red)">5–15 pacientes</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--bord)"><span style="font-size:.82rem">Mes 2 (días 31-60)</span><span style="font-family:Georgia,serif;font-size:1.2rem;color:var(--red)">35–55 pacientes</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem 0"><span style="font-size:.82rem">Mes 3 (días 61-90)</span><span style="font-family:Georgia,serif;font-size:1.2rem;color:var(--green)">100+ pacientes ✅</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd">Proyección financiera al mes 3</div>
+      <div style="display:flex;flex-direction:column;gap:.6rem">
+        <div style="display:flex;justify-content:space-between;font-size:.82rem;padding:.4rem 0;border-bottom:1px solid var(--bord)"><span style="color:var(--muted)">MRR con 100 pacientes (plan prom. $1,499)</span><span style="font-weight:600">$149,900</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.82rem;padding:.4rem 0;border-bottom:1px solid var(--bord)"><span style="color:var(--muted)">Margen neto estimado (65%)</span><span style="font-weight:600">$97,435</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.82rem;padding:.4rem 0;border-bottom:1px solid var(--bord)"><span style="color:var(--muted)">CAC promedio real</span><span style="font-weight:600">~$5,000 MXN</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.82rem;padding:.4rem 0"><span style="color:var(--muted)">Payback del CAC</span><span style="font-weight:600;color:var(--green)">3.3 meses</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div class="section" id="kpis">
+  <div class="section-hd">
+    <div class="section-title">KPIs que debes <em>monitorear</em></div>
+    <span class="section-tag">Semana a semana</span>
+  </div>
+  <div class="kpi-grid" style="margin-bottom:1.5rem">
+    <div class="kpi-card"><div class="kpi-num">$100</div><div class="kpi-label">CPL máximo</div><div class="kpi-bench">Si supera esto → cambiar creativo</div></div>
+    <div class="kpi-card"><div class="kpi-num">5%</div><div class="kpi-label">Conv. lead → paciente</div><div class="kpi-bench">Si baja → mejorar follow-up</div></div>
+    <div class="kpi-card"><div class="kpi-num">70%</div><div class="kpi-label">Retención mes 2</div><div class="kpi-bench">Si baja → mejorar onboarding</div></div>
+    <div class="kpi-card"><div class="kpi-num">4.2x</div><div class="kpi-label">ROAS mínimo</div><div class="kpi-bench">Si baja → pausar campaña</div></div>
+  </div>
+  <div class="card">
+    <div class="card-hd">Dashboard semanal que debes revisar</div>
+    <div class="g2">
+      <div>
+        <div style="font-size:.78rem;font-weight:600;margin-bottom:.6rem;color:var(--red)">Métricas de adquisición</div>
+        <div style="display:flex;flex-direction:column;gap:.35rem">
+          <div style="font-size:.78rem;color:var(--muted);display:flex;justify-content:space-between"><span>Visitas a la landing</span><span class="badge blue">Google Analytics</span></div>
+          <div style="font-size:.78rem;color:var(--muted);display:flex;justify-content:space-between"><span>Evaluaciones iniciadas</span><span class="badge blue">DB / Admin panel</span></div>
+          <div style="font-size:.78rem;color:var(--muted);display:flex;justify-content:space-between"><span>Evaluaciones completadas</span><span class="badge blue">DB / Admin panel</span></div>
+          <div style="font-size:.78rem;color:var(--muted);display:flex;justify-content:space-between"><span>CPL por canal</span><span class="badge blue">Meta + TikTok + Google</span></div>
+          <div style="font-size:.78rem;color:var(--muted);display:flex;justify-content:space-between"><span>Costo total gastado</span><span class="badge blue">Todas las plataformas</span></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:.78rem;font-weight:600;margin-bottom:.6rem;color:var(--red)">Métricas de retención</div>
+        <div style="display:flex;flex-direction:column;gap:.35rem">
+          <div style="font-size:.78rem;color:var(--muted);display:flex;justify-content:space-between"><span>Pacientes activos totales</span><span class="badge green">Admin panel</span></div>
+          <div style="font-size:.78rem;color:var(--muted);display:flex;justify-content:space-between"><span>Churn (cancelaciones)</span><span class="badge green">Conekta + DB</span></div>
+          <div style="font-size:.78rem;color:var(--muted);display:flex;justify-content:space-between"><span>MRR (ingresos recurrentes)</span><span class="badge green">Conekta</span></div>
+          <div style="font-size:.78rem;color:var(--muted);display:flex;justify-content:space-between"><span>Adherencia al tratamiento</span><span class="badge green">Portal médico</span></div>
+          <div style="font-size:.78rem;color:var(--muted);display:flex;justify-content:space-between"><span>NPS (satisfacción)</span><span class="badge green">WhatsApp encuesta</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+function scrollTo(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+}
+</script>
+</body>
+</html>

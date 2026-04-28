@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MEDNOVA — Panel Médico</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f5f5f3;
+  --bg2:#eeeeed;
+  --card:#ffffff;
+  --ink:#0d0d0d;
+  --ink2:#333;
+  --red:#c0392b;
+  --red2:#a93226;
+  --red-lt:#e74c3c;
+  --red-bg:rgba(192,57,43,0.07);
+  --green:#16a34a;
+  --green-bg:rgba(22,163,74,0.08);
+  --amber:#d97706;
+  --amber-bg:rgba(217,119,6,0.08);
+  --blue:#2563eb;
+  --blue-bg:rgba(37,99,235,0.08);
+  --muted:#888;
+  --muted2:#bbb;
+  --bord:rgba(0,0,0,0.07);
+  --bord2:rgba(0,0,0,0.12);
+  --sidebar:220px;
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;display:flex}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);background:var(--ink);display:flex;flex-direction:column;flex-shrink:0;height:100vh;overflow-y:auto}
+.sb-logo{padding:1.4rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-logo svg{display:block}
+.sb-doctor{padding:1.2rem;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:.75rem}
+.sb-av{width:38px;height:38px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1rem;color:#fff;flex-shrink:0}
+.sb-name{font-size:.82rem;font-weight:500;color:#fff}
+.sb-role{font-size:.68rem;color:rgba(255,255,255,.4);letter-spacing:.04em}
+.sb-nav{padding:.8rem 0;flex:1}
+.sb-section{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:.6rem 1.2rem .3rem}
+.sb-link{display:flex;align-items:center;gap:.75rem;padding:.65rem 1.2rem;color:rgba(255,255,255,.5);text-decoration:none;font-size:.82rem;transition:all .2s;cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:var(--sans)}
+.sb-link:hover{color:#fff;background:rgba(255,255,255,.05)}
+.sb-link.active{color:#fff;background:rgba(192,57,43,.25);border-right:2px solid var(--red)}
+.sb-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.sb-badge{margin-left:auto;background:var(--red);color:#fff;font-size:.6rem;padding:.15rem .45rem;border-radius:100px;font-weight:600}
+.sb-bottom{padding:1rem 1.2rem;border-top:1px solid rgba(255,255,255,.07)}
+.sb-status{display:flex;align-items:center;gap:.6rem;font-size:.72rem;color:rgba(255,255,255,.4)}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;animation:pls 2s infinite}
+@keyframes pls{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+/* TOP BAR */
+.topbar{background:var(--card);border-bottom:1px solid var(--bord);padding:.85rem 1.8rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.topbar-title{font-family:var(--serif);font-size:1.2rem;font-weight:300}
+.topbar-title em{font-style:italic;color:var(--red-lt)}
+.topbar-right{display:flex;align-items:center;gap:1rem}
+.topbar-date{font-size:.75rem;color:var(--muted)}
+.notif-btn{width:34px;height:34px;border:1px solid var(--bord2);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;position:relative;transition:all .2s}
+.notif-btn:hover{background:var(--bg)}
+.notif-dot{width:7px;height:7px;border-radius:50%;background:var(--red);position:absolute;top:5px;right:5px}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:1.5rem 1.8rem}
+
+/* VIEWS */
+.view{display:none}
+.view.active{display:block}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+.stat-card{background:var(--card);border:1px solid var(--bord);padding:1.3rem;transition:box-shadow .2s}
+.stat-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.07)}
+.sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem}
+.sc-label{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.sc-icon{font-size:1rem}
+.sc-num{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--ink);line-height:1;margin-bottom:.3rem}
+.sc-change{font-size:.72rem;display:flex;align-items:center;gap:.3rem}
+.sc-change.up{color:var(--green)}
+.sc-change.down{color:var(--red)}
+
+/* SECTION */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.section-title{font-family:var(--serif);font-size:1rem;font-weight:300}
+.section-title em{font-style:italic;color:var(--red-lt)}
+.btn-sm{border:1px solid var(--bord2);background:none;padding:.4rem .9rem;font-size:.72rem;cursor:pointer;font-family:var(--sans);color:var(--ink);transition:all .2s;letter-spacing:.04em}
+.btn-sm:hover{border-color:var(--red);color:var(--red)}
+.btn-sm.primary{background:var(--red);color:#fff;border-color:var(--red)}
+.btn-sm.primary:hover{background:var(--red2)}
+
+/* ALERTS */
+.alerts-list{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem}
+.alert-item{background:var(--card);border:1px solid var(--bord);padding:1rem 1.2rem;display:flex;align-items:center;gap:1rem;transition:all .2s;cursor:pointer}
+.alert-item:hover{border-color:var(--red);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.alert-priority{width:6px;height:40px;border-radius:3px;flex-shrink:0}
+.alert-priority.high{background:var(--red)}
+.alert-priority.med{background:var(--amber)}
+.alert-priority.low{background:var(--green)}
+.alert-icon{font-size:1.1rem;flex-shrink:0}
+.alert-info{flex:1}
+.alert-patient{font-size:.84rem;font-weight:500;margin-bottom:.15rem}
+.alert-desc{font-size:.76rem;color:var(--muted)}
+.alert-time{font-size:.7rem;color:var(--muted2);white-space:nowrap}
+.alert-action{font-size:.72rem;font-weight:500;color:var(--red);letter-spacing:.04em;white-space:nowrap}
+
+/* PATIENTS TABLE */
+.patients-table{width:100%;border-collapse:collapse;background:var(--card)}
+.patients-table th{padding:.75rem 1rem;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:2px solid var(--bord);font-weight:500;white-space:nowrap}
+.patients-table td{padding:.85rem 1rem;border-bottom:1px solid var(--bord);font-size:.82rem;vertical-align:middle}
+.patients-table tr:hover td{background:var(--bg)}
+.patients-table tr:last-child td{border-bottom:none}
+.patient-name-cell{display:flex;align-items:center;gap:.7rem}
+.p-mini-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:600;flex-shrink:0}
+.p-name{font-weight:500;font-size:.84rem}
+.p-email{font-size:.72rem;color:var(--muted)}
+.badge{font-size:.65rem;padding:.22rem .65rem;border-radius:100px;letter-spacing:.04em;font-weight:500;white-space:nowrap}
+.badge.active{background:var(--green-bg);color:var(--green)}
+.badge.pending{background:var(--amber-bg);color:var(--amber)}
+.badge.new{background:var(--blue-bg);color:var(--blue)}
+.badge.inactive{background:var(--bg2);color:var(--muted)}
+.plan-badge{font-size:.68rem;color:var(--muted);background:var(--bg);padding:.2rem .55rem;border:1px solid var(--bord2)}
+.imc-pill{display:inline-block;font-size:.72rem;font-weight:600;padding:.18rem .5rem}
+.imc-pill.high{color:var(--red);background:var(--red-bg)}
+.imc-pill.med{color:var(--amber);background:var(--amber-bg)}
+.imc-pill.norm{color:var(--green);background:var(--green-bg)}
+.action-btns{display:flex;gap:.4rem}
+.ab{width:28px;height:28px;border:1px solid var(--bord2);background:none;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ab:hover{border-color:var(--red);background:var(--red-bg)}
+.search-bar{display:flex;gap:.75rem;margin-bottom:1rem}
+.search-input{flex:1;border:1px solid var(--bord2);padding:.6rem .9rem;font-size:.84rem;font-family:var(--sans);outline:none;background:var(--card)}
+.search-input:focus{border-color:var(--red)}
+.filter-select{border:1px solid var(--bord2);padding:.6rem .9rem;font-size:.82rem;font-family:var(--sans);background:var(--card);outline:none;cursor:pointer}
+
+/* GRID 2 COL */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.5rem}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+
+/* CHART PLACEHOLDER */
+.chart-card{background:var(--card);border:1px solid var(--bord);padding:1.3rem}
+.chart-area{height:140px;display:flex;align-items:flex-end;gap:4px;padding-top:.5rem}
+.bar{flex:1;background:var(--red-bg);border-top:2px solid var(--red);border-radius:2px 2px 0 0;transition:height .6s ease;position:relative;cursor:pointer}
+.bar:hover{background:rgba(192,57,43,.15)}
+.chart-x{display:flex;gap:4px;margin-top:.4rem}
+.chart-x span{flex:1;text-align:center;font-size:.6rem;color:var(--muted)}
+
+/* PATIENT DETAIL PANEL */
+.detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:100;display:none;align-items:flex-start;justify-content:flex-end}
+.detail-overlay.open{display:flex}
+.detail-panel{background:var(--card);width:420px;height:100vh;overflow-y:auto;box-shadow:-4px 0 24px rgba(0,0,0,.12);animation:slideIn .25s ease}
+@keyframes slideIn{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+.dp-header{background:var(--ink);padding:1.4rem;display:flex;align-items:flex-start;justify-content:space-between}
+.dp-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:600;color:#fff;margin-bottom:.8rem}
+.dp-name{font-family:var(--serif);font-size:1.2rem;font-weight:300;color:#fff}
+.dp-plan{font-size:.7rem;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-top:.2rem}
+.dp-close{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;font-size:1.1rem;padding:.2rem}
+.dp-close:hover{color:#fff}
+.dp-body{padding:1.4rem}
+.dp-section{margin-bottom:1.4rem}
+.dp-section-title{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem}
+.dp-section-title::after{content:'';flex:1;height:1px;background:var(--bord)}
+.dp-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--bord)}
+.dp-row:last-child{border-bottom:none}
+.dp-key{font-size:.76rem;color:var(--muted)}
+.dp-val{font-size:.82rem;font-weight:500}
+.dp-metrics{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.dp-metric{background:var(--bg);padding:.9rem;text-align:center}
+.dp-metric-n{font-family:var(--serif);font-size:1.4rem;font-weight:300;color:var(--red);line-height:1}
+.dp-metric-l{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.2rem}
+.dp-ai-summary{background:var(--red-bg);border-left:3px solid var(--red);padding:.9rem 1rem;font-size:.78rem;line-height:1.7;color:var(--ink2)}
+.dp-actions{display:flex;flex-direction:column;gap:.6rem;margin-top:1rem}
+.dp-btn{padding:.75rem;font-size:.78rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;border:none;font-family:var(--sans);transition:all .2s}
+.dp-btn.primary{background:var(--red);color:#fff}
+.dp-btn.primary:hover{background:var(--red2)}
+.dp-btn.outline{background:none;border:1px solid var(--bord2);color:var(--ink)}
+.dp-btn.outline:hover{border-color:var(--red);color:var(--red)}
+.mini-chart{height:50px;display:flex;align-items:flex-end;gap:3px;margin-top:.6rem}
+.mini-bar{flex:1;background:var(--red-bg);border-top:1.5px solid var(--red);border-radius:1px 1px 0 0}
+
+/* SCHEDULE */
+.schedule-list{display:flex;flex-direction:column;gap:.6rem}
+.sched-item{background:var(--card);border:1px solid var(--bord);padding:.9rem 1.1rem;display:flex;align-items:center;gap:1rem;transition:all .2s;cursor:pointer}
+.sched-item:hover{border-color:var(--bord2)}
+.sched-time{min-width:52px;text-align:right}
+.sched-hour{font-size:.84rem;font-weight:500;color:var(--ink)}
+.sched-min{font-size:.7rem;color:var(--muted)}
+.sched-divider{width:1px;height:36px;background:var(--bord2);flex-shrink:0}
+.sched-type{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sched-type.video{background:var(--blue)}
+.sched-type.chat{background:var(--green)}
+.sched-type.lab{background:var(--amber)}
+.sched-info{flex:1}
+.sched-patient{font-size:.84rem;font-weight:500}
+.sched-desc{font-size:.72rem;color:var(--muted)}
+.sched-action{font-size:.7rem;font-weight:500;color:var(--blue);border:1px solid rgba(37,99,235,.25);padding:.25rem .6rem;white-space:nowrap;transition:all .2s}
+.sched-action:hover{background:var(--blue-bg)}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:3rem;color:var(--muted)}
+.empty-icon{font-size:2.5rem;margin-bottom:.8rem;opacity:.4}
+.empty-text{font-size:.85rem}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--bord);margin-bottom:1.2rem}
+.tab-btn{padding:.6rem 1.1rem;font-size:.78rem;cursor:pointer;border:none;background:none;font-family:var(--sans);color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;letter-spacing:.03em}
+.tab-btn.active{color:var(--red);border-bottom-color:var(--red)}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--ink);color:#fff;padding:.8rem 1.2rem;font-size:.78rem;z-index:999;transform:translateY(80px);opacity:0;transition:all .3s;display:flex;align-items:center;gap:.6rem}
+.toast.show{transform:translateY(0);opacity:1}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-logo">
+    <svg width="130" height="28" viewBox="0 0 130 28" xmlns="http://www.w3.org/2000/svg">
+      <line x1="6" y1="4" x2="6" y2="24" stroke="rgba(255,255,255,.7)" stroke-width="2.2" stroke-linecap="square"/>
+      <line x1="6" y1="4" x2="18" y2="24" stroke="#c0392b" stroke-width="2.2" stroke-linecap="square"/>
+      <line x1="18" y1="4" x2="18" y2="24" stroke="rgba(255,255,255,.7)" stroke-width="2.2" stroke-linecap="square"/>
+      <rect x="22" y="12" width="2" height="2" fill="#c0392b"/>
+      <text x="30" y="18" font-family="system-ui" font-size="10" font-weight="500" fill="rgba(255,255,255,.8)" letter-spacing="4">MEDNOVA</text>
+      <text x="30" y="26" font-family="system-ui" font-size="5.5" fill="rgba(255,255,255,.3)" letter-spacing="4">PANEL MÉDICO</text>
+    </svg>
+  </div>
+  <div class="sb-doctor">
+    <div class="sb-av">AV</div>
+    <div>
+      <div class="sb-name">Dr. Andrés Valverde</div>
+      <div class="sb-role">Endocrinólogo · UNAM</div>
+    </div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-section">Principal</div>
+    <button class="sb-link active" onclick="showView('dashboard',this)"><span class="sb-icon">📊</span>Dashboard<span class="sb-badge">3</span></button>
+    <button class="sb-link" onclick="showView('patients',this)"><span class="sb-icon">👥</span>Pacientes</button>
+    <button class="sb-link" onclick="showView('schedule',this)"><span class="sb-icon">📅</span>Agenda</button>
+    <button class="sb-link" onclick="showView('evaluaciones',this)"><span class="sb-icon">📋</span>Evaluaciones IA<span class="sb-badge">7</span></button>
+    <div class="sb-section">Clínica</div>
+    <button class="sb-link" onclick="showView('recetas',this)"><span class="sb-icon">💊</span>Recetas</button>
+    <button class="sb-link" onclick="showView('labs',this)"><span class="sb-icon">🧪</span>Laboratorios</button>
+    <button class="sb-link" onclick="showView('mensajes',this)"><span class="sb-icon">💬</span>Mensajes<span class="sb-badge">5</span></button>
+    <div class="sb-section">Sistema</div>
+    <button class="sb-link" onclick="toast('Configuración en desarrollo')"><span class="sb-icon">⚙️</span>Configuración</button>
+  </div>
+  <div class="sb-bottom">
+    <div class="sb-status"><div class="status-dot"></div>Sistema operativo · v1.0</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Dashboard <em>médico</em></div>
+    <div class="topbar-right">
+      <span class="topbar-date" id="topbar-date"></span>
+      <button class="notif-btn" onclick="toast('3 alertas pendientes')">🔔<div class="notif-dot"></div></button>
+      <button class="btn-sm primary" onclick="showView('evaluaciones', document.querySelector('.sb-link:nth-child(4))'))">+ Nueva evaluación</button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ── DASHBOARD ── -->
+    <div class="view active" id="view-dashboard">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="sc-top"><span class="sc-label">Pacientes activos</span><span class="sc-icon">👥</span></div>
+          <div class="sc-num">247</div>
+          <div class="sc-change up">↑ 12 este mes</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-top"><span class="sc-label">Consultas hoy</span><span class="sc-icon">📅</span></div>
+          <div class="sc-num">8</div>
+          <div class="sc-change up">↑ 3 completadas</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-top"><span class="sc-label">Alertas activas</span><span class="sc-icon">⚠️</span></div>
+          <div class="sc-num">3</div>
+          <div class="sc-change down">↑ 1 urgente</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-top"><span class="sc-label">Ingresos del mes</span><span class="sc-icon">💰</span></div>
+          <div class="sc-num">$47k</div>
+          <div class="sc-change up">↑ 18% vs mes ant.</div>
+        </div>
+      </div>
+
+      <!-- ALERTAS -->
+      <div class="section-header">
+        <div class="section-title">Alertas <em>prioritarias</em></div>
+        <button class="btn-sm" onclick="showView('patients',null)">Ver todas</button>
+      </div>
+      <div class="alerts-list">
+        <div class="alert-item" onclick="openDetail('María Rodríguez','MR','#e74c3c')">
+          <div class="alert-priority high"></div>
+          <div class="alert-icon">🚨</div>
+          <div class="alert-info">
+            <div class="alert-patient">María Rodríguez — Glucosa fuera de rango</div>
+            <div class="alert-desc">Glucosa en ayunas: 185 mg/dL · Requiere ajuste de dosis urgente</div>
+          </div>
+          <span class="alert-time">Hace 12 min</span>
+          <span class="alert-action">Revisar →</span>
+        </div>
+        <div class="alert-item" onclick="openDetail('Roberto Morales','RM','#2563eb')">
+          <div class="alert-priority med"></div>
+          <div class="alert-icon">💊</div>
+          <div class="alert-info">
+            <div class="alert-patient">Roberto Morales — Receta por vencer</div>
+            <div class="alert-desc">Receta de semaglutida vence en 3 días · Renovar para continuar</div>
+          </div>
+          <span class="alert-time">Hace 1 hora</span>
+          <span class="alert-action">Renovar →</span>
+        </div>
+        <div class="alert-item" onclick="openDetail('Ana Sánchez','AS','#16a34a')">
+          <div class="alert-priority low"></div>
+          <div class="alert-icon">📋</div>
+          <div class="alert-info">
+            <div class="alert-patient">Ana Sánchez — Evaluación IA pendiente de revisión</div>
+            <div class="alert-desc">Nueva candidata calificada · IMC: 33.2 · Objetivo: pérdida de peso</div>
+          </div>
+          <span class="alert-time">Hace 2 horas</span>
+          <span class="alert-action">Revisar →</span>
+        </div>
+      </div>
+
+      <!-- GRID: AGENDA + CHART -->
+      <div class="grid2">
+        <div>
+          <div class="section-header">
+            <div class="section-title">Agenda <em>de hoy</em></div>
+            <button class="btn-sm" onclick="showView('schedule',null)">Ver semana</button>
+          </div>
+          <div class="schedule-list">
+            <div class="sched-item">
+              <div class="sched-time"><div class="sched-hour">10:00</div><div class="sched-min">AM</div></div>
+              <div class="sched-divider"></div>
+              <div class="sched-type video"></div>
+              <div class="sched-info"><div class="sched-patient">María Rodríguez</div><div class="sched-desc">Videoconsulta · Ajuste de dosis semana 8</div></div>
+              <span class="sched-action">Unirse</span>
+            </div>
+            <div class="sched-item">
+              <div class="sched-time"><div class="sched-hour">11:30</div><div class="sched-min">AM</div></div>
+              <div class="sched-divider"></div>
+              <div class="sched-type chat"></div>
+              <div class="sched-info"><div class="sched-patient">Carlos Fuentes</div><div class="sched-desc">Seguimiento por chat · Resultados de laboratorio</div></div>
+              <span class="sched-action">Revisar</span>
+            </div>
+            <div class="sched-item">
+              <div class="sched-time"><div class="sched-hour">2:00</div><div class="sched-min">PM</div></div>
+              <div class="sched-divider"></div>
+              <div class="sched-type video"></div>
+              <div class="sched-info"><div class="sched-patient">Sofía Paredes</div><div class="sched-desc">Primera consulta · Candidata nueva</div></div>
+              <span class="sched-action">Preparar</span>
+            </div>
+            <div class="sched-item">
+              <div class="sched-time"><div class="sched-hour">4:30</div><div class="sched-min">PM</div></div>
+              <div class="sched-divider"></div>
+              <div class="sched-type lab"></div>
+              <div class="sched-info"><div class="sched-patient">Jorge Hernández</div><div class="sched-desc">Revisión de laboratorios trimestral</div></div>
+              <span class="sched-action">Ver labs</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section-header">
+            <div class="section-title">Nuevos pacientes <em>últimas 8 semanas</em></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-area" id="main-chart"></div>
+            <div class="chart-x" id="main-chart-x"></div>
+          </div>
+          <div class="section-header" style="margin-top:1.2rem">
+            <div class="section-title">Distribución <em>por plan</em></div>
+          </div>
+          <div class="chart-card">
+            <div style="display:flex;flex-direction:column;gap:.6rem;padding:.3rem 0">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:.74rem;margin-bottom:.35rem"><span>Plan Seguimiento</span><span style="font-weight:500">58%</span></div>
+                <div style="height:6px;background:var(--bg2);border-radius:3px;overflow:hidden"><div style="height:100%;width:58%;background:linear-gradient(90deg,var(--red),var(--red-lt));border-radius:3px"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:.74rem;margin-bottom:.35rem"><span>Plan Premium</span><span style="font-weight:500">27%</span></div>
+                <div style="height:6px;background:var(--bg2);border-radius:3px;overflow:hidden"><div style="height:100%;width:27%;background:linear-gradient(90deg,var(--red),var(--red-lt));border-radius:3px"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:.74rem;margin-bottom:.35rem"><span>Plan Básico</span><span style="font-weight:500">15%</span></div>
+                <div style="height:6px;background:var(--bg2);border-radius:3px;overflow:hidden"><div style="height:100%;width:15%;background:linear-gradient(90deg,var(--red),var(--red-lt));border-radius:3px"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PATIENTS ── -->
+    <div class="view" id="view-patients">
+      <div class="search-bar">
+        <input type="text" class="search-input" placeholder="🔍  Buscar paciente por nombre, email o plan..."/>
+        <select class="filter-select"><option>Todos los estados</option><option>Activo</option><option>Nuevo</option><option>Pendiente</option><option>Inactivo</option></select>
+        <select class="filter-select"><option>Todos los planes</option><option>Básico</option><option>Seguimiento</option><option>Premium</option></select>
+        <button class="btn-sm primary">+ Agregar paciente</button>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--bord);overflow:hidden">
+        <table class="patients-table">
+          <thead>
+            <tr>
+              <th>Paciente</th>
+              <th>Plan</th>
+              <th>IMC</th>
+              <th>Estado</th>
+              <th>Próxima consulta</th>
+              <th>Adherencia</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="patients-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── SCHEDULE ── -->
+    <div class="view" id="view-schedule">
+      <div class="tabs">
+        <button class="tab-btn active">Hoy</button>
+        <button class="tab-btn" onclick="this.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Esta semana</button>
+        <button class="tab-btn" onclick="this.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Este mes</button>
+      </div>
+      <div class="schedule-list" id="full-schedule"></div>
+    </div>
+
+    <!-- ── EVALUACIONES IA ── -->
+    <div class="view" id="view-evaluaciones">
+      <div class="section-header">
+        <div class="section-title">Evaluaciones IA <em>pendientes de revisión</em></div>
+        <span style="font-size:.75rem;color:var(--muted)">7 candidatos nuevos</span>
+      </div>
+      <div id="eval-list" style="display:flex;flex-direction:column;gap:.75rem"></div>
+    </div>
+
+    <!-- ── RECETAS ── -->
+    <div class="view" id="view-recetas">
+      <div class="section-header">
+        <div class="section-title">Recetas <em>activas</em></div>
+        <button class="btn-sm primary">+ Nueva receta</button>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--bord);overflow:hidden">
+        <table class="patients-table">
+          <thead><tr><th>Paciente</th><th>Medicamento</th><th>Dosis</th><th>Emitida</th><th>Vencimiento</th><th>Estado</th><th>Acción</th></tr></thead>
+          <tbody id="recetas-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── LABS ── -->
+    <div class="view" id="view-labs">
+      <div class="section-header"><div class="section-title">Laboratorios <em>pendientes de revisión</em></div></div>
+      <div style="display:flex;flex-direction:column;gap:.75rem" id="labs-list"></div>
+    </div>
+
+    <!-- ── MENSAJES ── -->
+    <div class="view" id="view-mensajes">
+      <div class="section-header"><div class="section-title">Mensajes <em>de pacientes</em></div></div>
+      <div style="display:flex;flex-direction:column;gap:.6rem" id="mensajes-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PATIENT DETAIL PANEL -->
+<div class="detail-overlay" id="detail-overlay" onclick="if(event.target===this)closeDetail()">
+  <div class="detail-panel" id="detail-panel"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// DATE
+const now = new Date();
+document.getElementById('topbar-date').textContent = now.toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long'});
+
+// PATIENTS DATA
+const patients = [
+  {name:'María Rodríguez',initials:'MR',color:'#e74c3c',email:'maria.r@gmail.com',plan:'Premium',imc:31.4,imcCat:'high',status:'active',nextConsult:'Hoy 10:00am',adherence:96,objective:'Pérdida de peso',weight:82,height:162,age:38,meds:'Semaglutida 0.5mg',conditions:'Hipertensión',weeks:8,lost:8.4,summary:'Paciente con excelente adherencia. Glucosa en ayunas elevada esta semana (185 mg/dL). Requiere ajuste de dosis y revisión de plan alimenticio.'},
+  {name:'Roberto Morales',initials:'RM',color:'#2563eb',email:'roberto.m@hotmail.com',plan:'Seguimiento',imc:34.1,imcCat:'high',status:'active',nextConsult:'Vie 11:30am',adherence:88,objective:'Pérdida de peso',weight:98,height:170,age:45,meds:'Semaglutida 1mg',conditions:'Ninguna',weeks:12,lost:11.2,summary:'Paciente con buena evolución. Receta vence en 3 días. Renovar antes del viernes.'},
+  {name:'Ana Sánchez',initials:'AS',color:'#16a34a',email:'ana.s@gmail.com',plan:'Seguimiento',imc:33.2,imcCat:'high',status:'new',nextConsult:'2 May 2:00pm',adherence:100,objective:'Pérdida de peso',weight:89,height:164,age:34,meds:'Pendiente',conditions:'Colesterol alto',weeks:0,lost:0,summary:'Candidata nueva. Evaluación IA completada. IMC 33.2. Sin contraindicaciones identificadas. Lista para primera consulta.'},
+  {name:'Jorge Hernández',initials:'JH',color:'#d97706',email:'jorge.h@empresa.com',plan:'Premium',imc:29.8,imcCat:'med',status:'active',nextConsult:'Hoy 4:30pm',adherence:79,objective:'Control diabetes',weight:88,height:172,age:52,meds:'Semaglutida + Metformina',conditions:'Diabetes T2, Hipertensión',weeks:20,lost:6.1,summary:'Paciente con diabetes T2 controlada. HbA1c bajó de 8.2% a 6.9% en 5 meses. Adherencia algo baja — reforzar compromiso.'},
+  {name:'Claudia Padilla',initials:'CP',color:'#7c3aed',email:'claudia.p@gmail.com',plan:'Básico',imc:27.4,imcCat:'med',status:'pending',nextConsult:'Por agendar',adherence:0,objective:'Pérdida de peso',weight:71,height:161,age:29,meds:'Pendiente',conditions:'Ninguna',weeks:0,lost:0,summary:'Candidata pendiente de primera consulta. Evaluación IA completada hace 3 días. Contactar para agendar.'},
+  {name:'Luis Vargas',initials:'LV',color:'#059669',email:'luis.v@startup.io',plan:'Seguimiento',imc:36.8,imcCat:'high',status:'active',nextConsult:'3 May 9:00am',adherence:92,objective:'Pérdida de peso',weight:112,height:175,age:41,meds:'Tirzepatida 5mg',conditions:'Apnea del sueño',weeks:16,lost:14.3,summary:'Excelente progreso. Uno de los mejores resultados del mes. Candidato para testimonio.'},
+];
+
+// RENDER PATIENTS TABLE
+function renderPatients(){
+  const tbody=document.getElementById('patients-tbody');
+  tbody.innerHTML='';
+  patients.forEach(p=>{
+    const statusMap={active:'<span class="badge active">Activo</span>',new:'<span class="badge new">Nuevo</span>',pending:'<span class="badge pending">Pendiente</span>',inactive:'<span class="badge inactive">Inactivo</span>'};
+    const imcClass={high:'high',med:'med',norm:'norm'}[p.imcCat]||'norm';
+    tbody.innerHTML+=`<tr onclick="openDetail('${p.name}','${p.initials}','${p.color}')" style="cursor:pointer">
+      <td><div class="patient-name-cell"><div class="p-mini-av" style="background:${p.color}20;color:${p.color}">${p.initials}</div><div><div class="p-name">${p.name}</div><div class="p-email">${p.email}</div></div></div></td>
+      <td><span class="plan-badge">${p.plan}</span></td>
+      <td><span class="imc-pill ${imcClass}">${p.imc}</span></td>
+      <td>${statusMap[p.status]||''}</td>
+      <td style="font-size:.78rem;color:var(--muted)">${p.nextConsult}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:.5rem">
+          <div style="flex:1;height:4px;background:var(--bg2);border-radius:2px;overflow:hidden;min-width:60px"><div style="height:100%;width:${p.adherence}%;background:${p.adherence>85?'var(--green)':p.adherence>60?'var(--amber)':'var(--red)'}"></div></div>
+          <span style="font-size:.72rem;font-weight:500">${p.adherence}%</span>
+        </div>
+      </td>
+      <td><div class="action-btns"><button class="ab" title="Consulta" onclick="event.stopPropagation();toast('Abriendo videoconsulta...')">📹</button><button class="ab" title="Mensaje" onclick="event.stopPropagation();toast('Abriendo chat...')">💬</button><button class="ab" title="Receta" onclick="event.stopPropagation();toast('Nueva receta...')">💊</button></div></td>
+    </tr>`;
+  });
+}
+
+// RENDER SCHEDULE
+function renderSchedule(){
+  const times=['8:00','9:30','10:00','11:30','2:00','3:30','4:30','6:00'];
+  const types=['video','chat','video','lab','video','chat','lab','video'];
+  const pats=['Carlos Fuentes','Sofía Paredes','María Rodríguez','Jorge Hernández','Ana Sánchez','Luis Vargas','Roberto Morales','Nueva paciente'];
+  const descs=['Seguimiento mensual','Primera consulta','Ajuste de dosis','Revisión laboratorios','Primera consulta','Control semana 16','Renovación receta','Evaluación inicial'];
+  const el=document.getElementById('full-schedule');
+  el.innerHTML='';
+  times.forEach((t,i)=>{
+    el.innerHTML+=`<div class="sched-item">
+      <div class="sched-time"><div class="sched-hour">${t}</div><div class="sched-min">${i<6?'AM':'PM'}</div></div>
+      <div class="sched-divider"></div>
+      <div class="sched-type ${types[i]}"></div>
+      <div class="sched-info"><div class="sched-patient">${pats[i]}</div><div class="sched-desc">${descs[i]}</div></div>
+      <span class="sched-action" onclick="toast('Abriendo consulta...')">${types[i]==='video'?'Unirse':'Ver'}</span>
+    </div>`;
+  });
+}
+
+// RENDER EVALUACIONES IA
+function renderEvals(){
+  const evals=[
+    {name:'Sofía Paredes',imc:33.2,obj:'Pérdida de peso',ciudad:'CDMX',urgencia:'Alta',cal:true,time:'Hace 2h'},
+    {name:'Miguel Torres',imc:31.8,obj:'Pérdida de peso',ciudad:'Monterrey',urgencia:'Media',cal:true,time:'Hace 4h'},
+    {name:'Valentina Cruz',imc:28.9,obj:'Terapia hormonal',ciudad:'Guadalajara',urgencia:'Alta',cal:true,time:'Hace 5h'},
+    {name:'Eduardo Ruiz',imc:22.1,obj:'Pérdida de peso',ciudad:'CDMX',urgencia:'Baja',cal:false,time:'Hace 6h'},
+    {name:'Carmen López',imc:35.4,obj:'Control diabetes',ciudad:'Puebla',urgencia:'Alta',cal:true,time:'Hace 8h'},
+    {name:'Andrés Méndez',imc:29.3,obj:'Pérdida de peso',ciudad:'Querétaro',urgencia:'Media',cal:true,time:'Hace 10h'},
+    {name:'Patricia Nava',imc:30.7,obj:'Pérdida de peso',ciudad:'León',urgencia:'Alta',cal:true,time:'Hace 12h'},
+  ];
+  const el=document.getElementById('eval-list');
+  el.innerHTML='';
+  evals.forEach(e=>{
+    el.innerHTML+=`<div class="alert-item" onclick="toast('Abriendo evaluación de ${e.name}...')">
+      <div class="alert-priority ${e.cal?'low':'high'}"></div>
+      <div style="font-size:1.1rem">${e.cal?'✅':'⚠️'}</div>
+      <div class="alert-info">
+        <div class="alert-patient">${e.name} — IMC ${e.imc} · ${e.obj}</div>
+        <div class="alert-desc">${e.ciudad} · Urgencia: ${e.urgencia} · ${e.cal?'<span style="color:var(--green);font-weight:500">Candidato calificado</span>':'<span style="color:var(--red)">No califica</span>'}</div>
+      </div>
+      <span class="alert-time">${e.time}</span>
+      <span class="alert-action">${e.cal?'Agendar →':'Revisar →'}</span>
+    </div>`;
+  });
+}
+
+// RENDER RECETAS
+function renderRecetas(){
+  const recetas=[
+    {patient:'María Rodríguez',med:'Semaglutida 0.5mg',dosis:'1 vez/semana',emitida:'15 Abr 2026',vence:'15 May 2026',status:'active'},
+    {patient:'Roberto Morales',med:'Semaglutida 1mg',dosis:'1 vez/semana',emitida:'28 Mar 2026',vence:'28 Abr 2026',status:'pending'},
+    {patient:'Jorge Hernández',med:'Semaglutida 0.5mg + Metformina 850mg',dosis:'Según indicación',emitida:'1 Abr 2026',vence:'1 Jul 2026',status:'active'},
+    {patient:'Luis Vargas',med:'Tirzepatida 5mg',dosis:'1 vez/semana',emitida:'5 Abr 2026',vence:'5 May 2026',status:'active'},
+  ];
+  const tbody=document.getElementById('recetas-tbody');
+  tbody.innerHTML='';
+  recetas.forEach(r=>{
+    const st=r.status==='active'?'<span class="badge active">Activa</span>':'<span class="badge pending">Por vencer</span>';
+    tbody.innerHTML+=`<tr>
+      <td style="font-size:.82rem;font-weight:500">${r.patient}</td>
+      <td style="font-size:.8rem">${r.med}</td>
+      <td style="font-size:.78rem;color:var(--muted)">${r.dosis}</td>
+      <td style="font-size:.76rem;color:var(--muted)">${r.emitida}</td>
+      <td style="font-size:.76rem;color:${r.status==='pending'?'var(--red)':'var(--muted)'};font-weight:${r.status==='pending'?'600':'400'}">${r.vence}</td>
+      <td>${st}</td>
+      <td><button class="btn-sm ${r.status==='pending'?'primary':''}" onclick="toast('Renovando receta...')">${r.status==='pending'?'Renovar':'Imprimir'}</button></td>
+    </tr>`;
+  });
+}
+
+// RENDER LABS
+function renderLabs(){
+  const labs=[
+    {patient:'Jorge Hernández',test:'Panel metabólico completo',fecha:'20 Abr 2026',status:'Resultados disponibles',alert:true},
+    {patient:'María Rodríguez',test:'Glucosa en ayunas + HbA1c',fecha:'21 Abr 2026',status:'⚠️ Glucosa: 185 mg/dL',alert:true},
+    {patient:'Luis Vargas',test:'Perfil lipídico',fecha:'18 Abr 2026',status:'Valores normales',alert:false},
+    {patient:'Ana Sánchez',test:'Panel metabólico inicial',fecha:'Solicitado',status:'Pendiente de realización',alert:false},
+  ];
+  const el=document.getElementById('labs-list');
+  el.innerHTML='';
+  labs.forEach(l=>{
+    el.innerHTML+=`<div class="alert-item" onclick="toast('Abriendo resultados de ${l.patient}...')">
+      <div class="alert-priority ${l.alert?'high':'low'}"></div>
+      <div style="font-size:1.1rem">🧪</div>
+      <div class="alert-info">
+        <div class="alert-patient">${l.patient} — ${l.test}</div>
+        <div class="alert-desc">${l.fecha} · ${l.status}</div>
+      </div>
+      <span class="alert-action">Ver →</span>
+    </div>`;
+  });
+}
+
+// RENDER MENSAJES
+function renderMensajes(){
+  const msgs=[
+    {patient:'María Rodríguez',msg:'Doctor, hoy me siento con mucho mareo, ¿es normal con la semaglutida?',time:'10:23 AM',unread:true},
+    {patient:'Roberto Morales',msg:'Buenos días, ¿puedo renovar mi receta esta semana?',time:'9:45 AM',unread:true},
+    {patient:'Luis Vargas',msg:'Hola doc, ya llegó mi medicamento. Gracias por el seguimiento.',time:'Ayer',unread:false},
+    {patient:'Jorge Hernández',msg:'Adjunté mis resultados de laboratorio. ¿Los revisa cuando pueda?',time:'Ayer',unread:true},
+    {patient:'Claudia Padilla',msg:'¿Cuándo podemos agendar mi primera consulta?',time:'Lun',unread:true},
+  ];
+  const el=document.getElementById('mensajes-list');
+  el.innerHTML='';
+  msgs.forEach(m=>{
+    el.innerHTML+=`<div class="alert-item" onclick="toast('Abriendo chat con ${m.patient}...')">
+      <div style="font-size:1.1rem">💬</div>
+      <div class="alert-info">
+        <div class="alert-patient" style="${m.unread?'font-weight:600':''}">${m.patient}</div>
+        <div class="alert-desc">${m.msg}</div>
+      </div>
+      <span class="alert-time">${m.time}</span>
+      ${m.unread?'<span class="alert-action">Responder →</span>':''}
+    </div>`;
+  });
+}
+
+// PATIENT DETAIL
+function openDetail(name, initials, color){
+  const p=patients.find(x=>x.name===name)||{name,initials,color,plan:'—',imc:'—',age:'—',weight:'—',height:'—',objective:'—',meds:'—',conditions:'—',adherence:0,weeks:0,lost:0,summary:'',email:'—'};
+  const panel=document.getElementById('detail-panel');
+  const bars=[30,45,60,70,78,85,90,p.lost?Math.round(p.lost*6):0].map(h=>`<div class="mini-bar" style="height:${h}%"></div>`).join('');
+  panel.innerHTML=`
+    <div class="dp-header">
+      <div>
+        <div class="dp-av" style="background:${color}">${initials}</div>
+        <div class="dp-name">${name}</div>
+        <div class="dp-plan">Plan ${p.plan} · ${p.objective}</div>
+      </div>
+      <button class="dp-close" onclick="closeDetail()">✕</button>
+    </div>
+    <div class="dp-body">
+      <div class="dp-section">
+        <div class="dp-section-title">Métricas clave</div>
+        <div class="dp-metrics">
+          <div class="dp-metric"><div class="dp-metric-n">${p.imc}</div><div class="dp-metric-l">IMC actual</div></div>
+          <div class="dp-metric"><div class="dp-metric-n">${p.adherence}%</div><div class="dp-metric-l">Adherencia</div></div>
+          <div class="dp-metric"><div class="dp-metric-n">${p.weeks}</div><div class="dp-metric-l">Semanas</div></div>
+          <div class="dp-metric"><div class="dp-metric-n">${p.lost} kg</div><div class="dp-metric-l">Pérdida total</div></div>
+        </div>
+        ${p.lost>0?`<div style="margin-top:.8rem"><div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem">Progreso de pérdida de peso</div><div class="mini-chart">${bars}</div></div>`:''}
+      </div>
+      <div class="dp-section">
+        <div class="dp-section-title">Datos del paciente</div>
+        <div class="dp-row"><span class="dp-key">Edad</span><span class="dp-val">${p.age} años</span></div>
+        <div class="dp-row"><span class="dp-key">Peso actual</span><span class="dp-val">${p.weight} kg</span></div>
+        <div class="dp-row"><span class="dp-key">Estatura</span><span class="dp-val">${p.height} cm</span></div>
+        <div class="dp-row"><span class="dp-key">Condiciones</span><span class="dp-val">${p.conditions}</span></div>
+        <div class="dp-row"><span class="dp-key">Medicamento</span><span class="dp-val">${p.meds}</span></div>
+        <div class="dp-row"><span class="dp-key">Email</span><span class="dp-val">${p.email}</span></div>
+      </div>
+      ${p.summary?`<div class="dp-section">
+        <div class="dp-section-title">Resumen IA</div>
+        <div class="dp-ai-summary">${p.summary}</div>
+      </div>`:''}
+      <div class="dp-actions">
+        <button class="dp-btn primary" onclick="toast('Iniciando videoconsulta...')">📹 Iniciar videoconsulta</button>
+        <button class="dp-btn outline" onclick="toast('Abriendo chat...')">💬 Enviar mensaje</button>
+        <button class="dp-btn outline" onclick="toast('Nueva receta...')">💊 Emitir receta</button>
+        <button class="dp-btn outline" onclick="toast('Solicitando laboratorio...')">🧪 Solicitar laboratorios</button>
+      </div>
+    </div>`;
+  document.getElementById('detail-overlay').classList.add('open');
+}
+
+function closeDetail(){
+  document.getElementById('detail-overlay').classList.remove('open');
+}
+
+// MAIN CHART
+function renderMainChart(){
+  const data=[8,12,19,15,23,28,31,27];
+  const labels=['Mar 3','Mar 10','Mar 17','Mar 24','Abr 1','Abr 8','Abr 15','Abr 22'];
+  const max=Math.max(...data);
+  const chart=document.getElementById('main-chart');
+  const xAxis=document.getElementById('main-chart-x');
+  chart.innerHTML='';xAxis.innerHTML='';
+  data.forEach((v,i)=>{
+    const bar=document.createElement('div');
+    bar.className='bar';
+    bar.style.height=(v/max*100)+'%';
+    bar.title=`${labels[i]}: ${v} pacientes`;
+    bar.onclick=()=>toast(`${labels[i]}: ${v} nuevos pacientes`);
+    chart.appendChild(bar);
+    const lbl=document.createElement('span');
+    lbl.textContent=labels[i].split(' ')[1];
+    xAxis.appendChild(lbl);
+  });
+}
+
+// VIEW SWITCHING
+const titles={dashboard:'Dashboard <em>médico</em>',patients:'Pacientes <em>activos</em>',schedule:'Agenda <em>del día</em>',evaluaciones:'Evaluaciones <em>con IA</em>',recetas:'Recetas <em>médicas</em>',labs:'Laboratorios <em>pendientes</em>',mensajes:'Mensajes <em>de pacientes</em>'};
+function showView(id, btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  document.querySelectorAll('.sb-link').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('topbar-title').innerHTML=titles[id]||id;
+}
+
+// TOAST
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.innerHTML='✓ '+msg;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2800);
+}
+
+// INIT
+renderPatients();
+renderSchedule();
+renderEvals();
+renderRecetas();
+renderLabs();
+renderMensajes();
+renderMainChart();
+</script>
+</body>
+</html>

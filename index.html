@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MEDNOVA — Medicina de Precisión</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:     #fafaf8;
+  --bg2:    #f3f3f1;
+  --bg3:    #eaeae8;
+  --card:   #ffffff;
+  --ink:    #111111;
+  --red:    #c0392b;
+  --red2:   #a93226;
+  --red-lt: #e74c3c;
+  --red-bg: rgba(192,57,43,0.08);
+  --muted:  #888;
+  --muted2: #bbb;
+  --border: rgba(0,0,0,0.08);
+  --bord2:  rgba(0,0,0,0.13);
+  --serif:  'Fraunces', Georgia, serif;
+  --sans:   'DM Sans', system-ui, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.7;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 5%;background:rgba(250,250,248,0.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;text-decoration:none}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--muted);font-size:.78rem;text-decoration:none;letter-spacing:.09em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.btn-nav{background:var(--red);color:#fff;padding:.55rem 1.5rem;font-size:.78rem;font-weight:500;text-decoration:none;letter-spacing:.05em;text-transform:uppercase;transition:background .2s}
+.btn-nav:hover{background:var(--red2)}
+
+/* HERO */
+#hero{min-height:100vh;display:grid;grid-template-columns:1.15fr .85fr;align-items:center;padding:9rem 5% 5rem;gap:4rem;position:relative;overflow:hidden}
+.hero-accent{position:absolute;top:0;right:42%;width:1px;bottom:0;background:linear-gradient(to bottom,transparent,rgba(192,57,43,0.12) 30%,rgba(192,57,43,0.12) 70%,transparent)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:2rem;animation:fadeUp .8s ease both}
+.ey-line{width:28px;height:1px;background:var(--red)}
+.ey-txt{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--red)}
+h1{font-family:var(--serif);font-size:clamp(2.8rem,4.5vw,5rem);font-weight:300;line-height:1.08;letter-spacing:-.02em;margin-bottom:1.6rem;animation:fadeUp .9s .05s ease both}
+h1 em{font-style:italic;color:var(--red-lt)}
+.hero-sub{color:var(--muted);font-size:1rem;max-width:460px;margin-bottom:2.5rem;font-weight:300;line-height:1.85;animation:fadeUp .9s .1s ease both}
+.acts{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp .9s .15s ease both}
+.btn-p{background:var(--red);color:#fff;padding:.9rem 2.2rem;font-size:.82rem;font-weight:500;text-decoration:none;letter-spacing:.05em;text-transform:uppercase;transition:all .25s}
+.btn-p:hover{background:var(--red2);box-shadow:0 8px 28px rgba(192,57,43,0.25);transform:translateY(-2px)}
+.btn-g{border:1.5px solid var(--bord2);color:var(--ink);padding:.9rem 2.2rem;font-size:.82rem;text-decoration:none;letter-spacing:.05em;text-transform:uppercase;transition:all .25s}
+.btn-g:hover{border-color:var(--red);color:var(--red)}
+.hero-nums{display:flex;gap:2.5rem;margin-top:3.5rem;padding-top:2.5rem;border-top:1px solid var(--border);animation:fadeUp .9s .2s ease both}
+.hn{font-family:var(--serif);font-size:2.2rem;font-weight:300;line-height:1}
+.hn span{color:var(--red)}
+.hl{font-size:.68rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+
+/* HERO CARD */
+.hero-card{background:var(--card);border:1px solid var(--border);border-top:2px solid var(--red);box-shadow:0 20px 60px rgba(0,0,0,0.08);animation:fadeUp .9s .12s ease both}
+.hc-h{padding:1.2rem 1.6rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.hc-t{font-size:.72rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.hc-live{display:flex;align-items:center;gap:6px}
+.dot-g{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pul 2s ease infinite;flex-shrink:0}
+@keyframes pul{0%,100%{opacity:1}50%{opacity:.3}}
+.hc-live span{font-size:.68rem;color:var(--muted)}
+.hc-b{padding:1.6rem}
+.p-row{display:flex;align-items:center;gap:10px;margin-bottom:1.4rem;padding-bottom:1.2rem;border-bottom:1px solid var(--border)}
+.p-av{width:42px;height:42px;background:var(--red-bg);border:1px solid rgba(192,57,43,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:.95rem;color:var(--red)}
+.p-name{font-size:.86rem;font-weight:500}
+.p-plan{font-size:.7rem;color:var(--muted)}
+.m-list{display:flex;flex-direction:column;gap:1rem}
+.m-item .m-top{display:flex;justify-content:space-between;margin-bottom:4px}
+.m-label{font-size:.74rem;color:var(--muted)}
+.m-val{font-size:.74rem;font-weight:500;color:var(--red)}
+.m-bar{height:4px;background:var(--bg3);overflow:hidden}
+.m-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--red-lt));width:0;transition:width 1.4s ease}
+.hc-f{padding:.9rem 1.6rem;border-top:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:space-between}
+.hc-next{font-size:.72rem;color:var(--muted)}
+.hc-next strong{color:var(--ink);font-weight:500}
+.hc-lnk{font-size:.7rem;font-weight:500;color:var(--red);text-decoration:none;border:1px solid rgba(192,57,43,0.25);padding:.28rem .75rem;letter-spacing:.04em;text-transform:uppercase;transition:all .2s}
+.hc-lnk:hover{background:var(--red-bg)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* TRUST */
+.trust{background:var(--ink);padding:1.1rem 5%;display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap}
+.t-lbl{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.t-logo{font-size:.82rem;color:rgba(255,255,255,.22);letter-spacing:.05em}
+
+/* COUNTERS */
+#counters{padding:5rem 5%;background:var(--bg2)}
+.counters-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+.counter-item{background:var(--bg2);padding:2.5rem 2rem;text-align:center}
+.counter-num{font-family:var(--serif);font-size:3.5rem;font-weight:300;color:var(--red);line-height:1;margin-bottom:.4rem}
+.counter-label{font-size:.72rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+
+/* SECTIONS */
+section{padding:7rem 5%}
+.s-eye{display:flex;align-items:center;gap:10px;margin-bottom:1.1rem}
+.s-line{width:22px;height:1px;background:var(--red)}
+.s-tag{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--red)}
+h2{font-family:var(--serif);font-size:clamp(1.9rem,3.5vw,3rem);font-weight:300;line-height:1.18;letter-spacing:-.01em;max-width:640px}
+h2 em{font-style:italic;color:var(--red-lt)}
+
+/* PILLARS */
+#pillars{background:var(--bg2)}
+.pillars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-top:4rem}
+.pillar{background:var(--card);border:1px solid var(--border);padding:2rem;transition:all .3s;position:relative;overflow:hidden}
+.pillar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--red);transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.pillar:hover::after{transform:scaleX(1)}
+.pillar:hover{box-shadow:0 12px 32px rgba(0,0,0,0.07);transform:translateY(-3px)}
+.pillar-icon{font-size:2rem;margin-bottom:1.2rem}
+.pillar h3{font-family:var(--serif);font-size:1.15rem;font-weight:300;margin-bottom:.5rem}
+.pillar p{color:var(--muted);font-size:.84rem;line-height:1.75}
+
+/* HOW */
+.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;margin-top:4rem}
+.step{display:flex;gap:1.4rem;padding:1.8rem 0;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:none;padding-bottom:0}
+.step:first-child{padding-top:0}
+.step:hover .step-n{color:var(--red)}
+.step-n{font-family:var(--serif);font-size:3.5rem;font-weight:300;color:rgba(0,0,0,.06);line-height:1;min-width:50px;flex-shrink:0;transition:color .3s}
+.step h3{font-family:var(--serif);font-size:1.2rem;font-weight:300;margin-bottom:.45rem}
+.step p{color:var(--muted);font-size:.86rem;line-height:1.8}
+.how-visual{background:var(--card);border:1px solid var(--border);box-shadow:0 8px 28px rgba(0,0,0,.05);position:sticky;top:7rem}
+.hv-bar{background:var(--bg3);padding:1rem 1.3rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
+.hv-d{width:9px;height:9px;border-radius:50%}
+.hv-title{font-size:.7rem;color:var(--muted);margin-left:auto;letter-spacing:.04em}
+.chat{padding:1.3rem;display:flex;flex-direction:column;gap:.75rem}
+.msg{padding:.8rem 1rem;font-size:.81rem;line-height:1.65;max-width:87%}
+.msg.doc{background:var(--bg2);color:var(--ink);align-self:flex-start}
+.msg.pat{background:var(--red);color:#fff;align-self:flex-end}
+.msg-who{font-size:.6rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted2);margin-bottom:.35rem}
+
+/* TREATMENTS */
+.treats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:4rem}
+.treat{background:var(--bg);padding:2.2rem;transition:background .3s;position:relative;overflow:hidden}
+.treat:hover{background:var(--card)}
+.treat:hover .treat-arrow{opacity:1;transform:translateX(0)}
+.treat-n{font-family:var(--serif);font-size:4rem;font-weight:300;color:rgba(0,0,0,.04);position:absolute;top:.8rem;right:1.2rem;line-height:1;transition:color .3s}
+.treat:hover .treat-n{color:rgba(192,57,43,.08)}
+.treat-icon{font-size:1.5rem;margin-bottom:1.3rem}
+.treat h3{font-family:var(--serif);font-size:1.2rem;font-weight:300;margin-bottom:.5rem}
+.treat p{color:var(--muted);font-size:.84rem;line-height:1.8}
+.treat-pill{display:inline-block;margin-top:1.1rem;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red);border:1px solid rgba(192,57,43,.28);padding:.22rem .75rem}
+.treat-arrow{position:absolute;bottom:1.4rem;right:1.4rem;color:var(--red);opacity:0;transform:translateX(-8px);transition:all .3s;font-size:1rem}
+
+/* DOCTORS */
+#doctors{background:var(--bg2)}
+.doctors-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin-top:4rem}
+.doc-card{background:var(--card);border:1px solid var(--border);padding:2rem;text-align:center;transition:all .3s}
+.doc-card:hover{box-shadow:0 12px 32px rgba(0,0,0,.07);transform:translateY(-3px)}
+.doc-av{width:72px;height:72px;border-radius:50%;background:var(--red-bg);border:2px solid rgba(192,57,43,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 1.1rem;font-family:var(--serif);font-size:1.4rem;color:var(--red)}
+.doc-name{font-family:var(--serif);font-size:1.05rem;font-weight:400;margin-bottom:.2rem}
+.doc-spec{font-size:.75rem;color:var(--red);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem}
+.doc-school{font-size:.76rem;color:var(--muted);margin-bottom:.6rem}
+.doc-ced{font-size:.68rem;color:var(--muted2);letter-spacing:.04em}
+
+/* RESULTS */
+#results{background:var(--bg)}
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-top:4rem}
+.stat-stack{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border)}
+.s-item{background:var(--bg2);padding:1.8rem 2rem;display:flex;align-items:center;gap:1.5rem;transition:background .3s}
+.s-item:hover{background:var(--card)}
+.s-big{font-family:var(--serif);font-size:3rem;font-weight:300;color:var(--red);line-height:1;min-width:90px}
+.s-desc{font-size:.84rem;color:var(--muted);line-height:1.7}
+.chart-panel{background:var(--card);border:1px solid var(--border);padding:2rem}
+.chart-lbl{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1.8rem}
+.bars{display:flex;flex-direction:column;gap:1.1rem}
+.b-row{display:flex;align-items:center;gap:1rem}
+.b-lbl{font-size:.72rem;color:var(--muted);min-width:42px;text-align:right}
+.b-track{flex:1;height:6px;background:var(--bg3);overflow:hidden}
+.b-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--red-lt));width:0;transition:width 1.4s ease}
+.b-val{font-size:.74rem;font-weight:500;color:var(--ink);min-width:40px}
+
+/* COMPARISON */
+#comparison{background:var(--bg2)}
+.compare-wrap{overflow-x:auto;margin-top:4rem}
+.compare-table{width:100%;border-collapse:collapse;min-width:600px}
+.compare-table th{padding:1.1rem 1.5rem;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;text-align:left;border-bottom:2px solid var(--border)}
+.compare-table th:first-child{width:35%}
+.compare-table th.col-mn{background:var(--red);color:#fff;text-align:center}
+.compare-table td{padding:1rem 1.5rem;border-bottom:1px solid var(--border);font-size:.86rem;color:var(--ink);vertical-align:middle}
+.compare-table td.col-mn{background:rgba(192,57,43,.04);text-align:center;font-weight:500;color:var(--red)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table td:not(:first-child){text-align:center;color:var(--muted)}
+.chk{color:var(--red);font-size:1rem}
+.cross{color:var(--muted2)}
+.compare-table tr:hover td{background:rgba(0,0,0,.02)}
+.compare-table tr:hover td.col-mn{background:rgba(192,57,43,.07)}
+
+/* TESTIMONIALS */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:4rem}
+.tcard{background:var(--card);border:1px solid var(--border);padding:2rem;transition:all .3s}
+.tcard:hover{box-shadow:0 8px 24px rgba(0,0,0,.07);border-color:rgba(192,57,43,.2)}
+.t-stars{color:var(--red);font-size:.82rem;letter-spacing:2px;margin-bottom:1rem}
+.t-quote{font-family:var(--serif);font-size:1rem;font-style:italic;font-weight:300;line-height:1.8;color:var(--ink);margin-bottom:1.3rem}
+.t-author{display:flex;align-items:center;gap:.7rem}
+.t-av{width:38px;height:38px;background:var(--red-bg);border:1px solid rgba(192,57,43,.18);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:500;color:var(--red)}
+.t-name{font-size:.84rem;font-weight:500}
+.t-loc{font-size:.7rem;color:var(--muted)}
+
+/* PRICING */
+#pricing{text-align:center}
+.price-sub{color:var(--muted);max-width:440px;margin:0 auto 4rem;font-size:.88rem}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;max-width:1060px;margin:0 auto}
+.p-card{background:var(--card);border:1px solid var(--border);padding:2.5rem 2rem;text-align:left;position:relative;transition:all .3s}
+.p-card:hover{box-shadow:0 16px 40px rgba(0,0,0,.08)}
+.p-card.feat{border-color:rgba(192,57,43,.35);border-top:2px solid var(--red)}
+.p-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:.28rem 1rem;white-space:nowrap;font-weight:500}
+.p-name{font-family:var(--serif);font-size:1.15rem;font-weight:300;margin-bottom:.3rem}
+.p-desc{font-size:.78rem;color:var(--muted);margin-bottom:1.4rem}
+.p-price{font-family:var(--serif);font-size:3rem;font-weight:300;line-height:1;margin-bottom:1.8rem}
+.p-price sup{font-size:1rem;vertical-align:top;margin-top:.5rem;display:inline-block}
+.p-price sub{font-size:.78rem;color:var(--muted)}
+.p-features{list-style:none;display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.8rem}
+.p-features li{display:flex;gap:.55rem;align-items:flex-start;font-size:.83rem;color:var(--muted)}
+.p-features li::before{content:'✓';color:var(--red);font-weight:600;flex-shrink:0;font-size:.76rem;margin-top:3px}
+.p-btn{display:block;text-align:center;padding:.85rem;font-size:.78rem;font-weight:500;text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:all .25s}
+.p-btn.red{background:var(--red);color:#fff}
+.p-btn.red:hover{background:var(--red2)}
+.p-btn.out{border:1.5px solid var(--bord2);color:var(--ink)}
+.p-btn.out:hover{border-color:var(--red);color:var(--red)}
+
+/* FAQ */
+#faq{background:var(--bg2)}
+.faq-list{max-width:760px;margin:3.5rem auto 0;display:flex;flex-direction:column;gap:0}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-item:first-child{border-top:1px solid var(--border)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:1.3rem 0;cursor:pointer;gap:1rem}
+.faq-q span{font-family:var(--serif);font-size:1.05rem;font-weight:300;color:var(--ink)}
+.faq-icon{width:24px;height:24px;border:1px solid var(--bord2);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--muted);flex-shrink:0;transition:all .3s}
+.faq-item.open .faq-icon{background:var(--red);border-color:var(--red);color:#fff;transform:rotate(45deg)}
+.faq-item.open .faq-q span{color:var(--red)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s ease}
+.faq-item.open .faq-a{max-height:200px;padding-bottom:1.3rem}
+.faq-a p{color:var(--muted);font-size:.88rem;line-height:1.8}
+
+/* MEDIA */
+#media{padding:4rem 5%;text-align:center;border-top:1px solid var(--border)}
+.media-label{font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted2);margin-bottom:2rem}
+.media-logos{display:flex;align-items:center;justify-content:center;gap:4rem;flex-wrap:wrap}
+.media-logo{font-size:1rem;color:rgba(0,0,0,.18);letter-spacing:.04em;font-weight:500}
+
+/* CTA FINAL */
+#cta{background:var(--ink);padding:8rem 5%;text-align:center;position:relative;overflow:hidden}
+#cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 100%,rgba(192,57,43,.25),transparent 70%)}
+#cta h2{color:#fff;margin:0 auto 1.4rem;text-align:center;max-width:560px;position:relative}
+#cta h2 em{color:#fc9090}
+#cta p{color:rgba(255,255,255,.45);max-width:420px;margin:0 auto 3rem;position:relative;font-size:.9rem}
+
+/* FOOTER */
+footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:2.5rem 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem}
+.foot-copy{color:rgba(255,255,255,.25);font-size:.75rem}
+.foot-links{display:flex;gap:2.5rem}
+.foot-links a{color:rgba(255,255,255,.28);font-size:.75rem;text-decoration:none;transition:color .2s}
+.foot-links a:hover{color:rgba(255,255,255,.7)}
+.foot-cert{font-size:.68rem;color:rgba(255,255,255,.2);letter-spacing:.04em}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:none}
+
+@media(max-width:900px){
+  #hero{grid-template-columns:1fr;padding-top:7rem}
+  .hero-card{display:none}
+  .how-grid{grid-template-columns:1fr}
+  .results-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <svg width="168" height="36" viewBox="0 0 168 36" xmlns="http://www.w3.org/2000/svg">
+      <line x1="8" y1="6" x2="8" y2="30" stroke="#111" stroke-width="2.8" stroke-linecap="square"/>
+      <line x1="8" y1="6" x2="24" y2="30" stroke="#c0392b" stroke-width="2.8" stroke-linecap="square"/>
+      <line x1="24" y1="6" x2="24" y2="30" stroke="#111" stroke-width="2.8" stroke-linecap="square"/>
+      <rect x="30" y="16" width="3" height="3" fill="#c0392b"/>
+      <text x="42" y="24" font-family="system-ui,sans-serif" font-size="12" font-weight="500" fill="#111111" letter-spacing="6">MEDNOVA</text>
+      <text x="42" y="34" font-family="system-ui,sans-serif" font-size="6" fill="#aaaaaa" letter-spacing="5">TELEHEALTH</text>
+    </svg>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#how">Proceso</a></li>
+    <li><a href="#treatments">Tratamientos</a></li>
+    <li><a href="#doctors">Médicos</a></li>
+    <li><a href="#pricing">Planes</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#" class="btn-nav">Evaluación gratuita</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-accent"></div>
+  <div>
+    <div class="eyebrow"><div class="ey-line"></div><span class="ey-txt">Telesalud de precisión · México</span></div>
+    <h1>Tu mejor versión<br/>empieza con<br/><em>atención real.</em></h1>
+    <p class="hero-sub">Médicos certificados, tratamientos GLP-1 con respaldo clínico y seguimiento personalizado continuo. Sin filas, sin excusas — desde donde estás.</p>
+    <div class="acts">
+      <a href="#" class="btn-p">Comenzar evaluación gratuita</a>
+      <a href="#how" class="btn-g">Cómo funciona</a>
+    </div>
+    <div class="hero-nums">
+      <div><div class="hn">50<span>k+</span></div><div class="hl">Pacientes activos</div></div>
+      <div><div class="hn">15<span>%</span></div><div class="hl">Pérdida de peso prom.</div></div>
+      <div><div class="hn">4.9<span>★</span></div><div class="hl">Valoración media</div></div>
+      <div><div class="hn">&lt;24<span>h</span></div><div class="hl">Respuesta médica</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="hero-card">
+      <div class="hc-h">
+        <span class="hc-t">Progreso · Semana 8</span>
+        <div class="hc-live"><div class="dot-g"></div><span>Médico disponible</span></div>
+      </div>
+      <div class="hc-b">
+        <div class="p-row">
+          <div class="p-av">MR</div>
+          <div><p class="p-name">María Rodríguez</p><p class="p-plan">Programa GLP-1 · Semaglutida</p></div>
+        </div>
+        <div class="m-list">
+          <div class="m-item"><div class="m-top"><span class="m-label">Pérdida de peso</span><span class="m-val">−8.4 kg</span></div><div class="m-bar"><div class="m-fill" data-w="74%"></div></div></div>
+          <div class="m-item"><div class="m-top"><span class="m-label">Control glucémico</span><span class="m-val">Normal</span></div><div class="m-bar"><div class="m-fill" data-w="88%"></div></div></div>
+          <div class="m-item"><div class="m-top"><span class="m-label">Adherencia</span><span class="m-val">96%</span></div><div class="m-bar"><div class="m-fill" data-w="96%"></div></div></div>
+          <div class="m-item"><div class="m-top"><span class="m-label">Nivel de energía</span><span class="m-val">Alto</span></div><div class="m-bar"><div class="m-fill" data-w="90%"></div></div></div>
+        </div>
+      </div>
+      <div class="hc-f">
+        <span class="hc-next">Próxima consulta: <strong>Viernes 10am</strong></span>
+        <a href="#" class="hc-lnk">Ver plan →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust">
+  <span class="t-lbl">Certificado por</span>
+  <span class="t-logo">COFEPRIS</span>
+  <span class="t-logo">LegitScript</span>
+  <span class="t-logo">ISO 27001</span>
+  <span class="t-logo">PROFECO</span>
+</div>
+
+<!-- COUNTERS -->
+<section id="counters">
+  <div class="counters-grid reveal">
+    <div class="counter-item"><div class="counter-num" data-target="50000">0</div><div class="counter-label">Pacientes atendidos</div></div>
+    <div class="counter-item"><div class="counter-num" data-target="94">0</div><div class="counter-label">% control glucémico logrado</div></div>
+    <div class="counter-item"><div class="counter-num" data-target="71">0</div><div class="counter-label">% retención al año</div></div>
+    <div class="counter-item"><div class="counter-num" data-target="4">0</div><div class="counter-label">Años y medio en operación</div></div>
+    <div class="counter-item"><div class="counter-num" data-target="24">0</div><div class="counter-label">Horas promedio de respuesta</div></div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section id="pillars">
+  <div class="reveal">
+    <div class="s-eye"><div class="s-line"></div><span class="s-tag">Programa integral</span></div>
+    <h2>Todo lo que<br/>necesitas en <em>un solo lugar.</em></h2>
+  </div>
+  <div class="pillars-grid reveal">
+    <div class="pillar"><div class="pillar-icon">👨‍⚕️</div><h3>Médico especialista</h3><p>Endocrinólogos e internistas certificados disponibles para consultas y ajustes de dosis en cualquier momento.</p></div>
+    <div class="pillar"><div class="pillar-icon">🧪</div><h3>Estudios de laboratorio</h3><p>Análisis clínicos incluidos con los principales laboratorios del país. Tu médico interpreta resultados y ajusta tu plan.</p></div>
+    <div class="pillar"><div class="pillar-icon">🥗</div><h3>Plan nutricional</h3><p>Nutriólogos certificados diseñan un plan alimenticio personalizado que complementa y potencia tu tratamiento.</p></div>
+    <div class="pillar"><div class="pillar-icon">🧠</div><h3>Apoyo psicológico</h3><p>Psicólogos especializados en salud metabólica te acompañan para asegurar resultados sostenibles a largo plazo.</p></div>
+    <div class="pillar"><div class="pillar-icon">💊</div><h3>Medicamento a domicilio</h3><p>Tu tratamiento llega directo a tu puerta con cadena de frío garantizada y empaque seguro certificado.</p></div>
+    <div class="pillar"><div class="pillar-icon">📱</div><h3>Seguimiento por app</h3><p>Monitorea tu progreso, agenda consultas y chatea con tu médico desde nuestra plataforma. 24/7 sin excepción.</p></div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how">
+  <div class="reveal">
+    <div class="s-eye"><div class="s-line"></div><span class="s-tag">Proceso</span></div>
+    <h2>Tres pasos.<br/><em>Una transformación.</em></h2>
+  </div>
+  <div class="how-grid">
+    <div class="reveal">
+      <div class="step"><div class="step-n">01</div><div><h3>Evaluación médica gratuita</h3><p>Cuestionario clínico en menos de 5 minutos. Diseñado por especialistas en salud metabólica. 100% confidencial.</p></div></div>
+      <div class="step"><div class="step-n">02</div><div><h3>Plan personalizado en 24h</h3><p>Un médico certificado revisa tu caso, diseña tu tratamiento y explica cada punto. Sin letra pequeña, sin protocolos genéricos.</p></div></div>
+      <div class="step"><div class="step-n">03</div><div><h3>Tratamiento a tu puerta</h3><p>Tu medicamento llega con cadena de frío. Soporte médico 24/7 durante todo el tratamiento.</p></div></div>
+    </div>
+    <div class="how-visual reveal">
+      <div class="hv-bar">
+        <div class="hv-d" style="background:#e0e0e0"></div>
+        <div class="hv-d" style="background:#e0e0e0;margin-left:4px"></div>
+        <div class="hv-d" style="background:#e0e0e0;margin-left:4px"></div>
+        <span class="hv-title">Chat con tu médico</span>
+      </div>
+      <div class="chat">
+        <div class="msg doc"><div class="msg-who">Dr. Andrés Valverde · Endocrinólogo</div>Buenos días. Tu glucosa en ayunas bajó a 98 mg/dL. Excelente progreso esta semana.</div>
+        <div class="msg pat">¡Muchas gracias! ¿Seguimos con la misma dosis?</div>
+        <div class="msg doc">Sí, mantenemos dos semanas más. Si hay náuseas, escríbeme de inmediato.</div>
+        <div class="msg pat">¿El siguiente check-in es el viernes?</div>
+        <div class="msg doc">Correcto, 10am. Te mando el link. Vas muy bien — sigue así.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TREATMENTS -->
+<section id="treatments" style="background:var(--bg2)">
+  <div class="reveal">
+    <div class="s-eye"><div class="s-line"></div><span class="s-tag">Tratamientos</span></div>
+    <h2>Cada programa,<br/><em>diseñado para ti.</em></h2>
+  </div>
+  <div class="treats-grid reveal">
+    <div class="treat"><div class="treat-n">01</div><div class="treat-icon">⚖️</div><h3>Pérdida de peso</h3><p>Semaglutida y tirzepatida con el más alto estándar clínico. El mismo medicamento que en las mejores clínicas privadas, desde casa.</p><span class="treat-pill">GLP-1 · Disponible</span><span class="treat-arrow">→</span></div>
+    <div class="treat"><div class="treat-n">02</div><div class="treat-icon">⚡</div><h3>Terapia hormonal</h3><p>Recupera energía, enfoque y rendimiento. Planes ajustados mes a mes según tu biometría y respuesta al tratamiento.</p><span class="treat-pill">Hormonas · Disponible</span><span class="treat-arrow">→</span></div>
+    <div class="treat"><div class="treat-n">03</div><div class="treat-icon">🧬</div><h3>Control de diabetes</h3><p>Manejo integral de diabetes tipo 2 con medicamentos de última generación, monitoreo continuo y ajustes en tiempo real.</p><span class="treat-pill">Diabetes · Disponible</span><span class="treat-arrow">→</span></div>
+    <div class="treat"><div class="treat-n">04</div><div class="treat-icon">🌿</div><h3>Salud capilar y piel</h3><p>Formulaciones médicas para recuperar tu cabello y optimizar la salud de tu piel desde adentro hacia afuera.</p><span class="treat-pill">Estética médica · Próximamente</span><span class="treat-arrow">→</span></div>
+  </div>
+</section>
+
+<!-- DOCTORS -->
+<section id="doctors">
+  <div class="reveal">
+    <div class="s-eye"><div class="s-line"></div><span class="s-tag">Nuestro equipo</span></div>
+    <h2>Médicos reales.<br/><em>Credenciales verificables.</em></h2>
+  </div>
+  <div class="doctors-grid reveal">
+    <div class="doc-card">
+      <div class="doc-av">AV</div>
+      <p class="doc-name">Dr. Andrés Valverde</p>
+      <p class="doc-spec">Endocrinólogo</p>
+      <p class="doc-school">UNAM · Hospital General</p>
+      <p class="doc-ced">Céd. Prof. 12467420</p>
+    </div>
+    <div class="doc-card">
+      <div class="doc-av">LC</div>
+      <p class="doc-name">Dra. Laura Castillo</p>
+      <p class="doc-spec">Medicina Interna</p>
+      <p class="doc-school">IPN · Centro Médico Nacional</p>
+      <p class="doc-ced">Céd. Prof. 11983741</p>
+    </div>
+    <div class="doc-card">
+      <div class="doc-av">MR</div>
+      <p class="doc-name">Dr. Miguel Reyes</p>
+      <p class="doc-spec">Nutriología Clínica</p>
+      <p class="doc-school">UAG · Hospital Civil</p>
+      <p class="doc-ced">Céd. Prof. 13512089</p>
+    </div>
+    <div class="doc-card">
+      <div class="doc-av">SP</div>
+      <p class="doc-name">Dra. Sofía Paredes</p>
+      <p class="doc-spec">Psicología de la Salud</p>
+      <p class="doc-school">UDEM · Clínica Montejo</p>
+      <p class="doc-ced">Céd. Prof. 14231657</p>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results" style="background:var(--bg2)">
+  <div class="reveal">
+    <div class="s-eye"><div class="s-line"></div><span class="s-tag">Resultados</span></div>
+    <h2>Números que<br/><em>no mienten.</em></h2>
+  </div>
+  <div class="results-grid">
+    <div class="stat-stack reveal">
+      <div class="s-item"><div class="s-big">15%</div><p class="s-desc">Pérdida de peso corporal promedio en los primeros 6 meses con tratamiento GLP-1 supervisado por médico.</p></div>
+      <div class="s-item"><div class="s-big">94%</div><p class="s-desc">De pacientes que se mantienen 6 meses logran control total de glucosa o alcanzan su objetivo de peso.</p></div>
+      <div class="s-item"><div class="s-big">92%</div><p class="s-desc">Reportan mejora significativa en energía, calidad de sueño y bienestar general durante el primer mes.</p></div>
+      <div class="s-item"><div class="s-big">71%</div><p class="s-desc">De retención al año — muy por encima del promedio de 90 días en clínicas privadas tradicionales.</p></div>
+    </div>
+    <div class="chart-panel reveal" id="chart-box">
+      <p class="chart-lbl">Pérdida de peso promedio por mes de tratamiento</p>
+      <div class="bars">
+        <div class="b-row"><span class="b-lbl">Mes 1</span><div class="b-track"><div class="b-fill" data-w="22%"></div></div><span class="b-val">3.8 kg</span></div>
+        <div class="b-row"><span class="b-lbl">Mes 2</span><div class="b-track"><div class="b-fill" data-w="42%"></div></div><span class="b-val">7.2 kg</span></div>
+        <div class="b-row"><span class="b-lbl">Mes 3</span><div class="b-track"><div class="b-fill" data-w="60%"></div></div><span class="b-val">10.4 kg</span></div>
+        <div class="b-row"><span class="b-lbl">Mes 4</span><div class="b-track"><div class="b-fill" data-w="74%"></div></div><span class="b-val">12.9 kg</span></div>
+        <div class="b-row"><span class="b-lbl">Mes 6</span><div class="b-track"><div class="b-fill" data-w="96%"></div></div><span class="b-val">16.5 kg</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section id="comparison">
+  <div class="reveal">
+    <div class="s-eye"><div class="s-line"></div><span class="s-tag">¿Por qué MEDNOVA?</span></div>
+    <h2>La diferencia está<br/>en los <em>detalles.</em></h2>
+  </div>
+  <div class="compare-wrap reveal">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="col-mn">MEDNOVA</th>
+          <th>Clínica tradicional</th>
+          <th>Solo farmacia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Consulta médica especializada</td><td class="col-mn"><span class="chk">✓</span> Ilimitada</td><td>1 por mes</td><td><span class="cross">✗</span></td></tr>
+        <tr><td>Tiempo de espera para consulta</td><td class="col-mn"><span class="chk">✓</span> &lt; 24 horas</td><td>2–4 semanas</td><td><span class="cross">✗</span></td></tr>
+        <tr><td>Medicamento a domicilio</td><td class="col-mn"><span class="chk">✓</span> Incluido</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+        <tr><td>Plan nutricional personalizado</td><td class="col-mn"><span class="chk">✓</span></td><td>Opcional / costo extra</td><td><span class="cross">✗</span></td></tr>
+        <tr><td>Estudios de laboratorio</td><td class="col-mn"><span class="chk">✓</span> Incluidos</td><td>Costo adicional</td><td><span class="cross">✗</span></td></tr>
+        <tr><td>Apoyo psicológico</td><td class="col-mn"><span class="chk">✓</span></td><td>Costo extra</td><td><span class="cross">✗</span></td></tr>
+        <tr><td>Soporte 24/7</td><td class="col-mn"><span class="chk">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+        <tr><td>Medicamento incluido</td><td class="col-mn"><span class="chk">✓</span> Farmacia aliada</td><td>Costo extra</td><td>Solo medicamento</td></tr>
+        <tr><td>Costo mensual plataforma</td><td class="col-mn">$799–$2,499</td><td>$2,000–$4,000</td><td>$0</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" style="background:var(--bg2)">
+  <div class="reveal">
+    <div class="s-eye"><div class="s-line"></div><span class="s-tag">Testimonios</span></div>
+    <h2>Miles de pacientes<br/><em>ya confían en MEDNOVA.</em></h2>
+  </div>
+  <div class="testi-grid">
+    <div class="tcard reveal"><div class="t-stars">★★★★★</div><p class="t-quote">Tres meses y bajé 14 kg. La disponibilidad del médico me sorprendió — cualquier duda, tenía respuesta en minutos.</p><div class="t-author"><div class="t-av">LG</div><div><p class="t-name">Laura González</p><p class="t-loc">CDMX · GLP-1</p></div></div></div>
+    <div class="tcard reveal"><div class="t-stars">★★★★★</div><p class="t-quote">Años sin resultados y MEDNOVA me dio un plan real. El proceso fue 100% en línea. Sin filas, sin esperas. Mi vida cambió.</p><div class="t-author"><div class="t-av">RM</div><div><p class="t-name">Roberto Morales</p><p class="t-loc">Monterrey · GLP-1</p></div></div></div>
+    <div class="tcard reveal"><div class="t-stars">★★★★★</div><p class="t-quote">La terapia hormonal transformó mi energía. Los médicos son rigurosos y el seguimiento es impecable. Totalmente recomendable.</p><div class="t-author"><div class="t-av">AS</div><div><p class="t-name">Ana Sánchez</p><p class="t-loc">Guadalajara · Hormonas</p></div></div></div>
+    <div class="tcard reveal"><div class="t-stars">★★★★★</div><p class="t-quote">Tengo diabetes hace 12 años y nunca había tenido tan buen control como con MEDNOVA. Los estudios incluidos me ahorran mucho.</p><div class="t-author"><div class="t-av">JH</div><div><p class="t-name">Jorge Hernández</p><p class="t-loc">Puebla · Diabetes</p></div></div></div>
+    <div class="tcard reveal"><div class="t-stars">★★★★★</div><p class="t-quote">El medicamento llegó en 2 días con refrigeración perfecta. El doctor me llama si ve algo fuera de lo normal. Nunca había tenido eso.</p><div class="t-author"><div class="t-av">CP</div><div><p class="t-name">Claudia Padilla</p><p class="t-loc">CDMX · GLP-1</p></div></div></div>
+    <div class="tcard reveal"><div class="t-stars">★★★★★</div><p class="t-quote">Lo que más me gustó fue la nutrióloga. Diseñó un plan que encaja con mi trabajo y familia. Bajé 9 kg en 10 semanas sin morirme de hambre.</p><div class="t-author"><div class="t-av">MV</div><div><p class="t-name">Mariana Valdés</p><p class="t-loc">León · GLP-1</p></div></div></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="reveal">
+    <div class="s-eye" style="justify-content:center"><div class="s-line"></div><span class="s-tag">Planes</span><div class="s-line"></div></div>
+    <h2 style="margin:0 auto .8rem;text-align:center">Sin letra pequeña.<br/><em>Sin sorpresas.</em></h2>
+    <p class="price-sub">Sin contratos. Sin cargos ocultos. Cancela cuando quieras.</p>
+  </div>
+  <div class="pricing-grid" style="max-width:1060px">
+    <div class="p-card reveal">
+      <p class="p-name">Básico</p>
+      <p class="p-desc">Para comenzar con supervisión médica.</p>
+      <div class="p-price"><sup>$</sup>799<sub>/mes</sub></div>
+      <p style="font-size:.75rem;color:var(--muted);margin-top:-.8rem;margin-bottom:1.4rem">+ medicamento en farmacia aliada</p>
+      <ul class="p-features">
+        <li>Evaluación médica inicial completa</li>
+        <li>Receta médica certificada</li>
+        <li>1 consulta mensual con especialista</li>
+        <li>Acceso a app de seguimiento</li>
+        <li>Descuento exclusivo en farmacia aliada</li>
+        <li>Soporte por chat (horario hábil)</li>
+      </ul>
+      <a href="#" class="p-btn out">Comenzar</a>
+    </div>
+    <div class="p-card feat reveal">
+      <div class="p-badge">Más popular</div>
+      <p class="p-name">Seguimiento</p>
+      <p class="p-desc">Atención continua y personalizada.</p>
+      <div class="p-price"><sup>$</sup>1,499<sub>/mes</sub></div>
+      <p style="font-size:.75rem;color:rgba(255,255,255,.5);margin-top:-.8rem;margin-bottom:1.4rem">+ medicamento en farmacia aliada</p>
+      <ul class="p-features">
+        <li>Todo lo del plan Básico</li>
+        <li>Consultas ilimitadas con médico</li>
+        <li>Plan nutricional personalizado</li>
+        <li>Soporte 24/7 por chat y WhatsApp</li>
+        <li>Ajuste de dosis sin costo adicional</li>
+        <li>Gráficos de progreso en app</li>
+        <li>Referencia a laboratorios con descuento</li>
+      </ul>
+      <a href="#" class="p-btn red">Comenzar ahora</a>
+    </div>
+    <div class="p-card reveal">
+      <p class="p-name">Premium</p>
+      <p class="p-desc">La experiencia MEDNOVA completa.</p>
+      <div class="p-price"><sup>$</sup>2,499<sub>/mes</sub></div>
+      <p style="font-size:.75rem;color:var(--muted);margin-top:-.8rem;margin-bottom:1.4rem">+ medicamento en farmacia aliada</p>
+      <ul class="p-features">
+        <li>Todo lo del plan Seguimiento</li>
+        <li>Sesiones mensuales con nutriólogo</li>
+        <li>Apoyo psicológico mensual</li>
+        <li>Laboratorios con interpretación incluida</li>
+        <li>Coach de salud dedicado</li>
+        <li>Acceso prioritario al médico &lt;2h</li>
+        <li>Cancelación sin penalidad</li>
+      </ul>
+      <a href="#" class="p-btn out">Comenzar</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="reveal">
+    <div class="s-eye" style="justify-content:center"><div class="s-line"></div><span class="s-tag">Preguntas frecuentes</span><div class="s-line"></div></div>
+    <h2 style="margin:0 auto;text-align:center">Todo lo que<br/>necesitas <em>saber.</em></h2>
+  </div>
+  <div class="faq-list reveal">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>¿Necesito receta médica para recibir el medicamento?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-a"><p>Sí. Un médico certificado de MEDNOVA evalúa tu caso y emite la receta si eres candidato. Todo el proceso es legal y está regulado por COFEPRIS. No vendemos medicamentos sin supervisión médica.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>¿Cómo llega el medicamento a mi casa?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-a"><p>Tu medicamento se envía con cadena de frío garantizada directamente desde nuestra farmacia aliada. El tiempo de entrega promedio es de 24–48 horas en CDMX, MTY y GDL, y 3–5 días en el resto del país.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>¿Qué pasa si tengo efectos secundarios?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-a"><p>Nuestros médicos están disponibles 24/7. Si experimentas náuseas, vómitos u otros síntomas, puedes contactar a tu médico en cualquier momento y ajustar la dosis inmediatamente. No estás solo en el proceso.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>¿Puedo cancelar en cualquier momento?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-a"><p>Sí. No hay contratos de largo plazo ni penalidades. Puedes pausar o cancelar tu suscripción en cualquier momento desde tu perfil o contactando a nuestro equipo.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>¿El seguro médico cubre el tratamiento?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-a"><p>Actualmente los medicamentos GLP-1 no están cubiertos por el IMSS ni el ISSSTE. Algunos seguros privados pueden reembolsar parcialmente las consultas médicas. Te proporcionamos facturas desglosadas para facilitar cualquier gestión.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>¿Necesito hacerme análisis de sangre antes de comenzar?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-a"><p>En el plan Premium los laboratorios están incluidos desde el primer mes. En el plan Esencial, tu médico te indicará qué estudios necesitas y te orientará sobre los mejores precios disponibles.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MEDIA -->
+<div id="media">
+  <p class="media-label">Destacado en</p>
+  <div class="media-logos">
+    <span class="media-logo">El Financiero</span>
+    <span class="media-logo">Expansión</span>
+    <span class="media-logo">Forbes México</span>
+    <span class="media-logo">Milenio</span>
+    <span class="media-logo">El Economista</span>
+  </div>
+</div>
+
+<!-- CTA -->
+<section id="cta">
+  <h2>La mejor inversión<br/>es en tu <em>salud.</em></h2>
+  <p>Evaluación gratuita. Un médico revisa tu caso en menos de 24 horas. Sin compromisos ni pagos anticipados.</p>
+  <a href="#" class="btn-p" style="display:inline-block">Iniciar evaluación gratuita →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo">
+    <svg width="140" height="30" viewBox="0 0 140 30" xmlns="http://www.w3.org/2000/svg">
+      <line x1="6" y1="5" x2="6" y2="25" stroke="rgba(255,255,255,.4)" stroke-width="2.5" stroke-linecap="square"/>
+      <line x1="6" y1="5" x2="20" y2="25" stroke="#c0392b" stroke-width="2.5" stroke-linecap="square"/>
+      <line x1="20" y1="5" x2="20" y2="25" stroke="rgba(255,255,255,.4)" stroke-width="2.5" stroke-linecap="square"/>
+      <rect x="25" y="13" width="2.5" height="2.5" fill="#c0392b"/>
+      <text x="34" y="20" font-family="system-ui,sans-serif" font-size="11" font-weight="500" fill="rgba(255,255,255,.4)" letter-spacing="5">MEDNOVA</text>
+    </svg>
+  </a>
+  <p class="foot-copy">© 2025 MEDNOVA. Todos los derechos reservados.</p>
+  <p class="foot-cert">COFEPRIS: 220915536X0022 · PROFECO: DA23NXO0091313</p>
+  <div class="foot-links">
+    <a href="#">Privacidad</a>
+    <a href="#">Términos</a>
+    <a href="#">Aviso médico</a>
+    <a href="#">Contacto</a>
+  </div>
+</footer>
+
+<script>
+// Reveal
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e,i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      obs.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.07});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Hero metrics
+const heroCard = document.querySelector('.hero-card');
+if (heroCard) {
+  const hObs = new IntersectionObserver((e) => {
+    if (e[0].isIntersecting) {
+      setTimeout(() => document.querySelectorAll('.m-fill').forEach(b => b.style.width = b.dataset.w), 500);
+      hObs.disconnect();
+    }
+  }, {threshold: .3});
+  hObs.observe(heroCard);
+}
+
+// Chart bars
+const chartBox = document.getElementById('chart-box');
+if (chartBox) {
+  const cObs = new IntersectionObserver((e) => {
+    if (e[0].isIntersecting) {
+      document.querySelectorAll('.b-fill').forEach(b => b.style.width = b.dataset.w);
+      cObs.disconnect();
+    }
+  }, {threshold: .3});
+  cObs.observe(chartBox);
+}
+
+// Counters
+const counterEls = document.querySelectorAll('.counter-num[data-target]');
+const countObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const target = parseInt(el.dataset.target);
+      const suffix = target >= 1000 ? 'k+' : target === 24 ? 'h' : '%';
+      const display = target >= 1000 ? Math.round(target/1000) : target;
+      let current = 0;
+      const step = Math.ceil(display / 40);
+      const timer = setInterval(() => {
+        current = Math.min(current + step, display);
+        el.textContent = current + suffix;
+        if (current >= display) clearInterval(timer);
+      }, 40);
+      countObs.unobserve(el);
+    }
+  });
+}, {threshold: .5});
+counterEls.forEach(el => countObs.observe(el));
+
+// FAQ
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>

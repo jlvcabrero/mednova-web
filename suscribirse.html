@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MEDNOVA — Suscripción</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#fafaf8;
+  --bg2:#f3f3f1;
+  --card:#ffffff;
+  --ink:#111111;
+  --ink2:#444;
+  --red:#c0392b;
+  --red2:#a93226;
+  --red-lt:#e74c3c;
+  --red-bg:rgba(192,57,43,0.07);
+  --green:#16a34a;
+  --green-bg:rgba(22,163,74,0.08);
+  --muted:#888;
+  --bord:rgba(0,0,0,0.08);
+  --bord2:rgba(0,0,0,0.13);
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;min-height:100vh}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 5%;border-bottom:1px solid var(--bord);background:var(--card)}
+.logo{display:flex;align-items:center;text-decoration:none}
+.nav-secure{display:flex;align-items:center;gap:.5rem;font-size:.72rem;color:var(--muted)}
+
+/* LAYOUT */
+.checkout-layout{display:grid;grid-template-columns:1fr 420px;min-height:calc(100vh - 60px)}
+
+/* LEFT — PLAN SELECTOR */
+.left-col{padding:3rem 5%;border-right:1px solid var(--bord);background:var(--bg)}
+.col-title{font-family:var(--serif);font-size:1.8rem;font-weight:300;margin-bottom:.4rem}
+.col-title em{font-style:italic;color:var(--red-lt)}
+.col-sub{color:var(--muted);font-size:.88rem;margin-bottom:2.5rem}
+
+/* PLAN CARDS */
+.plans-grid{display:flex;flex-direction:column;gap:.85rem;margin-bottom:2.5rem}
+.plan-card{background:var(--card);border:2px solid var(--bord);padding:1.4rem;cursor:pointer;transition:all .2s;position:relative}
+.plan-card:hover{border-color:var(--bord2)}
+.plan-card.selected{border-color:var(--red);background:#fff}
+.plan-card.selected::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red)}
+.plan-popular{position:absolute;top:-1px;right:1.2rem;background:var(--red);color:#fff;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .8rem;font-weight:600}
+.plan-row{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
+.plan-left{display:flex;align-items:flex-start;gap:.9rem}
+.plan-radio{width:20px;height:20px;border:2px solid var(--bord2);border-radius:50%;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.plan-card.selected .plan-radio{border-color:var(--red);background:var(--red)}
+.plan-card.selected .plan-radio::after{content:'';width:7px;height:7px;border-radius:50%;background:#fff}
+.plan-name{font-size:.96rem;font-weight:500;margin-bottom:.25rem}
+.plan-desc{font-size:.76rem;color:var(--muted)}
+.plan-price-wrap{text-align:right;flex-shrink:0}
+.plan-price{font-family:var(--serif);font-size:1.5rem;font-weight:300;line-height:1;color:var(--ink)}
+.plan-period{font-size:.7rem;color:var(--muted);margin-top:.2rem}
+.plan-features{margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--bord);display:none}
+.plan-card.selected .plan-features{display:grid;grid-template-columns:1fr 1fr;gap:.3rem}
+.feat{display:flex;align-items:center;gap:.4rem;font-size:.75rem;color:var(--ink2)}
+.feat::before{content:'✓';color:var(--red);font-weight:700;font-size:.7rem;flex-shrink:0}
+
+/* BILLING TOGGLE */
+.billing-toggle{display:flex;align-items:center;gap:.8rem;margin-bottom:2rem;background:var(--bg2);padding:.6rem 1rem;width:fit-content}
+.toggle-label{font-size:.8rem;color:var(--muted);cursor:pointer;transition:color .2s}
+.toggle-label.active{color:var(--ink);font-weight:500}
+.toggle-switch{width:40px;height:22px;background:var(--red);border-radius:100px;position:relative;cursor:pointer;flex-shrink:0;transition:background .2s}
+.toggle-switch::after{content:'';width:16px;height:16px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:left .2s}
+.toggle-switch.monthly::after{left:21px}
+.toggle-switch.monthly{background:var(--red)}
+.save-badge{background:var(--red-bg);color:var(--red);font-size:.68rem;padding:.18rem .55rem;letter-spacing:.04em;font-weight:500}
+
+/* TRUST BADGES */
+.trust-row{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--bord)}
+.trust-item{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--muted)}
+.trust-icon{font-size:1rem}
+
+/* RIGHT — CHECKOUT FORM */
+.right-col{background:var(--card);border-left:1px solid var(--bord);display:flex;flex-direction:column}
+.right-header{padding:1.5rem 2rem;border-bottom:1px solid var(--bord)}
+.right-title{font-size:.88rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem}
+.order-summary{display:flex;flex-direction:column;gap:.5rem}
+.order-line{display:flex;justify-content:space-between;align-items:center;font-size:.84rem}
+.order-line .label{color:var(--muted)}
+.order-line .val{font-weight:500}
+.order-line.total{padding-top:.8rem;border-top:1px solid var(--bord);font-size:.96rem}
+.order-line.total .val{font-family:var(--serif);font-size:1.3rem;font-weight:300;color:var(--ink)}
+.order-trial{background:var(--green-bg);border:1px solid rgba(22,163,74,.2);padding:.75rem 1rem;font-size:.76rem;color:var(--green);display:flex;align-items:center;gap:.5rem;margin-top:.6rem}
+
+/* FORM */
+.form-body{padding:1.5rem 2rem;flex:1;overflow-y:auto}
+.form-section{margin-bottom:1.5rem}
+.form-section-title{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.85rem;display:flex;align-items:center;gap:.5rem}
+.form-section-title::after{content:'';flex:1;height:1px;background:var(--bord)}
+.field{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.85rem}
+.field label{font-size:.74rem;font-weight:500;color:var(--ink);letter-spacing:.02em}
+.field input,.field select{border:1.5px solid var(--bord2);padding:.75rem .9rem;font-size:.9rem;font-family:var(--sans);color:var(--ink);background:var(--card);outline:none;transition:border-color .2s;width:100%}
+.field input:focus,.field select:focus{border-color:var(--red)}
+.field input.error{border-color:var(--red-lt)}
+.field .hint{font-size:.7rem;color:var(--muted)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+
+/* CARD FIELD */
+.card-field-wrap{border:1.5px solid var(--bord2);padding:.75rem .9rem;transition:border-color .2s;background:var(--card);cursor:text}
+.card-field-wrap:focus-within{border-color:var(--red)}
+.card-icons{display:flex;gap:.4rem;margin-top:.5rem}
+.card-icon{background:var(--bg2);border:1px solid var(--bord);padding:.2rem .5rem;font-size:.65rem;color:var(--muted);letter-spacing:.04em;border-radius:2px}
+.card-number-input{border:none;outline:none;font-size:.9rem;font-family:var(--sans);color:var(--ink);width:100%;background:transparent;letter-spacing:.08em}
+
+/* PAYMENT METHOD */
+.pay-methods{display:flex;gap:.5rem;margin-bottom:1.2rem}
+.pay-btn{flex:1;padding:.6rem;border:1.5px solid var(--bord2);background:var(--card);cursor:pointer;font-size:.78rem;font-family:var(--sans);color:var(--muted);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.4rem}
+.pay-btn:hover{border-color:var(--bord2);color:var(--ink)}
+.pay-btn.active{border-color:var(--red);color:var(--ink);background:var(--red-bg)}
+
+/* COUPON */
+.coupon-row{display:flex;gap:.5rem;margin-bottom:1rem}
+.coupon-input{flex:1;border:1.5px solid var(--bord2);padding:.65rem .9rem;font-size:.84rem;font-family:var(--sans);color:var(--ink);outline:none;transition:border-color .2s;letter-spacing:.06em;text-transform:uppercase}
+.coupon-input:focus{border-color:var(--red)}
+.coupon-btn{background:var(--bg2);border:1.5px solid var(--bord2);padding:.65rem 1rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:var(--sans);color:var(--ink);transition:all .2s;white-space:nowrap}
+.coupon-btn:hover{background:var(--bg);border-color:var(--bord2)}
+.coupon-success{display:none;font-size:.75rem;color:var(--green);display:flex;align-items:center;gap:.4rem;padding:.4rem .6rem;background:var(--green-bg)}
+
+/* SUBMIT */
+.form-footer{padding:1.5rem 2rem;border-top:1px solid var(--bord);background:var(--bg)}
+.btn-pay{background:var(--red);color:#fff;border:none;padding:1.1rem;font-size:.9rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:var(--sans);transition:all .25s;width:100%;position:relative;overflow:hidden}
+.btn-pay:hover{background:var(--red2)}
+.btn-pay:disabled{background:var(--muted);cursor:not-allowed}
+.btn-pay.loading::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center}
+.pay-disclaimer{font-size:.68rem;color:var(--muted);text-align:center;margin-top:.75rem;line-height:1.6}
+.pay-disclaimer a{color:var(--red)}
+
+/* SUCCESS SCREEN */
+#success-screen{display:none;min-height:100vh;align-items:center;justify-content:center;padding:2rem}
+.success-card{max-width:520px;width:100%;text-align:center;background:var(--card);border:1px solid var(--bord);border-top:3px solid var(--green);padding:3rem}
+.success-icon{font-size:3.5rem;margin-bottom:1.2rem;animation:popIn .5s cubic-bezier(.175,.885,.32,1.275) both}
+@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.success-title{font-family:var(--serif);font-size:2rem;font-weight:300;margin-bottom:.8rem}
+.success-title em{font-style:italic;color:var(--green)}
+.success-sub{color:var(--muted);font-size:.9rem;margin-bottom:2rem;line-height:1.8}
+.success-details{background:var(--bg2);padding:1.2rem;margin-bottom:2rem;text-align:left;display:flex;flex-direction:column;gap:.6rem}
+.sd-row{display:flex;justify-content:space-between;font-size:.82rem}
+.sd-key{color:var(--muted)}
+.sd-val{font-weight:500}
+.btn-portal{background:var(--ink);color:#fff;border:none;padding:.95rem 2rem;font-size:.82rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:var(--sans);transition:all .25s;width:100%;margin-bottom:.6rem}
+.btn-portal:hover{background:#333}
+.btn-whatsapp{background:#25d366;color:#fff;border:none;padding:.9rem 2rem;font-size:.82rem;font-weight:500;cursor:pointer;font-family:var(--sans);transition:all .25s;width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem}
+
+/* LOADING OVERLAY */
+.pay-loader{display:none;position:fixed;inset:0;background:rgba(250,250,248,.92);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem}
+.loader-spinner{width:48px;height:48px;border:3px solid var(--bg2);border-top-color:var(--red);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-text{font-family:var(--serif);font-size:1.2rem;font-weight:300;color:var(--ink)}
+.loader-sub{font-size:.78rem;color:var(--muted)}
+
+@media(max-width:900px){
+  .checkout-layout{grid-template-columns:1fr;min-height:auto}
+  .right-col{border-left:none;border-top:1px solid var(--bord)}
+  .left-col{padding:2rem 5%}
+  .plan-card.selected .plan-features{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="mednova-robust.html" class="logo">
+    <svg width="140" height="30" viewBox="0 0 140 30" xmlns="http://www.w3.org/2000/svg">
+      <line x1="8" y1="4" x2="8" y2="26" stroke="#111" stroke-width="2.5" stroke-linecap="square"/>
+      <line x1="8" y1="4" x2="22" y2="26" stroke="#c0392b" stroke-width="2.5" stroke-linecap="square"/>
+      <line x1="22" y1="4" x2="22" y2="26" stroke="#111" stroke-width="2.5" stroke-linecap="square"/>
+      <rect x="27" y="13" width="2.5" height="2.5" fill="#c0392b"/>
+      <text x="36" y="20" font-family="system-ui,sans-serif" font-size="11" font-weight="500" fill="#111" letter-spacing="5">MEDNOVA</text>
+    </svg>
+  </a>
+  <div class="nav-secure">🔒 Pago seguro · SSL 256-bit · Conekta</div>
+</nav>
+
+<!-- CHECKOUT -->
+<div class="checkout-layout" id="checkout-layout">
+
+  <!-- LEFT -->
+  <div class="left-col">
+    <h1 class="col-title">Elige tu <em>plan</em></h1>
+    <p class="col-sub">Tu suscripción incluye acceso inmediato. El medicamento se adquiere en farmacia aliada con tu descuento exclusivo MEDNOVA.</p>
+
+    <!-- BILLING TOGGLE -->
+    <div class="billing-toggle">
+      <span class="toggle-label active" id="lbl-anual">Anual</span>
+      <div class="toggle-switch" id="billing-toggle" onclick="toggleBilling()"></div>
+      <span class="toggle-label" id="lbl-mensual">Mensual</span>
+      <span class="save-badge" id="save-badge">Ahorra 15%</span>
+    </div>
+
+    <!-- PLAN CARDS -->
+    <div class="plans-grid">
+      <div class="plan-card" id="plan-basico" onclick="selectPlan('basico')">
+        <div class="plan-row">
+          <div class="plan-left">
+            <div class="plan-radio"></div>
+            <div>
+              <div class="plan-name">Plan Básico</div>
+              <div class="plan-desc">Evaluación + receta + consulta mensual</div>
+            </div>
+          </div>
+          <div class="plan-price-wrap">
+            <div class="plan-price" id="price-basico">$679</div>
+            <div class="plan-period">/mes · facturado anual</div>
+          </div>
+        </div>
+        <div class="plan-features">
+          <div class="feat">Evaluación médica inicial</div>
+          <div class="feat">Receta certificada</div>
+          <div class="feat">1 consulta mensual</div>
+          <div class="feat">App de seguimiento</div>
+          <div class="feat">Descuento en farmacia</div>
+          <div class="feat">Soporte por chat</div>
+        </div>
+      </div>
+
+      <div class="plan-card selected" id="plan-seguimiento" onclick="selectPlan('seguimiento')">
+        <div class="plan-popular">Más popular</div>
+        <div class="plan-row">
+          <div class="plan-left">
+            <div class="plan-radio"></div>
+            <div>
+              <div class="plan-name">Plan Seguimiento</div>
+              <div class="plan-desc">Consultas ilimitadas + nutriólogo + soporte 24/7</div>
+            </div>
+          </div>
+          <div class="plan-price-wrap">
+            <div class="plan-price" id="price-seguimiento">$1,274</div>
+            <div class="plan-period">/mes · facturado anual</div>
+          </div>
+        </div>
+        <div class="plan-features">
+          <div class="feat">Todo del plan Básico</div>
+          <div class="feat">Consultas ilimitadas</div>
+          <div class="feat">Nutriólogo personalizado</div>
+          <div class="feat">Soporte 24/7</div>
+          <div class="feat">Ajuste de dosis sin costo</div>
+          <div class="feat">Gráficas de progreso</div>
+          <div class="feat">Labs con descuento</div>
+          <div class="feat">Recordatorios automáticos</div>
+        </div>
+      </div>
+
+      <div class="plan-card" id="plan-premium" onclick="selectPlan('premium')">
+        <div class="plan-row">
+          <div class="plan-left">
+            <div class="plan-radio"></div>
+            <div>
+              <div class="plan-name">Plan Premium</div>
+              <div class="plan-desc">Todo incluido + psicólogo + coach + labs</div>
+            </div>
+          </div>
+          <div class="plan-price-wrap">
+            <div class="plan-price" id="price-premium">$2,124</div>
+            <div class="plan-period">/mes · facturado anual</div>
+          </div>
+        </div>
+        <div class="plan-features">
+          <div class="feat">Todo del plan Seguimiento</div>
+          <div class="feat">Sesiones con psicólogo</div>
+          <div class="feat">Coach de salud dedicado</div>
+          <div class="feat">Laboratorios incluidos</div>
+          <div class="feat">Acceso prioritario &lt;2h</div>
+          <div class="feat">Interpretación de labs</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRUST -->
+    <div class="trust-row">
+      <div class="trust-item"><span class="trust-icon">🔒</span>Pago 100% seguro</div>
+      <div class="trust-item"><span class="trust-icon">↩️</span>Cancela cuando quieras</div>
+      <div class="trust-item"><span class="trust-icon">🇲🇽</span>COFEPRIS certificado</div>
+      <div class="trust-item"><span class="trust-icon">👨‍⚕️</span>Médico en &lt;24h</div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-col">
+    <div class="right-header">
+      <div class="right-title">Resumen de orden</div>
+      <div class="order-summary" id="order-summary">
+        <div class="order-line"><span class="label" id="sum-plan">Plan Seguimiento (anual)</span><span class="val" id="sum-subtotal">$15,288</span></div>
+        <div class="order-line"><span class="label">Descuento anual (15%)</span><span class="val" style="color:var(--green)" id="sum-discount">−$2,698</span></div>
+        <div class="order-line total"><span class="label">Total hoy</span><span class="val" id="sum-total">$15,288</span></div>
+      </div>
+      <div class="order-trial">✓ <strong>Primer mes gratis</strong> — solo pagas si ves resultados. Cancela antes de 30 días sin cargo.</div>
+    </div>
+
+    <div class="form-body">
+      <!-- PERSONAL DATA -->
+      <div class="form-section">
+        <div class="form-section-title">Tus datos</div>
+        <div class="field-row">
+          <div class="field"><label>Nombre</label><input type="text" id="f-nombre" placeholder="María" oninput="validateForm()"/></div>
+          <div class="field"><label>Apellido</label><input type="text" id="f-apellido" placeholder="González" oninput="validateForm()"/></div>
+        </div>
+        <div class="field"><label>Correo electrónico</label><input type="email" id="f-email" placeholder="maria@gmail.com" oninput="validateForm()"/><div class="hint">Aquí recibirás tu confirmación y acceso</div></div>
+        <div class="field"><label>WhatsApp</label><input type="tel" id="f-whatsapp" placeholder="+52 55 1234 5678" oninput="validateForm()"/><div class="hint">Tu médico se comunicará por aquí</div></div>
+      </div>
+
+      <!-- PAYMENT METHOD -->
+      <div class="form-section">
+        <div class="form-section-title">Método de pago</div>
+        <div class="pay-methods">
+          <button class="pay-btn active" id="pm-card" onclick="switchPayMethod('card')">💳 Tarjeta</button>
+          <button class="pay-btn" id="pm-oxxo" onclick="switchPayMethod('oxxo')">🏪 OXXO Pay</button>
+          <button class="pay-btn" id="pm-spei" onclick="switchPayMethod('spei')">🏦 SPEI</button>
+        </div>
+
+        <!-- CARD FORM -->
+        <div id="card-form">
+          <div class="field">
+            <label>Número de tarjeta</label>
+            <div class="card-field-wrap">
+              <input class="card-number-input" type="text" id="card-number" placeholder="1234  5678  9012  3456" maxlength="19" oninput="formatCard(this); validateForm()" autocomplete="cc-number"/>
+            </div>
+            <div class="card-icons">
+              <span class="card-icon">VISA</span>
+              <span class="card-icon">MC</span>
+              <span class="card-icon">AMEX</span>
+              <span class="card-icon">SPEI</span>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Vencimiento</label><input type="text" id="card-exp" placeholder="MM / AA" maxlength="7" oninput="formatExp(this); validateForm()" autocomplete="cc-exp"/></div>
+            <div class="field"><label>CVV</label><input type="text" id="card-cvv" placeholder="123" maxlength="4" oninput="validateForm()" autocomplete="cc-csc"/></div>
+          </div>
+          <div class="field"><label>Nombre en la tarjeta</label><input type="text" id="card-name" placeholder="MARIA GONZALEZ" style="text-transform:uppercase" oninput="validateForm()" autocomplete="cc-name"/></div>
+        </div>
+
+        <!-- OXXO FORM -->
+        <div id="oxxo-form" style="display:none">
+          <div style="background:var(--bg2);padding:1.2rem;font-size:.82rem;line-height:1.8;color:var(--ink2)">
+            <strong>¿Cómo funciona OXXO Pay?</strong><br>
+            Al confirmar, recibirás un código de barras por email. Llévalo a cualquier OXXO y paga en efectivo. Tu suscripción se activa en 1–2 horas después del pago.<br><br>
+            <strong style="color:var(--red)">Límite máximo:</strong> $10,000 MXN por transacción. El pago vence en 48 horas.
+          </div>
+        </div>
+
+        <!-- SPEI FORM -->
+        <div id="spei-form" style="display:none">
+          <div style="background:var(--bg2);padding:1.2rem;font-size:.82rem;line-height:1.8;color:var(--ink2)">
+            <strong>Transferencia SPEI</strong><br>
+            Al confirmar recibirás una CLABE interbancaria. Realiza la transferencia desde tu app bancaria. Se activa en 1–3 horas.<br><br>
+            <div style="background:var(--card);padding:.8rem;border:1px solid var(--bord);margin-top:.5rem">
+              <div style="font-size:.7rem;color:var(--muted);margin-bottom:.3rem">CLABE INTERBANCARIA (se generará al confirmar)</div>
+              <div style="font-size:1.1rem;letter-spacing:.1em;font-weight:600">••••  ••••  ••••  ••••</div>
+              <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem">MEDNOVA SAS DE CV · BBVA México</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BILLING ADDRESS -->
+      <div class="form-section">
+        <div class="form-section-title">Datos de facturación</div>
+        <div class="field">
+          <label>RFC (opcional para factura)</label>
+          <input type="text" id="f-rfc" placeholder="GOAG850312HDF" style="text-transform:uppercase"/>
+          <div class="hint">Déjalo en blanco si no necesitas factura fiscal</div>
+        </div>
+        <div class="field">
+          <label>Ciudad</label>
+          <select id="f-ciudad" onchange="validateForm()">
+            <option value="">Seleccionar ciudad</option>
+            <option>Ciudad de México</option>
+            <option>Monterrey</option>
+            <option>Guadalajara</option>
+            <option>Puebla</option>
+            <option>Tijuana</option>
+            <option>León</option>
+            <option>Querétaro</option>
+            <option>Otra ciudad</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- COUPON -->
+      <div class="form-section">
+        <div class="form-section-title">Código de descuento</div>
+        <div class="coupon-row">
+          <input type="text" class="coupon-input" id="coupon-input" placeholder="CÓDIGO" style="letter-spacing:.1em"/>
+          <button class="coupon-btn" onclick="applyCoupon()">Aplicar</button>
+        </div>
+        <div class="coupon-success" id="coupon-success" style="display:none">✓ Código aplicado — 10% adicional de descuento</div>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button class="btn-pay" id="btn-pay" disabled onclick="processPayment()">
+        🔒 Confirmar suscripción — <span id="btn-price">$15,288</span>
+      </button>
+      <p class="pay-disclaimer">Al confirmar aceptas nuestros <a href="#">términos</a> y <a href="#">aviso de privacidad</a>. Tu pago es procesado de forma segura por Conekta. MEDNOVA no almacena datos de tarjetas. Primer mes gratis — sin cargo si cancelas antes de 30 días.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div id="success-screen" style="display:none">
+  <div class="success-card">
+    <div class="success-icon">🎉</div>
+    <h2 class="success-title">¡Bienvenido a <em>MEDNOVA!</em></h2>
+    <p class="success-sub">Tu suscripción está activa. Un médico certificado revisará tu caso y te contactará en las próximas horas para agendar tu primera consulta.</p>
+    <div class="success-details">
+      <div class="sd-row"><span class="sd-key">Plan</span><span class="sd-val" id="suc-plan">Seguimiento</span></div>
+      <div class="sd-row"><span class="sd-key">Próximo cargo</span><span class="sd-val" id="suc-fecha">—</span></div>
+      <div class="sd-row"><span class="sd-key">Confirmación enviada a</span><span class="sd-val" id="suc-email">—</span></div>
+      <div class="sd-row"><span class="sd-key">Folio</span><span class="sd-val" id="suc-folio">—</span></div>
+    </div>
+    <button class="btn-portal" onclick="alert('Redirigiendo a portal del paciente...')">Acceder a mi portal →</button>
+    <button class="btn-whatsapp" onclick="window.open('https://wa.me/525512345678?text=Hola, acabo de suscribirme a MEDNOVA')">💬 Hablar con mi médico por WhatsApp</button>
+  </div>
+</div>
+
+<!-- LOADER -->
+<div class="pay-loader" id="pay-loader">
+  <div class="loader-spinner"></div>
+  <div class="loader-text">Procesando tu pago...</div>
+  <div class="loader-sub">No cierres esta ventana</div>
+</div>
+
+<script>
+// PLAN DATA
+const plans = {
+  basico: {name:'Básico', anual:679, mensual:799, anualTotal:8148, mensualTotal:799},
+  seguimiento: {name:'Seguimiento', anual:1274, mensual:1499, anualTotal:15288, mensualTotal:1499},
+  premium: {name:'Premium', anual:2124, mensual:2499, anualTotal:25488, mensualTotal:2499},
+};
+let currentPlan = 'seguimiento';
+let isAnual = true;
+let payMethod = 'card';
+let couponApplied = false;
+
+function selectPlan(id) {
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('plan-' + id).classList.add('selected');
+  currentPlan = id;
+  updateSummary();
+}
+
+function toggleBilling() {
+  isAnual = !isAnual;
+  const toggle = document.getElementById('billing-toggle');
+  toggle.classList.toggle('monthly', !isAnual);
+  document.getElementById('lbl-anual').classList.toggle('active', isAnual);
+  document.getElementById('lbl-mensual').classList.toggle('active', !isAnual);
+  document.getElementById('save-badge').style.display = isAnual ? 'inline' : 'none';
+  Object.keys(plans).forEach(id => {
+    const p = plans[id];
+    document.getElementById('price-' + id).textContent = '$' + (isAnual ? p.anual : p.mensual).toLocaleString('es-MX');
+  });
+  document.querySelectorAll('.plan-period').forEach(el => {
+    el.textContent = isAnual ? '/mes · facturado anual' : '/mes · facturado mensual';
+  });
+  updateSummary();
+}
+
+function updateSummary() {
+  const p = plans[currentPlan];
+  const base = isAnual ? p.anualTotal : p.mensualTotal;
+  const discount = isAnual ? Math.round(p.mensualTotal * 12 - p.anualTotal) : 0;
+  const total = couponApplied ? Math.round(base * 0.9) : base;
+  document.getElementById('sum-plan').textContent = `Plan ${p.name} (${isAnual ? 'anual' : 'mensual'})`;
+  document.getElementById('sum-subtotal').textContent = '$' + base.toLocaleString('es-MX');
+  document.getElementById('sum-discount').textContent = isAnual ? '−$' + discount.toLocaleString('es-MX') : '$0';
+  const discountRow = document.getElementById('sum-discount').closest('.order-line');
+  discountRow.style.display = isAnual ? 'flex' : 'none';
+  document.getElementById('sum-total').textContent = '$' + total.toLocaleString('es-MX');
+  document.getElementById('btn-price').textContent = '$' + total.toLocaleString('es-MX');
+  validateForm();
+}
+
+function switchPayMethod(method) {
+  payMethod = method;
+  document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('pm-' + method).classList.add('active');
+  document.getElementById('card-form').style.display = method === 'card' ? 'block' : 'none';
+  document.getElementById('oxxo-form').style.display = method === 'oxxo' ? 'block' : 'none';
+  document.getElementById('spei-form').style.display = method === 'spei' ? 'block' : 'none';
+  validateForm();
+}
+
+function formatCard(el) {
+  let v = el.value.replace(/\D/g, '').substring(0, 16);
+  el.value = v.replace(/(.{4})/g, '$1  ').trim();
+}
+
+function formatExp(el) {
+  let v = el.value.replace(/\D/g, '').substring(0, 4);
+  if (v.length >= 2) v = v.substring(0,2) + ' / ' + v.substring(2);
+  el.value = v;
+}
+
+function validateForm() {
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const whatsapp = document.getElementById('f-whatsapp').value.trim();
+  const ciudad = document.getElementById('f-ciudad').value;
+  let cardOk = true;
+  if (payMethod === 'card') {
+    const cn = document.getElementById('card-number').value.replace(/\s/g,'');
+    const exp = document.getElementById('card-exp').value;
+    const cvv = document.getElementById('card-cvv').value;
+    const cname = document.getElementById('card-name').value;
+    cardOk = cn.length === 16 && exp.length >= 4 && cvv.length >= 3 && cname.length > 2;
+  }
+  const valid = nombre && email.includes('@') && whatsapp.length > 8 && ciudad && cardOk;
+  document.getElementById('btn-pay').disabled = !valid;
+}
+
+function applyCoupon() {
+  const code = document.getElementById('coupon-input').value.trim().toUpperCase();
+  const valid = ['MEDNOVA10', 'BIENVENIDO', 'PROMO2025', 'SALUD10'];
+  if (valid.includes(code) && !couponApplied) {
+    couponApplied = true;
+    document.getElementById('coupon-success').style.display = 'flex';
+    updateSummary();
+  } else if (couponApplied) {
+    document.getElementById('coupon-success').textContent = '✓ Código ya aplicado';
+    document.getElementById('coupon-success').style.display = 'flex';
+  } else {
+    document.getElementById('coupon-input').style.borderColor = 'var(--red-lt)';
+    setTimeout(() => document.getElementById('coupon-input').style.borderColor = '', 2000);
+  }
+}
+
+function processPayment() {
+  const btn = document.getElementById('btn-pay');
+  if (btn.disabled) return;
+  btn.disabled = true;
+  document.getElementById('pay-loader').style.display = 'flex';
+
+  // Simulate payment processing
+  setTimeout(() => {
+    document.getElementById('pay-loader').style.display = 'none';
+    document.getElementById('checkout-layout').style.display = 'none';
+    document.getElementById('success-screen').style.display = 'flex';
+
+    const p = plans[currentPlan];
+    const email = document.getElementById('f-email').value;
+    const nextDate = new Date();
+    nextDate.setMonth(nextDate.getMonth() + (isAnual ? 12 : 1));
+    document.getElementById('suc-plan').textContent = p.name;
+    document.getElementById('suc-email').textContent = email;
+    document.getElementById('suc-fecha').textContent = nextDate.toLocaleDateString('es-MX', {day:'numeric', month:'long', year:'numeric'});
+    document.getElementById('suc-folio').textContent = 'MN-' + Date.now().toString().slice(-8);
+    window.scrollTo(0,0);
+  }, 2800);
+}
+
+// INIT
+updateSummary();
+</script>
+</body>
+</html>

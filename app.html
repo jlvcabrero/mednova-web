@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="MEDNOVA"/>
+<meta name="msapplication-TileColor" content="#c0392b"/>
+<meta name="theme-color" content="#c0392b"/>
+<meta name="description" content="Tu plataforma de telesalud. Médico disponible 24/7, seguimiento personalizado y tratamiento GLP-1."/>
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json"/>
+<!-- Apple Icons -->
+<link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png"/>
+<link rel="apple-touch-startup-image" href="icons/icon-512.png"/>
+
+<title>MEDNOVA — Mi Salud</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --red:    #c0392b;
+  --red2:   #a93226;
+  --red-lt: #e74c3c;
+  --red-bg: rgba(192,57,43,.08);
+  --green:  #16a34a;
+  --green-bg: rgba(22,163,74,.09);
+  --amber:  #b45309;
+  --blue:   #1d4ed8;
+  --bg:     #f7f6f4;
+  --bg2:    #eeecea;
+  --card:   #ffffff;
+  --ink:    #0f0f0f;
+  --ink2:   #3a3a3a;
+  --muted:  #808080;
+  --bord:   rgba(0,0,0,.07);
+  --bord2:  rgba(0,0,0,.12);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
+  --serif: 'Fraunces', Georgia, serif;
+  --sans:  'DM Sans', system-ui, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{height:100%;-webkit-tap-highlight-color:transparent}
+body{
+  background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.6;
+  height:100%;overflow:hidden;
+  display:flex;flex-direction:column;
+  padding-top:var(--safe-top);
+  padding-bottom:var(--safe-bot);
+  max-width:430px;margin:0 auto;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── INSTALL BANNER ── */
+#install-banner{
+  position:fixed;top:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;
+  background:var(--ink);color:#fff;
+  padding:1rem 1.2rem;
+  display:flex;align-items:center;gap:.8rem;
+  z-index:999;animation:slideDown .4s ease;
+  padding-top:calc(1rem + var(--safe-top));
+}
+@keyframes slideDown{from{transform:translateX(-50%) translateY(-100%)}to{transform:translateX(-50%) translateY(0)}}
+.ib-logo{width:40px;height:40px;background:var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem}
+.ib-text{flex:1}
+.ib-title{font-size:.84rem;font-weight:600;margin-bottom:.1rem}
+.ib-sub{font-size:.72rem;color:rgba(255,255,255,.55)}
+.ib-actions{display:flex;gap:.5rem;flex-shrink:0}
+.btn-install{background:var(--red);color:#fff;border:none;padding:.5rem 1rem;font-size:.78rem;font-weight:600;cursor:pointer;font-family:var(--sans);border-radius:4px}
+.btn-dismiss{background:none;border:none;color:rgba(255,255,255,.45);font-size:.78rem;cursor:pointer;font-family:var(--sans);padding:.5rem}
+
+/* ── STATUS BAR ── */
+.status-bar{
+  background:var(--red);color:#fff;
+  padding:.6rem 1.2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.sb-left{display:flex;align-items:center;gap:.6rem}
+.sb-logo{font-family:var(--serif);font-size:1.1rem;font-weight:300;letter-spacing:.04em}
+.sb-plan{font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-top:.05rem}
+.sb-right{display:flex;align-items:center;gap:.8rem}
+.sb-notif{width:28px;height:28px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;position:relative}
+.notif-dot{position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:#fbbf24}
+.sb-avatar{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:600;border:1.5px solid rgba(255,255,255,.4);color:#fff}
+
+/* ── CONTENT ── */
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+
+/* ── VIEWS ── */
+.view{display:none;padding:1rem 1rem 5rem}
+.view.active{display:block}
+
+/* ── HERO CARD ── */
+.hero-card{
+  background:var(--ink);border-radius:20px;padding:1.4rem;
+  margin-bottom:1rem;position:relative;overflow:hidden;
+}
+.hero-card::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(192,57,43,.35),transparent 70%)}
+.hc-greeting{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.3rem}
+.hc-name{font-family:var(--serif);font-size:1.5rem;font-weight:300;color:#fff;margin-bottom:1rem}
+.hc-name em{font-style:italic;color:#fc9090}
+.hc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem}
+.hc-stat{}
+.hc-num{font-family:var(--serif);font-size:1.6rem;font-weight:300;color:#fff;line-height:1}
+.hc-num span{font-size:1rem;color:rgba(255,255,255,.5)}
+.hc-lbl{font-size:.62rem;color:rgba(255,255,255,.4);letter-spacing:.07em;text-transform:uppercase;margin-top:.2rem}
+
+/* ── SECTION ── */
+.section{margin-bottom:1rem}
+.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem}
+.section-title{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.4rem}
+.section-title::before{content:'';width:12px;height:2px;background:var(--red)}
+.section-link{font-size:.72rem;color:var(--red)}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:1px solid var(--bord);border-radius:16px;overflow:hidden}
+.card-p{padding:1rem 1.1rem}
+
+/* ── CONSULT CARD ── */
+.consult-next{background:var(--card);border:1.5px solid rgba(192,57,43,.2);border-radius:16px;padding:1rem 1.1rem;display:flex;gap:.9rem;align-items:center}
+.cn-date{text-align:center;flex-shrink:0}
+.cn-day{font-family:var(--serif);font-size:1.8rem;font-weight:300;color:var(--red);line-height:1}
+.cn-mon{font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.cn-divider{width:1px;height:42px;background:var(--bord2)}
+.cn-info{flex:1}
+.cn-type{font-size:.86rem;font-weight:500;margin-bottom:.15rem}
+.cn-dr{font-size:.72rem;color:var(--muted)}
+.cn-time{font-size:.72rem;color:var(--muted);margin-top:.1rem}
+.btn-join{background:var(--red);color:#fff;border:none;padding:.5rem .9rem;font-size:.72rem;font-weight:600;cursor:pointer;font-family:var(--sans);border-radius:100px;white-space:nowrap;flex-shrink:0}
+
+/* ── PROGRESS RING ── */
+.ring-row{display:flex;align-items:center;gap:1rem;padding:1rem 1.1rem}
+.ring-wrap{position:relative;width:72px;height:72px;flex-shrink:0}
+.ring-svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--bg2);stroke-width:7}
+.ring-fill{fill:none;stroke:var(--red);stroke-width:7;stroke-linecap:round;stroke-dasharray:188;stroke-dashoffset:82;transition:stroke-dashoffset 1.5s ease}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-pct{font-family:var(--serif);font-size:1.1rem;font-weight:300;color:var(--ink);line-height:1}
+.ring-lbl{font-size:.5rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.ring-metrics{flex:1;display:flex;flex-direction:column;gap:.45rem}
+.rm{display:flex;align-items:center;justify-content:space-between;font-size:.78rem}
+.rm-k{color:var(--muted)}
+.rm-v{font-weight:600;color:var(--ink)}
+
+/* ── MED LIST ── */
+.med-item{display:flex;align-items:center;gap:.75rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--bord)}
+.med-item:last-child{border-bottom:none}
+.med-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.med-icon.ok{background:var(--green-bg)}
+.med-icon.pend{background:var(--red-bg)}
+.med-name{font-size:.84rem;font-weight:500;margin-bottom:.1rem}
+.med-dose{font-size:.7rem;color:var(--muted)}
+.med-badge{font-size:.62rem;padding:.18rem .55rem;border-radius:100px;font-weight:500;white-space:nowrap;margin-left:auto;flex-shrink:0}
+.med-badge.ok{background:var(--green-bg);color:var(--green)}
+.med-badge.pend{background:var(--red-bg);color:var(--red)}
+
+/* ── TASKS ── */
+.task-item{display:flex;align-items:center;gap:.75rem;padding:.75rem 1.1rem;border-bottom:1px solid var(--bord);cursor:pointer;transition:background .15s}
+.task-item:last-child{border-bottom:none}
+.task-item:active{background:var(--bg)}
+.task-item.done{opacity:.5}
+.task-check{width:22px;height:22px;border:2px solid var(--bord2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;transition:all .2s}
+.task-item.done .task-check{background:var(--green);border-color:var(--green);color:#fff}
+.task-text{flex:1;font-size:.82rem}
+.task-item.done .task-text{text-decoration:line-through;color:var(--muted)}
+.task-due{font-size:.66rem;color:var(--muted2);white-space:nowrap}
+
+/* ── CHAT ── */
+.chat-layout{display:flex;flex-direction:column;height:calc(100vh - 220px)}
+.chat-dr-info{background:var(--card);border:1px solid var(--bord);border-radius:16px;padding:1rem 1.1rem;display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem}
+.dr-av{width:42px;height:42px;border-radius:50%;background:var(--red-bg);display:flex;align-items:center;justify-content:center;font-family:var(--serif);color:var(--red);font-size:.95rem;flex-shrink:0;border:1.5px solid rgba(192,57,43,.2)}
+.dr-name{font-size:.86rem;font-weight:500}
+.dr-spec{font-size:.7rem;color:var(--muted)}
+.dr-status{font-size:.68rem;color:var(--green);display:flex;align-items:center;gap:.3rem;margin-top:.1rem}
+.online-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.chat-msgs{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:.7rem;padding:.3rem 0}
+.msg-wrap{display:flex;gap:.55rem;max-width:88%}
+.msg-wrap.me{flex-direction:row-reverse;margin-left:auto}
+.msg-av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:600;margin-top:auto}
+.msg-av.dr{background:var(--red);color:#fff;font-family:var(--serif);font-size:.72rem}
+.msg-av.me{background:var(--bg2);color:var(--muted)}
+.msg-bubble{padding:.7rem .9rem;font-size:.82rem;line-height:1.65}
+.msg-bubble.dr{background:var(--card);border:1px solid var(--bord);border-radius:4px 14px 14px 14px}
+.msg-bubble.me{background:var(--red);color:#fff;border-radius:14px 4px 14px 14px}
+.msg-time{font-size:.58rem;color:var(--muted2);margin-top:.2rem}
+.chat-input-row{display:flex;gap:.6rem;padding:.75rem 0;flex-shrink:0;border-top:1px solid var(--bord);margin-top:.5rem}
+.chat-input{flex:1;border:1.5px solid var(--bord2);border-radius:100px;padding:.65rem 1rem;font-size:.88rem;font-family:var(--sans);color:var(--ink);outline:none;background:var(--card);transition:border-color .18s}
+.chat-input:focus{border-color:var(--red)}
+.btn-send{width:40px;height:40px;background:var(--red);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;transition:background .18s}
+.btn-send:active{background:var(--red2)}
+
+/* ── LAB RESULTS ── */
+.lab-item{display:flex;align-items:center;gap:.75rem;padding:.8rem 1.1rem;border-bottom:1px solid var(--bord)}
+.lab-item:last-child{border-bottom:none}
+.lab-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.lab-dot.ok{background:var(--green)}
+.lab-dot.hi{background:var(--red-lt)}
+.lab-dot.warn{background:#f59e0b}
+.lab-name{flex:1;font-size:.8rem}
+.lab-val{font-size:.8rem;font-weight:700;min-width:70px;text-align:right}
+.lab-flag{font-size:.62rem;padding:.15rem .5rem;border-radius:100px;font-weight:500;min-width:52px;text-align:center}
+.lab-flag.ok{background:var(--green-bg);color:var(--green)}
+.lab-flag.hi{background:var(--red-bg);color:var(--red)}
+.lab-flag.warn{background:rgba(245,158,11,.1);color:#b45309}
+
+/* ── WEIGHT CHART ── */
+.wc-wrap{padding:1rem 1.1rem 0}
+.wc-svg{width:100%;height:80px}
+.wc-x{display:flex;justify-content:space-between;padding:0 1.1rem .5rem;margin-top:.3rem}
+.wc-x span{font-size:.58rem;color:var(--muted)}
+.log-weight-btn{margin:0 1.1rem 1rem;background:var(--red);color:#fff;border:none;padding:.7rem;font-size:.78rem;font-weight:600;cursor:pointer;font-family:var(--sans);border-radius:100px;width:calc(100% - 2.2rem);display:flex;align-items:center;justify-content:center;gap:.4rem}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;
+  background:var(--card);border-top:1px solid var(--bord);
+  display:flex;padding-bottom:var(--safe-bot);
+  z-index:50;
+}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:.55rem .3rem;cursor:pointer;position:relative;transition:all .15s;border:none;background:none}
+.nav-item:active{background:var(--bg)}
+.nav-icon{font-size:1.2rem;margin-bottom:.2rem;transition:transform .15s}
+.nav-label{font-size:.6rem;color:var(--muted);letter-spacing:.03em;transition:color .15s}
+.nav-item.active .nav-icon{transform:scale(1.1)}
+.nav-item.active .nav-label{color:var(--red);font-weight:600}
+.nav-badge{position:absolute;top:.35rem;right:.9rem;width:8px;height:8px;border-radius:50%;background:var(--red)}
+
+/* ── MODAL ── */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;display:none;align-items:flex-end;justify-content:center}
+.modal-ov.open{display:flex}
+.modal{background:var(--card);width:100%;max-width:430px;border-radius:24px 24px 0 0;padding:1.5rem 1.4rem calc(1.5rem + var(--safe-bot));animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:40px;height:4px;background:var(--bg2);border-radius:2px;margin:0 auto 1.2rem}
+.modal-title{font-family:var(--serif);font-size:1.2rem;font-weight:300;margin-bottom:1.1rem;text-align:center}
+.modal-field{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.9rem}
+.modal-field label{font-size:.72rem;font-weight:500;color:var(--muted);letter-spacing:.03em}
+.modal-field input{border:1.5px solid var(--bord2);border-radius:12px;padding:.8rem 1rem;font-size:1rem;font-family:var(--sans);color:var(--ink);outline:none;text-align:center;font-weight:600;transition:border-color .18s}
+.modal-field input:focus{border-color:var(--red)}
+.modal-btn{background:var(--red);color:#fff;border:none;padding:.9rem;font-size:.88rem;font-weight:600;cursor:pointer;font-family:var(--sans);border-radius:100px;width:100%;margin-top:.5rem}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:.7rem 1.2rem;font-size:.78rem;border-radius:100px;opacity:0;transition:all .25s;white-space:nowrap;z-index:300;max-width:calc(100% - 2rem)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── PUSH PERMISSION ── */
+.push-card{background:linear-gradient(135deg,var(--ink),#1a0a08);border-radius:16px;padding:1.1rem;margin-bottom:1rem;display:flex;gap:.8rem;align-items:center}
+.push-icon{font-size:1.5rem;flex-shrink:0}
+.push-text{}
+.push-title{font-size:.84rem;font-weight:600;color:#fff;margin-bottom:.15rem}
+.push-sub{font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.5}
+.btn-enable-push{background:var(--red);color:#fff;border:none;padding:.45rem .9rem;font-size:.72rem;font-weight:600;cursor:pointer;font-family:var(--sans);border-radius:100px;margin-top:.5rem;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<!-- INSTALL BANNER (se muestra solo si no está instalada) -->
+<div id="install-banner" style="display:none">
+  <div class="ib-logo">🏥</div>
+  <div class="ib-text">
+    <div class="ib-title">Instalar MEDNOVA</div>
+    <div class="ib-sub">Agregar a pantalla de inicio</div>
+  </div>
+  <div class="ib-actions">
+    <button class="btn-install" id="btn-install">Instalar</button>
+    <button class="btn-dismiss" onclick="dismissInstall()">✕</button>
+  </div>
+</div>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="sb-left">
+    <div>
+      <div class="sb-logo">MEDNOVA</div>
+      <div class="sb-plan">Plan Seguimiento · Sem. 8</div>
+    </div>
+  </div>
+  <div class="sb-right">
+    <div class="sb-notif" onclick="toast('3 notificaciones nuevas')">🔔<div class="notif-dot"></div></div>
+    <div class="sb-avatar">MR</div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content" id="content">
+
+  <!-- ═══ INICIO ═══ -->
+  <div class="view active" id="v-inicio">
+    <div style="padding-top:.8rem">
+
+      <!-- HERO -->
+      <div class="hero-card">
+        <div class="hc-greeting">Bienvenida de vuelta</div>
+        <div class="hc-name">María <em>Rodríguez</em></div>
+        <div class="hc-stats">
+          <div class="hc-stat">
+            <div class="hc-num">73.6<span>kg</span></div>
+            <div class="hc-lbl">Peso actual</div>
+          </div>
+          <div class="hc-stat">
+            <div class="hc-num">−8.4<span>kg</span></div>
+            <div class="hc-lbl">Perdidos</div>
+          </div>
+          <div class="hc-stat">
+            <div class="hc-num">96<span>%</span></div>
+            <div class="hc-lbl">Adherencia</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PUSH PERMISSION -->
+      <div class="push-card" id="push-card">
+        <div class="push-icon">🔔</div>
+        <div class="push-text">
+          <div class="push-title">Activa recordatorios</div>
+          <div class="push-sub">Recibe alertas de dosis, consultas y resultados en tiempo real.</div>
+          <button class="btn-enable-push" onclick="requestPushPermission()">Activar notificaciones</button>
+        </div>
+      </div>
+
+      <!-- PRÓXIMA CONSULTA -->
+      <div class="section">
+        <div class="section-hd">
+          <span class="section-title">Próxima consulta</span>
+          <span class="section-link" onclick="switchView('consultas')">Ver todas</span>
+        </div>
+        <div class="consult-next">
+          <div class="cn-date"><div class="cn-day">25</div><div class="cn-mon">ABR</div></div>
+          <div class="cn-divider"></div>
+          <div class="cn-info">
+            <div class="cn-type">Videoconsulta · Ajuste dosis</div>
+            <div class="cn-dr">Dr. Andrés Valverde</div>
+            <div class="cn-time">🕙 10:00 AM</div>
+          </div>
+          <button class="btn-join" onclick="toast('Iniciando videoconsulta...')">📹 Unirse</button>
+        </div>
+      </div>
+
+      <!-- MEDICAMENTOS HOY -->
+      <div class="section">
+        <div class="section-hd">
+          <span class="section-title">Medicamentos de hoy</span>
+          <span class="section-link" onclick="switchView('meds')">Ver todos</span>
+        </div>
+        <div class="card">
+          <div class="med-item">
+            <div class="med-icon ok">💉</div>
+            <div><div class="med-name">Semaglutida 0.5mg</div><div class="med-dose">Semanal · Lunes</div></div>
+            <span class="med-badge ok">✓ Aplicada</span>
+          </div>
+          <div class="med-item">
+            <div class="med-icon pend">💊</div>
+            <div><div class="med-name">Metformina 850mg</div><div class="med-dose">2 veces al día</div></div>
+            <span class="med-badge pend">Pendiente</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAREAS -->
+      <div class="section">
+        <div class="section-hd">
+          <span class="section-title">Tareas pendientes</span>
+        </div>
+        <div class="card" id="task-list">
+          <div class="task-item done" onclick="toggleTask(this)">
+            <div class="task-check">✓</div>
+            <span class="task-text">Registrar peso de esta semana</span>
+            <span class="task-due">Hoy</span>
+          </div>
+          <div class="task-item done" onclick="toggleTask(this)">
+            <div class="task-check">✓</div>
+            <span class="task-text">Aplicar dosis de semaglutida</span>
+            <span class="task-due">Lun 21</span>
+          </div>
+          <div class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"></div>
+            <span class="task-text">Enviar foto de glucómetro</span>
+            <span class="task-due">Hoy</span>
+          </div>
+          <div class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"></div>
+            <span class="task-text">Confirmar consulta del viernes</span>
+            <span class="task-due">Mañana</span>
+          </div>
+          <div class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"></div>
+            <span class="task-text">Laboratorios trimestrales</span>
+            <span class="task-due">25 Abr</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ PROGRESO ═══ -->
+  <div class="view" id="v-progreso">
+    <div style="padding-top:.8rem">
+      <div class="section">
+        <div class="section-hd"><span class="section-title">Mi progreso — Semana 8</span></div>
+        <div class="card">
+          <div class="ring-row">
+            <div class="ring-wrap">
+              <svg class="ring-svg" width="72" height="72" viewBox="0 0 72 72">
+                <circle class="ring-bg" cx="36" cy="36" r="30"/>
+                <circle class="ring-fill" cx="36" cy="36" r="30" id="ring-el"/>
+              </svg>
+              <div class="ring-center"><div class="ring-pct">56%</div><div class="ring-lbl">Meta</div></div>
+            </div>
+            <div class="ring-metrics">
+              <div class="rm"><span class="rm-k">⚖️ Pérdida de peso</span><span class="rm-v">8.4 kg</span></div>
+              <div class="rm"><span class="rm-k">💊 Adherencia</span><span class="rm-v">96%</span></div>
+              <div class="rm"><span class="rm-k">🩸 Glucosa</span><span class="rm-v">Normal</span></div>
+              <div class="rm"><span class="rm-k">⚡ Energía</span><span class="rm-v">Alta</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-hd">
+          <span class="section-title">Evolución de peso</span>
+          <span class="section-link" onclick="openModal()">+ Registrar</span>
+        </div>
+        <div class="card">
+          <div class="wc-wrap">
+            <svg class="wc-svg" id="wc-svg" viewBox="0 0 300 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
+          </div>
+          <div class="wc-x" id="wc-x"></div>
+          <button class="log-weight-btn" onclick="openModal()">⚖️ Registrar peso de hoy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CHAT ═══ -->
+  <div class="view" id="v-chat">
+    <div style="padding-top:.8rem">
+      <div class="chat-layout">
+        <div class="chat-dr-info">
+          <div class="dr-av">AV</div>
+          <div>
+            <div class="dr-name">Dr. Andrés Valverde</div>
+            <div class="dr-spec">Endocrinólogo · UNAM</div>
+            <div class="dr-status"><div class="online-dot"></div>En línea ahora</div>
+          </div>
+          <button style="margin-left:auto;background:var(--red-bg);border:none;color:var(--red);padding:.4rem .8rem;font-size:.72rem;cursor:pointer;font-family:var(--sans);border-radius:100px;font-weight:600" onclick="toast('Iniciando videollamada...')">📹 Llamar</button>
+        </div>
+        <div class="chat-msgs" id="chat-msgs">
+          <div class="msg-wrap">
+            <div class="msg-av dr">AV</div>
+            <div><div class="msg-bubble dr">Buenos días. Tu glucosa bajó a 98 mg/dL esta semana. ¡Excelente progreso! ¿Cómo te has sentido con la dosis?</div><div class="msg-time">Hoy, 9:15 AM</div></div>
+          </div>
+          <div class="msg-wrap me">
+            <div class="msg-av me">MR</div>
+            <div><div class="msg-bubble me">¡Muy bien Doctor! Solo un poco de náusea el lunes pero ya pasó. Bajé 1.2 kg esta semana 🎉</div><div class="msg-time" style="text-align:right">Hoy, 9:23 AM</div></div>
+          </div>
+          <div class="msg-wrap">
+            <div class="msg-av dr">AV</div>
+            <div><div class="msg-bubble dr">¡Excelente! Eso es exactamente lo esperado. Nos vemos el viernes — recuerda traer tus mediciones de glucosa.</div><div class="msg-time">Hoy, 9:31 AM</div></div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" class="chat-input" id="chat-input" placeholder="Escribe un mensaje..." onkeydown="if(event.key==='Enter')sendChat()"/>
+          <button class="btn-send" onclick="sendChat()">➤</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ LABORATORIOS ═══ -->
+  <div class="view" id="v-labs">
+    <div style="padding-top:.8rem">
+      <div class="section">
+        <div class="section-hd"><span class="section-title">Resultados — 20 Abr 2026</span><span class="section-link" onclick="toast('Descargando PDF...')">⬇ PDF</span></div>
+        <div class="card">
+          <div class="lab-item"><div class="lab-dot ok"></div><span class="lab-name">Glucosa en ayunas</span><span class="lab-val">98 mg/dL</span><span class="lab-flag ok">Normal</span></div>
+          <div class="lab-item"><div class="lab-dot hi"></div><span class="lab-name">Colesterol LDL</span><span class="lab-val">145 mg/dL</span><span class="lab-flag hi">↑ Alto</span></div>
+          <div class="lab-item"><div class="lab-dot warn"></div><span class="lab-name">HbA1c</span><span class="lab-val">5.8%</span><span class="lab-flag warn">Límite</span></div>
+          <div class="lab-item"><div class="lab-dot ok"></div><span class="lab-name">Triglicéridos</span><span class="lab-val">118 mg/dL</span><span class="lab-flag ok">Normal</span></div>
+          <div class="lab-item"><div class="lab-dot ok"></div><span class="lab-name">Colesterol HDL</span><span class="lab-val">58 mg/dL</span><span class="lab-flag ok">Normal</span></div>
+          <div class="lab-item"><div class="lab-dot ok"></div><span class="lab-name">TSH (tiroides)</span><span class="lab-val">2.1 mUI/L</span><span class="lab-flag ok">Normal</span></div>
+        </div>
+        <div style="margin-top:.7rem;background:var(--red-bg);border-left:3px solid var(--red);padding:.8rem .9rem;font-size:.76rem;color:var(--ink);line-height:1.65;border-radius:0 8px 8px 0">
+          <strong>Dr. Valverde:</strong> El LDL está ligeramente elevado. Ajustaremos el plan alimenticio con la nutrióloga.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ MEDICAMENTOS ═══ -->
+  <div class="view" id="v-meds">
+    <div style="padding-top:.8rem">
+      <div class="section">
+        <div class="section-hd"><span class="section-title">Tratamiento activo</span></div>
+        <div class="card">
+          <div class="med-item">
+            <div class="med-icon ok" style="width:44px;height:44px;border-radius:12px;font-size:1.2rem">💉</div>
+            <div style="flex:1">
+              <div class="med-name">Semaglutida 0.5mg</div>
+              <div class="med-dose">Inyección semanal · Cada lunes a las 9am</div>
+              <div style="font-size:.68rem;color:var(--green);margin-top:.15rem">✓ Última: Lun 21 Abr</div>
+            </div>
+          </div>
+          <div class="med-item">
+            <div class="med-icon pend" style="width:44px;height:44px;border-radius:12px;font-size:1.2rem">💊</div>
+            <div style="flex:1">
+              <div class="med-name">Metformina 850mg</div>
+              <div class="med-dose">Oral · Con desayuno y cena</div>
+              <div style="font-size:.68rem;color:var(--muted);margin-top:.15rem">Receta vigente hasta: 15 May 2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-hd"><span class="section-title">Recordatorios</span></div>
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.1rem;border-bottom:1px solid var(--bord)">
+            <div><div style="font-size:.82rem;font-weight:500">Semaglutida · Lunes 9am</div><div style="font-size:.7rem;color:var(--muted)">Recordatorio activo</div></div>
+            <div style="width:44px;height:24px;background:var(--red);border-radius:100px;position:relative;cursor:pointer" onclick="toast('Recordatorio actualizado')"><div style="width:18px;height:18px;background:#fff;border-radius:50%;position:absolute;top:3px;right:3px"></div></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.1rem">
+            <div><div style="font-size:.82rem;font-weight:500">Metformina · 8am y 8pm</div><div style="font-size:.7rem;color:var(--muted)">Recordatorio activo</div></div>
+            <div style="width:44px;height:24px;background:var(--red);border-radius:100px;position:relative;cursor:pointer" onclick="toast('Recordatorio actualizado')"><div style="width:18px;height:18px;background:#fff;border-radius:50%;position:absolute;top:3px;right:3px"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-item active" id="nav-inicio" onclick="switchView('inicio')">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">Inicio</span>
+  </button>
+  <button class="nav-item" id="nav-progreso" onclick="switchView('progreso')">
+    <span class="nav-icon">📈</span>
+    <span class="nav-label">Progreso</span>
+  </button>
+  <button class="nav-item" id="nav-chat" onclick="switchView('chat')">
+    <span class="nav-icon">💬</span>
+    <span class="nav-label">Médico</span>
+    <div class="nav-badge"></div>
+  </button>
+  <button class="nav-item" id="nav-labs" onclick="switchView('labs')">
+    <span class="nav-icon">🧪</span>
+    <span class="nav-label">Laboratorios</span>
+  </button>
+  <button class="nav-item" id="nav-meds" onclick="switchView('meds')">
+    <span class="nav-icon">💊</span>
+    <span class="nav-label">Medicamentos</span>
+  </button>
+</nav>
+
+<!-- MODAL: REGISTRAR PESO -->
+<div class="modal-ov" id="modal-ov" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Registrar peso de hoy</div>
+    <div class="modal-field">
+      <label>Peso actual (kg)</label>
+      <input type="number" id="weight-input" value="73.6" step="0.1" inputmode="decimal"/>
+    </div>
+    <div class="modal-field">
+      <label>Nota (opcional)</label>
+      <input type="text" id="weight-note" placeholder="Ej. En ayunas" style="font-size:.88rem;font-weight:400"/>
+    </div>
+    <button class="modal-btn" onclick="saveWeight()">Guardar registro ✓</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── SERVICE WORKER ────────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('SW registrado:', reg.scope))
+      .catch(err => console.log('SW error:', err));
+  });
+}
+
+// ── PWA INSTALL PROMPT ────────────────────────────
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Mostrar banner solo si no está instalada
+  if (!window.matchMedia('(display-mode: standalone)').matches) {
+    setTimeout(() => {
+      document.getElementById('install-banner').style.display = 'flex';
+    }, 3000); // Mostrar después de 3 segundos
+  }
+});
+
+document.getElementById('btn-install').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === 'accepted') {
+    toast('¡MEDNOVA instalada en tu dispositivo! 🎉');
+    document.getElementById('install-banner').style.display = 'none';
+  }
+  deferredPrompt = null;
+});
+
+function dismissInstall() {
+  document.getElementById('install-banner').style.display = 'none';
+  sessionStorage.setItem('installDismissed', '1');
+}
+
+// Si ya está instalada como PWA, ocultar banner y push card
+if (window.matchMedia('(display-mode: standalone)').matches) {
+  document.getElementById('install-banner').style.display = 'none';
+  document.getElementById('push-card').style.display = 'none';
+}
+
+// ── PUSH NOTIFICATIONS ────────────────────────────
+async function requestPushPermission() {
+  if (!('Notification' in window)) {
+    toast('Tu navegador no soporta notificaciones');
+    return;
+  }
+  const permission = await Notification.requestPermission();
+  if (permission === 'granted') {
+    toast('✓ Notificaciones activadas');
+    document.getElementById('push-card').style.display = 'none';
+    // Aquí registrarías el push subscription con el backend
+    // const sub = await registration.pushManager.subscribe({...})
+  } else {
+    toast('Notificaciones denegadas — puedes activarlas en configuración');
+  }
+}
+
+// ── VIEW SWITCHING ────────────────────────────────
+function switchView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('v-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  document.getElementById('content').scrollTop = 0;
+  if (id === 'progreso') setTimeout(renderWeightChart, 50);
+}
+
+// ── WEIGHT CHART ──────────────────────────────────
+const weightData = [
+  {w:82,l:'Mar'},{w:80.8,l:'Mar'},{w:79.4,l:'Mar'},
+  {w:78.2,l:'Mar'},{w:77.1,l:'Abr'},{w:75.8,l:'Abr'},
+  {w:74.8,l:'Abr'},{w:73.6,l:'Hoy'}
+];
+
+function renderWeightChart() {
+  const svg = document.getElementById('wc-svg');
+  const x = document.getElementById('wc-x');
+  const W = 300, H = 80;
+  const min = Math.min(...weightData.map(d=>d.w))-1;
+  const max = Math.max(...weightData.map(d=>d.w))+1;
+  const px = i => (i/(weightData.length-1))*(W-20)+10;
+  const py = v => H-((v-min)/(max-min))*(H-10)-5;
+  const pts = weightData.map((d,i) => `${px(i).toFixed(1)},${py(d.w).toFixed(1)}`).join(' ');
+  const area = `M${px(0)},${H} ` + weightData.map((d,i)=>`L${px(i).toFixed(1)},${py(d.w).toFixed(1)}`).join(' ') + ` L${px(7)},${H} Z`;
+  svg.innerHTML = `
+    <defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c0392b" stop-opacity=".15"/><stop offset="100%" stop-color="#c0392b" stop-opacity="0"/></linearGradient></defs>
+    <path d="${area}" fill="url(#wg)"/>
+    <polyline points="${pts}" fill="none" stroke="#c0392b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    ${weightData.map((d,i)=>`<circle cx="${px(i).toFixed(1)}" cy="${py(d.w).toFixed(1)}" r="${i===7?5:3}" fill="${i===7?'#c0392b':'#e74c3c'}" stroke="white" stroke-width="1.5"/>
+    <text x="${px(i).toFixed(1)}" y="${(py(d.w)-7).toFixed(1)}" text-anchor="middle" font-size="8" fill="#888" font-family="system-ui">${d.w}</text>`).join('')}`;
+  x.innerHTML = weightData.map((d,i) => `<span style="font-size:.58rem;color:var(--muted);flex:1;text-align:center">${i===7?'Hoy':''}</span>`).join('');
+}
+
+// ── TASKS ─────────────────────────────────────────
+function toggleTask(el) {
+  el.classList.toggle('done');
+  const check = el.querySelector('.task-check');
+  check.textContent = el.classList.contains('done') ? '✓' : '';
+  toast(el.classList.contains('done') ? '✓ Tarea completada' : 'Tarea pendiente');
+}
+
+// ── CHAT ──────────────────────────────────────────
+function sendChat() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const msgs = document.getElementById('chat-msgs');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-wrap me';
+  wrap.innerHTML = `<div class="msg-av me">MR</div><div><div class="msg-bubble me">${text}</div><div class="msg-time" style="text-align:right">Ahora</div></div>`;
+  msgs.appendChild(wrap);
+  input.value = '';
+  msgs.scrollTop = msgs.scrollHeight;
+  setTimeout(() => {
+    const reply = document.createElement('div');
+    reply.className = 'msg-wrap';
+    reply.innerHTML = `<div class="msg-av dr">AV</div><div><div class="msg-bubble dr">Gracias por tu mensaje. Lo reviso y te respondo en breve. 💙</div><div class="msg-time">Ahora</div></div>`;
+    msgs.appendChild(reply);
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 1500);
+}
+
+// ── MODAL ─────────────────────────────────────────
+function openModal() {
+  document.getElementById('modal-ov').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal-ov').classList.remove('open');
+}
+function saveWeight() {
+  const w = parseFloat(document.getElementById('weight-input').value);
+  if (w > 0) {
+    weightData[weightData.length-1].w = w;
+    closeModal();
+    toast(`✓ Peso registrado: ${w} kg`);
+    if (document.getElementById('v-progreso').classList.contains('active')) {
+      renderWeightChart();
+    }
+  }
+}
+
+// ── TOAST ─────────────────────────────────────────
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+// ── INIT ──────────────────────────────────────────
+// Simular notificación push de prueba
+setTimeout(() => {
+  if (Notification.permission === 'granted') {
+    new Notification('MEDNOVA', {
+      body: '💊 Recordatorio: Toma tu Metformina con la cena',
+      icon: '/icons/icon-192.png',
+    });
+  }
+}, 5000);
+</script>
+</body>
+</html>

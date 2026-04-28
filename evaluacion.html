@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MEDNOVA — Evaluación con IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:     #fafaf8;
+  --bg2:    #f3f3f1;
+  --card:   #ffffff;
+  --ink:    #111111;
+  --red:    #c0392b;
+  --red2:   #a93226;
+  --red-lt: #e74c3c;
+  --red-bg: rgba(192,57,43,0.07);
+  --muted:  #888;
+  --bord:   rgba(0,0,0,0.08);
+  --bord2:  rgba(0,0,0,0.13);
+  --serif:  'Fraunces', Georgia, serif;
+  --sans:   'DM Sans', system-ui, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;display:flex;flex-direction:column}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 5%;border-bottom:1px solid var(--bord);background:var(--card);flex-shrink:0}
+.logo{display:flex;align-items:center;text-decoration:none}
+.nav-right{display:flex;align-items:center;gap:1rem}
+.secure{font-size:.7rem;color:var(--muted);letter-spacing:.04em}
+.secure::before{content:'🔒 '}
+.btn-exit{font-size:.75rem;color:var(--muted);text-decoration:none;border:1px solid var(--bord2);padding:.35rem .9rem;transition:all .2s}
+.btn-exit:hover{color:var(--ink);border-color:var(--bord2)}
+
+/* INTRO SCREEN */
+#intro{flex:1;display:flex;align-items:center;justify-content:center;padding:3rem 5%}
+.intro-card{max-width:560px;width:100%;text-align:center}
+.intro-icon{width:64px;height:64px;background:var(--red-bg);border:1px solid rgba(192,57,43,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:1.6rem}
+.intro-title{font-family:var(--serif);font-size:2.2rem;font-weight:300;line-height:1.2;margin-bottom:.8rem}
+.intro-title em{font-style:italic;color:var(--red-lt)}
+.intro-sub{color:var(--muted);font-size:.92rem;margin-bottom:2rem;line-height:1.8}
+.intro-features{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:2.5rem;text-align:left}
+.feat-item{display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:var(--muted)}
+.feat-icon{width:28px;height:28px;background:var(--red-bg);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+.name-field{display:flex;gap:.75rem;margin-bottom:1.5rem}
+.name-input{flex:1;border:1.5px solid var(--bord2);padding:.85rem 1rem;font-size:.95rem;font-family:var(--sans);color:var(--ink);background:var(--card);outline:none;transition:border-color .2s}
+.name-input:focus{border-color:var(--red)}
+.btn-start{background:var(--red);color:#fff;border:none;padding:1rem 2.5rem;font-size:.88rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:var(--sans);transition:all .25s;width:100%}
+.btn-start:hover{background:var(--red2)}
+.btn-start:disabled{background:var(--muted);cursor:not-allowed}
+.intro-disclaimer{font-size:.68rem;color:var(--muted);margin-top:1rem;line-height:1.6}
+
+/* CHAT SCREEN */
+#chat-screen{flex:1;display:none;flex-direction:column}
+
+/* PROGRESS BAR */
+.chat-progress{background:var(--card);border-bottom:1px solid var(--bord);padding:.8rem 5%;display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.prog-bar{flex:1;height:3px;background:var(--bg2);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--red-lt));border-radius:2px;transition:width .6s ease;width:0%}
+.prog-label{font-size:.72rem;color:var(--muted);white-space:nowrap}
+
+/* MESSAGES */
+.chat-messages{flex:1;overflow-y:auto;padding:2rem 5%;display:flex;flex-direction:column;gap:1.2rem;scroll-behavior:smooth}
+
+.msg-wrap{display:flex;gap:.8rem;max-width:680px}
+.msg-wrap.user{flex-direction:row-reverse;margin-left:auto}
+.msg-wrap.ai{margin-right:auto}
+
+.msg-avatar{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:500}
+.msg-avatar.ai-av{background:var(--red);color:#fff;font-family:var(--serif);font-size:.85rem}
+.msg-avatar.user-av{background:var(--bg2);color:var(--muted);font-size:.8rem}
+
+.msg-bubble{padding:.9rem 1.1rem;font-size:.88rem;line-height:1.75;max-width:520px}
+.msg-bubble.ai{background:var(--card);border:1px solid var(--bord);border-radius:4px 16px 16px 16px}
+.msg-bubble.user{background:var(--red);color:#fff;border-radius:16px 4px 16px 16px}
+
+/* TYPING INDICATOR */
+.typing-dots{display:flex;gap:4px;padding:.9rem 1.1rem;background:var(--card);border:1px solid var(--bord);border-radius:4px 16px 16px 16px;width:fit-content}
+.typing-dots span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:bounce .9s infinite}
+.typing-dots span:nth-child(2){animation-delay:.15s}
+.typing-dots span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+/* QUICK REPLIES */
+.quick-replies{display:flex;flex-wrap:wrap;gap:.6rem;padding:.5rem 5% 1rem;flex-shrink:0}
+.qr-btn{border:1.5px solid var(--bord2);background:var(--card);padding:.5rem 1rem;font-size:.82rem;cursor:pointer;font-family:var(--sans);color:var(--ink);transition:all .2s;border-radius:100px}
+.qr-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-bg)}
+
+/* INPUT BAR */
+.chat-input-bar{border-top:1px solid var(--bord);background:var(--card);padding:1rem 5%;display:flex;gap:.75rem;flex-shrink:0}
+#user-input{flex:1;border:1.5px solid var(--bord2);padding:.8rem 1rem;font-size:.9rem;font-family:var(--sans);color:var(--ink);outline:none;transition:border-color .2s;resize:none;height:44px;max-height:120px;overflow-y:auto;background:var(--card)}
+#user-input:focus{border-color:var(--red)}
+.btn-send{background:var(--red);color:#fff;border:none;padding:.8rem 1.2rem;cursor:pointer;font-size:1rem;transition:background .2s;flex-shrink:0}
+.btn-send:hover{background:var(--red2)}
+.btn-send:disabled{background:var(--muted);cursor:not-allowed}
+
+/* RESULT CARD */
+.result-wrap{padding:2rem 5%;max-width:680px;width:100%}
+.result-card{background:var(--card);border:1px solid var(--bord);border-top:3px solid var(--red);padding:2.5rem}
+.rc-header{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--bord)}
+.rc-icon{font-size:2rem;flex-shrink:0}
+.rc-title{font-family:var(--serif);font-size:1.6rem;font-weight:300;margin-bottom:.3rem}
+.rc-title em{font-style:italic;color:var(--red-lt)}
+.rc-sub{font-size:.84rem;color:var(--muted);line-height:1.7}
+.rc-summary{background:var(--bg2);padding:1.3rem;margin-bottom:1.5rem;font-size:.85rem;line-height:1.8;color:var(--ink);border-left:3px solid var(--red)}
+.rc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.8rem}
+.rc-stat{text-align:center;padding:1rem;background:var(--bg2)}
+.rc-stat-n{font-family:var(--serif);font-size:1.8rem;font-weight:300;color:var(--red);line-height:1}
+.rc-stat-l{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:.3rem}
+.btn-cta{background:var(--red);color:#fff;border:none;padding:1rem;font-size:.85rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;font-family:var(--sans);transition:all .25s;display:block;width:100%;margin-bottom:.75rem}
+.btn-cta:hover{background:var(--red2)}
+.btn-cta-sec{border:1.5px solid var(--bord2);background:none;color:var(--ink);padding:.9rem;font-size:.83rem;cursor:pointer;font-family:var(--sans);transition:all .25s;display:block;width:100%}
+.btn-cta-sec:hover{border-color:var(--red);color:var(--red)}
+.rc-disclaimer{font-size:.68rem;color:var(--muted);margin-top:1.2rem;line-height:1.7;border-top:1px solid var(--bord);padding-top:1rem}
+
+@media(max-width:600px){
+  .intro-features{grid-template-columns:1fr}
+  .rc-stats{grid-template-columns:1fr 1fr}
+  .name-field{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="mednova-robust.html" class="logo">
+    <svg width="140" height="30" viewBox="0 0 140 30" xmlns="http://www.w3.org/2000/svg">
+      <line x1="8" y1="4" x2="8" y2="26" stroke="#111" stroke-width="2.5" stroke-linecap="square"/>
+      <line x1="8" y1="4" x2="22" y2="26" stroke="#c0392b" stroke-width="2.5" stroke-linecap="square"/>
+      <line x1="22" y1="4" x2="22" y2="26" stroke="#111" stroke-width="2.5" stroke-linecap="square"/>
+      <rect x="27" y="13" width="2.5" height="2.5" fill="#c0392b"/>
+      <text x="36" y="20" font-family="system-ui,sans-serif" font-size="11" font-weight="500" fill="#111" letter-spacing="5">MEDNOVA</text>
+    </svg>
+  </a>
+  <div class="nav-right">
+    <span class="secure">Evaluación confidencial</span>
+    <a href="mednova-robust.html" class="btn-exit">← Salir</a>
+  </div>
+</nav>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="intro-card">
+    <div class="intro-icon">🩺</div>
+    <h1 class="intro-title">Tu evaluación médica <em>personalizada</em></h1>
+    <p class="intro-sub">A diferencia de un formulario genérico, nuestra IA médica tiene una conversación real contigo. Las preguntas se adaptan a tus respuestas — como en una consulta con un especialista.</p>
+    <div class="intro-features">
+      <div class="feat-item"><div class="feat-icon">⚡</div>Solo 3–5 minutos</div>
+      <div class="feat-item"><div class="feat-icon">🔒</div>100% confidencial</div>
+      <div class="feat-item"><div class="feat-icon">🤖</div>Adaptada a ti en tiempo real</div>
+      <div class="feat-item"><div class="feat-icon">👨‍⚕️</div>Médico te llama en &lt;24h</div>
+    </div>
+    <div class="name-field">
+      <input type="text" class="name-input" id="first-name" placeholder="Tu nombre" oninput="checkName()"/>
+      <input type="text" class="name-input" id="last-name" placeholder="Tu apellido" oninput="checkName()"/>
+    </div>
+    <button class="btn-start" id="btn-start" disabled onclick="startEval()">Comenzar evaluación →</button>
+    <p class="intro-disclaimer">Al continuar aceptas nuestro <a href="#" style="color:var(--red)">aviso de privacidad</a>. Esta evaluación es orientativa y no sustituye una consulta médica.</p>
+  </div>
+</div>
+
+<!-- CHAT -->
+<div id="chat-screen">
+  <div class="chat-progress">
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+    <span class="prog-label" id="prog-label">Iniciando...</span>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="quick-replies" id="quick-replies"></div>
+  <div class="chat-input-bar">
+    <textarea id="user-input" placeholder="Escribe tu respuesta..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+    <button class="btn-send" id="btn-send" onclick="sendMessage()" disabled>➤</button>
+  </div>
+</div>
+
+<script>
+let userName = '';
+let conversationHistory = [];
+let isTyping = false;
+let progressPct = 0;
+let evalComplete = false;
+
+function checkName() {
+  const f = document.getElementById('first-name').value.trim();
+  const l = document.getElementById('last-name').value.trim();
+  document.getElementById('btn-start').disabled = !(f && l);
+}
+
+function startEval() {
+  userName = document.getElementById('first-name').value.trim() + ' ' + document.getElementById('last-name').value.trim();
+  document.getElementById('intro').style.display = 'none';
+  const chatScreen = document.getElementById('chat-screen');
+  chatScreen.style.display = 'flex';
+  chatScreen.style.flexDirection = 'column';
+  document.getElementById('user-input').disabled = true;
+  document.getElementById('btn-send').disabled = true;
+  sendToAI(null, true);
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    if (!document.getElementById('btn-send').disabled) sendMessage();
+  }
+}
+
+function autoResize(el) {
+  el.style.height = '44px';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+  document.getElementById('btn-send').disabled = !el.value.trim() || isTyping;
+}
+
+function addMessage(text, role) {
+  const msgs = document.getElementById('chat-messages');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-wrap ' + role;
+
+  const avatar = document.createElement('div');
+  avatar.className = 'msg-avatar ' + (role === 'ai' ? 'ai-av' : 'user-av');
+  avatar.textContent = role === 'ai' ? 'M' : userName.charAt(0).toUpperCase();
+
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble ' + role;
+  bubble.innerHTML = text.replace(/\n/g, '<br>');
+
+  if (role === 'ai') { wrap.appendChild(avatar); wrap.appendChild(bubble); }
+  else { wrap.appendChild(avatar); wrap.appendChild(bubble); }
+
+  msgs.appendChild(wrap);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+  const msgs = document.getElementById('chat-messages');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-wrap ai';
+  wrap.id = 'typing-indicator';
+
+  const avatar = document.createElement('div');
+  avatar.className = 'msg-avatar ai-av';
+  avatar.textContent = 'M';
+
+  const dots = document.createElement('div');
+  dots.className = 'typing-dots';
+  dots.innerHTML = '<span></span><span></span><span></span>';
+
+  wrap.appendChild(avatar);
+  wrap.appendChild(dots);
+  msgs.appendChild(wrap);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing-indicator');
+  if (t) t.remove();
+}
+
+function setQuickReplies(options) {
+  const qr = document.getElementById('quick-replies');
+  qr.innerHTML = '';
+  if (!options || options.length === 0) return;
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'qr-btn';
+    btn.textContent = opt;
+    btn.onclick = () => {
+      qr.innerHTML = '';
+      document.getElementById('user-input').value = opt;
+      sendMessage();
+    };
+    qr.appendChild(btn);
+  });
+}
+
+function updateProgress(pct, label) {
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = label;
+}
+
+async function sendToAI(userMessage, isStart = false) {
+  isTyping = true;
+  document.getElementById('user-input').disabled = true;
+  document.getElementById('btn-send').disabled = true;
+  document.getElementById('quick-replies').innerHTML = '';
+
+  if (userMessage) {
+    addMessage(userMessage, 'user');
+    conversationHistory.push({ role: 'user', content: userMessage });
+  }
+
+  showTyping();
+
+  const systemPrompt = `Eres la IA médica de MEDNOVA, una plataforma de telesalud premium en México especializada en pérdida de peso con GLP-1, diabetes tipo 2 y terapia hormonal.
+
+Estás realizando una evaluación médica conversacional con ${userName}. Tu objetivo es calificar si el paciente es candidato al tratamiento y recopilar su información clínica de forma natural.
+
+REGLAS CRÍTICAS:
+1. Habla en español, de forma cálida pero profesional. Usa el nombre del paciente ocasionalmente.
+2. Haz UNA sola pregunta a la vez. Nunca hagas múltiples preguntas en un mensaje.
+3. Adapta las preguntas según las respuestas anteriores — si dice que tiene diabetes, profundiza en eso.
+4. Las preguntas deben fluir como una conversación natural, no como un formulario.
+5. Cada respuesta tuya debe ser CORTA: 1-3 oraciones máximo.
+6. Después de cada mensaje incluye una línea especial: QUICK:[opción1|opción2|opción3] con 2-4 opciones de respuesta rápida relevantes. Si no aplican, omite esa línea.
+7. Incluye también: PROGRESS:[número del 0 al 100] para indicar qué tan avanzada está la evaluación.
+8. Cuando hayas recopilado suficiente información (objetivo, peso/talla, condiciones, medicamentos, urgencia, contacto), incluye: COMPLETE:[resumen en JSON].
+
+INFORMACIÓN A RECOPILAR (en orden natural):
+- Objetivo principal (pérdida de peso, diabetes, hormonas)
+- Peso actual y estatura (para calcular IMC)
+- Edad
+- Condiciones médicas existentes
+- Medicamentos actuales
+- Intentos previos de tratamiento
+- Nivel de urgencia/motivación
+- WhatsApp y ciudad
+
+CRITERIOS DE CALIFICACIÓN:
+- CALIFICADO: IMC ≥ 27, mayor de 18 años, sin cáncer activo, sin embarazo
+- NO CALIFICADO: IMC < 27, menor de 18, cáncer activo, embarazada
+
+JSON del COMPLETE debe tener: {nombre, objetivo, peso, altura, imc, edad, condiciones, medicamentos, urgencia, calificado, whatsapp, ciudad, resumen_para_medico}
+
+Empieza saludando a ${userName} por su nombre y pregunta cuál es su principal objetivo de salud.`;
+
+  try {
+    const messages = isStart
+      ? [{ role: 'user', content: `Hola, me llamo ${userName}` }]
+      : conversationHistory;
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: messages
+      })
+    });
+
+    const data = await response.json();
+    const fullText = data.content[0].text;
+
+    removeTyping();
+
+    // Parse special commands
+    const quickMatch = fullText.match(/QUICK:\[([^\]]+)\]/);
+    const progressMatch = fullText.match(/PROGRESS:\[(\d+)\]/);
+    const completeMatch = fullText.match(/COMPLETE:\[({.+})\]/s);
+
+    // Clean text for display
+    let displayText = fullText
+      .replace(/QUICK:\[[^\]]+\]/g, '')
+      .replace(/PROGRESS:\[\d+\]/g, '')
+      .replace(/COMPLETE:\[{.+}\]/s, '')
+      .trim();
+
+    if (completeMatch) {
+      // Eval complete
+      addMessage(displayText, 'ai');
+      conversationHistory.push({ role: 'assistant', content: fullText });
+      try {
+        const evalData = JSON.parse(completeMatch[1]);
+        showResult(evalData);
+      } catch(e) {
+        showResult({ calificado: true, imc: '—', resumen_para_medico: displayText });
+      }
+      updateProgress(100, 'Evaluación completada');
+      document.getElementById('user-input').disabled = true;
+      document.getElementById('btn-send').disabled = true;
+      document.getElementById('chat-input-bar') && (document.querySelector('.chat-input-bar').style.display = 'none');
+    } else {
+      addMessage(displayText, 'ai');
+      conversationHistory.push({ role: 'assistant', content: fullText });
+
+      if (progressMatch) {
+        const pct = parseInt(progressMatch[1]);
+        const labels = ['Iniciando...', 'Conociendo tu objetivo...', 'Perfil físico...', 'Historial médico...', 'Evaluando candidatura...', 'Últimos datos...', 'Procesando...'];
+        const labelIdx = Math.min(Math.floor(pct / 17), labels.length - 1);
+        updateProgress(pct, labels[labelIdx]);
+      }
+
+      if (quickMatch) {
+        const opts = quickMatch[1].split('|').map(o => o.trim()).filter(Boolean);
+        setQuickReplies(opts);
+      }
+
+      isTyping = false;
+      document.getElementById('user-input').disabled = false;
+      document.getElementById('btn-send').disabled = false;
+      document.getElementById('user-input').focus();
+    }
+
+  } catch(err) {
+    removeTyping();
+    addMessage('Disculpa, tuve un problema de conexión. ¿Puedes intentar de nuevo?', 'ai');
+    isTyping = false;
+    document.getElementById('user-input').disabled = false;
+    document.getElementById('btn-send').disabled = !document.getElementById('user-input').value.trim();
+  }
+}
+
+function sendMessage() {
+  const input = document.getElementById('user-input');
+  const text = input.value.trim();
+  if (!text || isTyping) return;
+  input.value = '';
+  input.style.height = '44px';
+  document.getElementById('btn-send').disabled = true;
+  sendToAI(text);
+}
+
+function showResult(data) {
+  const msgs = document.getElementById('chat-messages');
+
+  const wrap = document.createElement('div');
+  wrap.className = 'result-wrap';
+
+  const imc = data.imc || '—';
+  const calificado = data.calificado !== false;
+  const resumen = data.resumen_para_medico || '';
+
+  wrap.innerHTML = `
+    <div class="result-card">
+      <div class="rc-header">
+        <div class="rc-icon">${calificado ? '✅' : '⚠️'}</div>
+        <div>
+          <div class="rc-title">${calificado ? `¡<em>${userName.split(' ')[0]}</em>, eres candidato!` : 'Evaluación completada'}</div>
+          <p class="rc-sub">${calificado
+            ? 'Basado en tu evaluación, un médico especialista de MEDNOVA puede diseñar un plan personalizado para ti. Te contactaremos en menos de 24 horas.'
+            : 'Hemos completado tu evaluación. Un médico revisará tu caso y te orientará sobre los próximos pasos.'
+          }</p>
+        </div>
+      </div>
+      ${resumen ? `<div class="rc-summary"><strong>Resumen para el médico:</strong><br>${resumen}</div>` : ''}
+      <div class="rc-stats">
+        <div class="rc-stat">
+          <div class="rc-stat-n">${imc}</div>
+          <div class="rc-stat-l">Tu IMC</div>
+        </div>
+        <div class="rc-stat">
+          <div class="rc-stat-n">&lt;24h</div>
+          <div class="rc-stat-l">Te contactamos</div>
+        </div>
+        <div class="rc-stat">
+          <div class="rc-stat-n">${calificado ? '15%' : '—'}</div>
+          <div class="rc-stat-l">Pérdida esperada</div>
+        </div>
+      </div>
+      <button class="btn-cta" onclick="window.location.href='tel:+525512345678'">📞 Hablar con un médico ahora</button>
+      <button class="btn-cta-sec" onclick="window.location.href='https://wa.me/525512345678?text=Hola, acabo de completar mi evaluación MEDNOVA'">💬 Recibir resultados por WhatsApp</button>
+      <p class="rc-disclaimer">Esta evaluación es orientativa. El diagnóstico y la prescripción siempre los realiza un médico certificado. MEDNOVA · Registro COFEPRIS 220915536X0022</p>
+    </div>`;
+
+  msgs.appendChild(wrap);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+</script>
+</body>
+</html>
