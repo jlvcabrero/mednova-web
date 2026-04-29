@@ -2,7 +2,8 @@
   "name": "MEDNOVA — Mi Salud",
   "short_name": "MEDNOVA",
   "description": "Tu plataforma de telesalud personalizada. Consultas, seguimiento y médico disponible 24/7.",
-  "start_url": "/portal.html",
+  "start_url": "https://mymednova.com/portal.html",
+  "scope": "https://mymednova.com/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#fafaf8",
@@ -10,11 +11,16 @@
   "lang": "es-MX",
   "categories": ["health", "medical"],
   "icons": [
+    { "src": "/icons/icon-72.png",  "sizes": "72x72",   "type": "image/png", "purpose": "maskable any" },
+    { "src": "/icons/icon-96.png",  "sizes": "96x96",   "type": "image/png", "purpose": "maskable any" },
+    { "src": "/icons/icon-128.png", "sizes": "128x128", "type": "image/png", "purpose": "maskable any" },
     { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable any" },
     { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable any" }
   ],
   "shortcuts": [
-    { "name": "Mi progreso", "url": "/portal.html?view=progreso", "icons": [{"src":"/icons/icon-192.png","sizes":"192x192"}] },
-    { "name": "Chat médico", "url": "/portal.html?view=chat", "icons": [{"src":"/icons/icon-192.png","sizes":"192x192"}] }
-  ]
+    { "name": "Mi progreso",  "url": "/portal.html?view=progreso",      "icons": [{"src":"/icons/icon-192.png","sizes":"192x192"}] },
+    { "name": "Chat médico",  "url": "/portal.html?view=chat",          "icons": [{"src":"/icons/icon-192.png","sizes":"192x192"}] },
+    { "name": "Laboratorios", "url": "/portal.html?view=laboratorios",  "icons": [{"src":"/icons/icon-192.png","sizes":"192x192"}] }
+  ],
+  "prefer_related_applications": false
 }
