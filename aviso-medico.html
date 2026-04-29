@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aviso Médico — MEDNOVA</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<style>
+:root{--red:#d90000;--ink:#111;--muted:#666;--bg:#fafaf8;--bg2:#f3f3f1;--bord:rgba(0,0,0,.08);--serif:'Fraunces',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.8}
+nav{background:var(--ink);padding:1rem 5%;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--serif);font-size:1.1rem;color:#fff;font-weight:300;text-decoration:none}
+.nav-logo span{color:#fc9090}
+.nav-back{color:rgba(255,255,255,.5);font-size:.78rem;text-decoration:none}
+.nav-back:hover{color:#fff}
+.hero{background:var(--ink);padding:3rem 5%;border-bottom:3px solid var(--red)}
+.hero-tag{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:.6rem}
+.hero h1{font-family:var(--serif);font-size:2.2rem;font-weight:300;color:#fff;margin-bottom:.5rem}
+.hero-meta{font-size:.78rem;color:rgba(255,255,255,.4)}
+.content{max-width:800px;margin:0 auto;padding:3rem 5%}
+.section{margin-bottom:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--bord)}
+.section:last-child{border-bottom:none}
+h2{font-family:var(--serif);font-size:1.3rem;font-weight:300;color:var(--ink);margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+h2::before{content:'';width:20px;height:2px;background:var(--red);flex-shrink:0}
+p{margin-bottom:1rem;color:#333}
+ul{margin:0 0 1rem 1.5rem}
+li{margin-bottom:.5rem;color:#333}
+.warn-box{background:#fff8f8;border:1px solid rgba(217,0,0,.25);border-left:4px solid var(--red);padding:1.2rem 1.4rem;margin:1.2rem 0;font-size:.92rem;line-height:1.8}
+.warn-box strong{color:var(--red);display:block;margin-bottom:.4rem;font-size:1rem}
+.emergency-box{background:var(--red);color:#fff;padding:1.4rem;margin:2rem 0;text-align:center}
+.emergency-box .emergency-title{font-family:var(--serif);font-size:1.4rem;font-weight:300;margin-bottom:.5rem}
+.emergency-box p{color:rgba(255,255,255,.85);margin-bottom:.3rem}
+.emergency-box .emergency-num{font-size:2rem;font-weight:700;letter-spacing:.1em}
+.cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+.cert-item{background:var(--bg2);border:1px solid var(--bord);padding:1rem;display:flex;gap:.75rem;align-items:flex-start}
+.cert-icon{font-size:1.3rem;flex-shrink:0}
+.cert-title{font-size:.84rem;font-weight:600;margin-bottom:.2rem}
+.cert-desc{font-size:.76rem;color:var(--muted);line-height:1.5}
+footer{background:var(--ink);padding:2rem 5%;text-align:center}
+footer p{color:rgba(255,255,255,.35);font-size:.78rem}
+footer a{color:var(--red);text-decoration:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/index.html" class="nav-logo">MY<span>MEDNOVA</span></a>
+  <a href="/index.html" class="nav-back">← Regresar al inicio</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Documento legal</div>
+  <h1>Aviso Médico</h1>
+  <div class="hero-meta">Última actualización: 28 de abril de 2025 · Versión 1.0</div>
+</div>
+
+<div class="content">
+
+  <div class="warn-box">
+    <strong>⚠️ Lea este aviso detenidamente antes de utilizar los servicios de MEDNOVA</strong>
+    La información y los servicios médicos proporcionados por MEDNOVA están sujetos a las limitaciones descritas en este documento. Su comprensión y aceptación son condición indispensable para el uso de nuestra plataforma.
+  </div>
+
+  <div class="emergency-box">
+    <div class="emergency-title">¿Estás en una emergencia médica?</div>
+    <p>MEDNOVA NO es un servicio de urgencias. Si experimentas síntomas graves, llama inmediatamente al:</p>
+    <div class="emergency-num">911</div>
+    <p style="margin-top:.5rem;font-size:.82rem">o acude al servicio de urgencias más cercano</p>
+  </div>
+
+  <div class="section">
+    <h2>1. Naturaleza del servicio</h2>
+    <p>MEDNOVA es una plataforma de <strong>telesalud</strong> que facilita la conexión entre pacientes y médicos certificados a través de medios electrónicos, en cumplimiento con la legislación sanitaria mexicana y la NOM-024-SSA3-2012.</p>
+    <p>Los servicios de MEDNOVA <strong>no sustituyen</strong> la atención médica de emergencia ni el diagnóstico presencial en situaciones que lo requieran. La telesalud tiene limitaciones inherentes al entorno virtual que el paciente debe conocer.</p>
+  </div>
+
+  <div class="section">
+    <h2>2. Acerca de nuestros médicos</h2>
+    <p>Todos los médicos que prestan servicios a través de MEDNOVA cumplen con los siguientes requisitos:</p>
+    <ul>
+      <li>Cédula profesional de médico cirujano emitida por la SEP, verificable en el Registro Nacional de Profesionistas (cedulaprofesional.sep.gob.mx)</li>
+      <li>Especialidad certificada en endocrinología, medicina interna, nutriología o área relacionada</li>
+      <li>Registro activo ante el Consejo de Especialidad correspondiente</li>
+      <li>Capacitación en telemedicina conforme a las normas oficiales mexicanas</li>
+    </ul>
+    <div class="cert-grid">
+      <div class="cert-item"><div class="cert-icon">🏥</div><div><div class="cert-title">Aviso COFEPRIS</div><div class="cert-desc">Establecimiento de servicios de salud registrado ante la Comisión Federal para la Protección contra Riesgos Sanitarios</div></div></div>
+      <div class="cert-item"><div class="cert-icon">📋</div><div><div class="cert-title">NOM-024-SSA3-2012</div><div class="cert-desc">Cumplimiento con la norma de sistemas de información de registro electrónico para la salud</div></div></div>
+      <div class="cert-item"><div class="cert-icon">📄</div><div><div class="cert-title">NOM-004-SSA3-2012</div><div class="cert-desc">Expediente clínico electrónico en cumplimiento con la norma oficial mexicana</div></div></div>
+      <div class="cert-item"><div class="cert-icon">🔒</div><div><div class="cert-title">Confidencialidad médica</div><div class="cert-desc">Todo el personal médico firma contratos de confidencialidad y cumple con el secreto profesional</div></div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>3. Alcance y limitaciones de la telemedicina</h2>
+    <p>La telemedicina tiene limitaciones que el paciente debe comprender:</p>
+    <ul>
+      <li>El médico <strong>no puede realizar exploración física directa</strong> del paciente</li>
+      <li>El diagnóstico se basa en la información proporcionada por el paciente y resultados de laboratorio</li>
+      <li>Algunas condiciones médicas requieren atención presencial que MEDNOVA no puede proporcionar</li>
+      <li>La calidad del servicio puede verse afectada por la velocidad de la conexión a internet</li>
+    </ul>
+    <p>Los médicos de MEDNOVA están capacitados para identificar cuándo una condición requiere atención presencial urgente y lo comunicarán al paciente de manera oportuna.</p>
+  </div>
+
+  <div class="section">
+    <h2>4. Sobre los tratamientos GLP-1 (Semaglutida y Tirzepatida)</h2>
+    <p>Los medicamentos GLP-1 (agonistas del receptor de glucagón) como la semaglutida (Ozempic®, Wegovy®) y la tirzepatida (Mounjaro®) que pueden ser prescritos por los médicos de MEDNOVA son medicamentos aprobados por COFEPRIS que requieren prescripción médica obligatoria.</p>
+
+    <div class="warn-box">
+      <strong>Efectos secundarios comunes conocidos:</strong>
+      Náuseas, vómito, diarrea, estreñimiento, dolor abdominal — especialmente durante las primeras semanas de tratamiento. Estos efectos suelen disminuir con el tiempo.
+    </div>
+
+    <p><strong>Contraindicaciones absolutas:</strong></p>
+    <ul>
+      <li>Antecedente personal o familiar de carcinoma medular de tiroides</li>
+      <li>Síndrome de Neoplasia Endócrina Múltiple tipo 2 (NEM-2)</li>
+      <li>Embarazo o lactancia</li>
+      <li>Hipersensibilidad conocida al principio activo</li>
+      <li>Pancreatitis activa</li>
+    </ul>
+    <p>El médico asignado evaluará su perfil clínico para determinar si es candidato adecuado para estos medicamentos antes de emitir cualquier prescripción.</p>
+  </div>
+
+  <div class="section">
+    <h2>5. Resultados y expectativas</h2>
+    <p>MEDNOVA no garantiza resultados específicos de pérdida de peso, control glucémico u otros objetivos de salud, ya que estos dependen de múltiples factores individuales incluyendo:</p>
+    <ul>
+      <li>Adherencia del paciente al tratamiento prescrito</li>
+      <li>Características metabólicas individuales</li>
+      <li>Hábitos alimenticios y actividad física</li>
+      <li>Condiciones de salud preexistentes</li>
+      <li>Interacciones con otros medicamentos</li>
+    </ul>
+    <p>Las estadísticas publicadas en nuestro sitio web (pérdida de peso promedio del 15%, etc.) corresponden a estudios clínicos y resultados agregados de pacientes, y no representan una garantía de resultados individuales.</p>
+  </div>
+
+  <div class="section">
+    <h2>6. Cuándo buscar atención de emergencia</h2>
+    <p>Busque atención médica de emergencia <strong>inmediatamente</strong> si experimenta:</p>
+    <ul>
+      <li>Dolor severo en el abdomen, pecho o mandíbula</li>
+      <li>Dificultad para respirar</li>
+      <li>Pérdida del conocimiento o confusión repentina</li>
+      <li>Reacción alérgica grave (urticaria, hinchazón de cara, labios o garganta)</li>
+      <li>Vómito persistente que impide hidratarse</li>
+      <li>Signos de pancreatitis (dolor abdominal intenso que irradia a la espalda)</li>
+      <li>Hipoglucemia severa (glucosa muy baja con síntomas graves)</li>
+    </ul>
+    <div class="emergency-box" style="margin-top:1.5rem">
+      <div class="emergency-title">Números de emergencia</div>
+      <p>Emergencias generales: <strong class="emergency-num">911</strong></p>
+      <p style="margin-top:.8rem">Cruz Roja: <strong>065</strong> · IMSS Urgencias: <strong>800 623 2323</strong></p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>7. Responsable Sanitario</h2>
+    <p>MEDNOVA cuenta con un Responsable Sanitario debidamente registrado ante COFEPRIS, quien supervisa que todas las actividades médicas desarrolladas en la plataforma cumplan con la normatividad sanitaria vigente en México.</p>
+    <p>Para asuntos relacionados con la regulación sanitaria del servicio, puede contactar directamente a nuestro Responsable Sanitario a través de <strong>sanitario@mymednova.com</strong>.</p>
+  </div>
+
+  <div class="section">
+    <h2>8. Quejas y sugerencias</h2>
+    <p>Si tiene alguna queja sobre la atención médica recibida a través de MEDNOVA, puede:</p>
+    <ul>
+      <li>Contactar a nuestro equipo de atención: <strong>soporte@mymednova.com</strong></li>
+      <li>Presentar una queja ante la <strong>COFEPRIS</strong>: cofepris.gob.mx</li>
+      <li>Acudir a la <strong>CONAMED</strong> (Comisión Nacional de Arbitraje Médico): conamed.gob.mx · 800 711 0658</li>
+      <li>Presentar una denuncia ante la <strong>PROFECO</strong>: gob.mx/profeco</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 MEDNOVA SAS DE CV · Todos los derechos reservados · <a href="/privacidad.html">Aviso de Privacidad</a> · <a href="/terminos.html">Términos y Condiciones</a> · <a href="/aviso-medico.html">Aviso Médico</a></p>
+</footer>
+
+</body>
+</html>

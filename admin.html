@@ -13,10 +13,10 @@
   --card:#fff;
   --ink:#0d0d0d;
   --ink2:#3d3d3d;
-  --red:#c0392b;
-  --red2:#a93226;
-  --red-lt:#e74c3c;
-  --red-bg:rgba(192,57,43,.07);
+  --red:#d90000;
+  --red2:#b80000;
+  --red-lt:#ff1a1a;
+  --red-bg:rgba(217,0,0,.07);
   --green:#15803d;
   --green-bg:rgba(21,128,61,.08);
   --amber:#b45309;
@@ -43,7 +43,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:13p
 .sb-logo svg{display:block}
 .sb-item{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:all .18s;position:relative;background:none;border:none;color:rgba(255,255,255,.35)}
 .sb-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.75)}
-.sb-item.active{background:var(--red);color:#fff;box-shadow:0 4px 14px rgba(192,57,43,.45)}
+.sb-item.active{background:var(--red);color:#fff;box-shadow:0 4px 14px rgba(217,0,0,.45)}
 .sb-item .tip{position:absolute;left:calc(100% + 10px);background:#0d0d0d;color:#fff;font-size:.68rem;padding:.3rem .65rem;white-space:nowrap;opacity:0;transform:translateX(-4px);transition:all .18s;border-radius:3px;pointer-events:none;z-index:200;letter-spacing:.03em}
 .sb-item:hover .tip{opacity:1;transform:translateX(0)}
 .sb-badge{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--red)}
@@ -253,7 +253,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:13p
   <div class="sb-logo">
     <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
       <line x1="6" y1="3" x2="6" y2="25" stroke="rgba(255,255,255,.6)" stroke-width="2.2" stroke-linecap="square"/>
-      <line x1="6" y1="3" x2="16" y2="25" stroke="#c0392b" stroke-width="2.2" stroke-linecap="square"/>
+      <line x1="6" y1="3" x2="16" y2="25" stroke="#d90000" stroke-width="2.2" stroke-linecap="square"/>
       <line x1="16" y1="3" x2="16" y2="25" stroke="rgba(255,255,255,.6)" stroke-width="2.2" stroke-linecap="square"/>
     </svg>
   </div>
@@ -340,10 +340,10 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:13p
           <div class="mexico-map" id="mex-map">
             <div style="font-size:.72rem;color:var(--muted2)">México</div>
             <div class="city-dot" style="top:45%;left:28%"><div class="city-tip">CDMX · 98 pac.</div></div>
-            <div class="city-dot" style="top:35%;left:55%;background:#e74c3c"><div class="city-tip">Monterrey · 62 pac.</div></div>
-            <div class="city-dot" style="top:55%;left:22%;background:#e74c3c"><div class="city-tip">Guadalajara · 48 pac.</div></div>
-            <div class="city-dot" style="top:50%;left:38%;background:#c0392b;width:8px;height:8px"><div class="city-tip">Puebla · 21 pac.</div></div>
-            <div class="city-dot" style="top:40%;left:12%;background:#c0392b;width:8px;height:8px"><div class="city-tip">Tijuana · 18 pac.</div></div>
+            <div class="city-dot" style="top:35%;left:55%;background:#ff1a1a"><div class="city-tip">Monterrey · 62 pac.</div></div>
+            <div class="city-dot" style="top:55%;left:22%;background:#ff1a1a"><div class="city-tip">Guadalajara · 48 pac.</div></div>
+            <div class="city-dot" style="top:50%;left:38%;background:#d90000;width:8px;height:8px"><div class="city-tip">Puebla · 21 pac.</div></div>
+            <div class="city-dot" style="top:40%;left:12%;background:#d90000;width:8px;height:8px"><div class="city-tip">Tijuana · 18 pac.</div></div>
           </div>
           <div style="display:flex;flex-direction:column;gap:.3rem;margin-top:.6rem">
             <div style="display:flex;justify-content:space-between;font-size:.72rem"><span style="color:var(--muted)">CDMX</span><span style="font-weight:500">98 · <span style="color:var(--muted)">40%</span></span></div>
@@ -601,7 +601,7 @@ function showView(id, btn){
 
 // ── PATIENTS TABLE ──
 const patients = [
-  {name:'María Rodríguez',email:'maria.r@gmail.com',init:'MR',color:'#e74c3c',plan:'Premium',status:'active',ciudad:'CDMX',imc:28.1,adh:96,mrr:2499,semanas:8},
+  {name:'María Rodríguez',email:'maria.r@gmail.com',init:'MR',color:'#ff1a1a',plan:'Premium',status:'active',ciudad:'CDMX',imc:28.1,adh:96,mrr:2499,semanas:8},
   {name:'Roberto Morales',email:'roberto.m@hotmail.com',init:'RM',color:'#2563eb',plan:'Seguimiento',status:'active',ciudad:'MTY',imc:31.4,adh:88,mrr:1499,semanas:12},
   {name:'Ana Sánchez',email:'ana.s@gmail.com',init:'AS',color:'#16a34a',plan:'Seguimiento',status:'new',ciudad:'GDL',imc:33.2,adh:100,mrr:1499,semanas:0},
   {name:'Jorge Hernández',email:'jorge.h@corp.mx',init:'JH',color:'#d97706',plan:'Premium',status:'active',ciudad:'PUE',imc:29.8,adh:79,mrr:2499,semanas:20},
@@ -632,7 +632,7 @@ function renderPatients(){
 
 // ── DOCTORS GRID ──
 const doctors = [
-  {name:'Dr. Andrés Valverde',spec:'Endocrinólogo',school:'UNAM',ced:'12467420',init:'AV',color:'#c0392b',patients:87,consults:312,rating:4.9,active:true},
+  {name:'Dr. Andrés Valverde',spec:'Endocrinólogo',school:'UNAM',ced:'12467420',init:'AV',color:'#d90000',patients:87,consults:312,rating:4.9,active:true},
   {name:'Dra. Laura Castillo',spec:'Medicina Interna',school:'IPN · CMN',ced:'11983741',init:'LC',color:'#2563eb',patients:64,consults:218,rating:4.8,active:true},
   {name:'Dr. Miguel Reyes',spec:'Nutriología Clínica',school:'UAG · H. Civil',ced:'13512089',init:'MR',color:'#16a34a',patients:52,consults:187,rating:4.7,active:true},
   {name:'Dra. Sofía Paredes',spec:'Psicología de la Salud',school:'UDEM',ced:'14231657',init:'SP',color:'#7c3aed',patients:44,consults:142,rating:4.9,active:true},
@@ -780,10 +780,10 @@ function renderRevChart(){
   const pts=data.map((d,i)=>`${px(i).toFixed(1)},${py(d).toFixed(1)}`).join(' ');
   const area=`M${px(0).toFixed(1)},${H} `+data.map((d,i)=>`L${px(i).toFixed(1)},${py(d).toFixed(1)}`).join(' ')+` L${px(data.length-1).toFixed(1)},${H} Z`;
   el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <defs><linearGradient id="rg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c0392b" stop-opacity=".12"/><stop offset="100%" stop-color="#c0392b" stop-opacity="0"/></linearGradient></defs>
+    <defs><linearGradient id="rg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d90000" stop-opacity=".12"/><stop offset="100%" stop-color="#d90000" stop-opacity="0"/></linearGradient></defs>
     <path d="${area}" fill="url(#rg)"/>
-    <polyline points="${pts}" fill="none" stroke="#c0392b" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-    ${data.map((d,i)=>`<circle cx="${px(i).toFixed(1)}" cy="${py(d).toFixed(1)}" r="${i===data.length-1?5:3}" fill="${i===data.length-1?'#c0392b':'#e74c3c'}" stroke="white" stroke-width="1.5"/>
+    <polyline points="${pts}" fill="none" stroke="#d90000" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${data.map((d,i)=>`<circle cx="${px(i).toFixed(1)}" cy="${py(d).toFixed(1)}" r="${i===data.length-1?5:3}" fill="${i===data.length-1?'#d90000':'#ff1a1a'}" stroke="white" stroke-width="1.5"/>
     <text x="${px(i).toFixed(1)}" y="${(py(d)-8).toFixed(1)}" text-anchor="middle" font-size="9" fill="#888">$${d}k</text>`).join('')}
   </svg>`;
   document.getElementById('rev-chart-x').innerHTML=labels.map(l=>`<span style="font-size:.6rem;color:var(--muted);flex:1;text-align:center">${l}</span>`).join('');

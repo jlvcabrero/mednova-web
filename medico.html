@@ -12,10 +12,10 @@
   --card:#ffffff;
   --ink:#0d0d0d;
   --ink2:#333;
-  --red:#c0392b;
-  --red2:#a93226;
-  --red-lt:#e74c3c;
-  --red-bg:rgba(192,57,43,0.07);
+  --red:#d90000;
+  --red2:#b80000;
+  --red-lt:#ff1a1a;
+  --red-bg:rgba(217,0,0,0.07);
   --green:#16a34a;
   --green-bg:rgba(22,163,74,0.08);
   --amber:#d97706;
@@ -46,7 +46,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14p
 .sb-section{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:.6rem 1.2rem .3rem}
 .sb-link{display:flex;align-items:center;gap:.75rem;padding:.65rem 1.2rem;color:rgba(255,255,255,.5);text-decoration:none;font-size:.82rem;transition:all .2s;cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:var(--sans)}
 .sb-link:hover{color:#fff;background:rgba(255,255,255,.05)}
-.sb-link.active{color:#fff;background:rgba(192,57,43,.25);border-right:2px solid var(--red)}
+.sb-link.active{color:#fff;background:rgba(217,0,0,.25);border-right:2px solid var(--red)}
 .sb-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 .sb-badge{margin-left:auto;background:var(--red);color:#fff;font-size:.6rem;padding:.15rem .45rem;border-radius:100px;font-weight:600}
 .sb-bottom{padding:1rem 1.2rem;border-top:1px solid rgba(255,255,255,.07)}
@@ -146,7 +146,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14p
 .chart-card{background:var(--card);border:1px solid var(--bord);padding:1.3rem}
 .chart-area{height:140px;display:flex;align-items:flex-end;gap:4px;padding-top:.5rem}
 .bar{flex:1;background:var(--red-bg);border-top:2px solid var(--red);border-radius:2px 2px 0 0;transition:height .6s ease;position:relative;cursor:pointer}
-.bar:hover{background:rgba(192,57,43,.15)}
+.bar:hover{background:rgba(217,0,0,.15)}
 .chart-x{display:flex;gap:4px;margin-top:.4rem}
 .chart-x span{flex:1;text-align:center;font-size:.6rem;color:var(--muted)}
 
@@ -223,9 +223,9 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14p
   <div class="sb-logo">
     <svg width="130" height="28" viewBox="0 0 130 28" xmlns="http://www.w3.org/2000/svg">
       <line x1="6" y1="4" x2="6" y2="24" stroke="rgba(255,255,255,.7)" stroke-width="2.2" stroke-linecap="square"/>
-      <line x1="6" y1="4" x2="18" y2="24" stroke="#c0392b" stroke-width="2.2" stroke-linecap="square"/>
+      <line x1="6" y1="4" x2="18" y2="24" stroke="#d90000" stroke-width="2.2" stroke-linecap="square"/>
       <line x1="18" y1="4" x2="18" y2="24" stroke="rgba(255,255,255,.7)" stroke-width="2.2" stroke-linecap="square"/>
-      <rect x="22" y="12" width="2" height="2" fill="#c0392b"/>
+      <rect x="22" y="12" width="2" height="2" fill="#d90000"/>
       <text x="30" y="18" font-family="system-ui" font-size="10" font-weight="500" fill="rgba(255,255,255,.8)" letter-spacing="4">MEDNOVA</text>
       <text x="30" y="26" font-family="system-ui" font-size="5.5" fill="rgba(255,255,255,.3)" letter-spacing="4">PANEL MÉDICO</text>
     </svg>
@@ -301,7 +301,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14p
         <button class="btn-sm" onclick="showView('patients',null)">Ver todas</button>
       </div>
       <div class="alerts-list">
-        <div class="alert-item" onclick="openDetail('María Rodríguez','MR','#e74c3c')">
+        <div class="alert-item" onclick="openDetail('María Rodríguez','MR','#ff1a1a')">
           <div class="alert-priority high"></div>
           <div class="alert-icon">🚨</div>
           <div class="alert-info">
@@ -491,7 +491,7 @@ document.getElementById('topbar-date').textContent = now.toLocaleDateString('es-
 
 // PATIENTS DATA
 const patients = [
-  {name:'María Rodríguez',initials:'MR',color:'#e74c3c',email:'maria.r@gmail.com',plan:'Premium',imc:31.4,imcCat:'high',status:'active',nextConsult:'Hoy 10:00am',adherence:96,objective:'Pérdida de peso',weight:82,height:162,age:38,meds:'Semaglutida 0.5mg',conditions:'Hipertensión',weeks:8,lost:8.4,summary:'Paciente con excelente adherencia. Glucosa en ayunas elevada esta semana (185 mg/dL). Requiere ajuste de dosis y revisión de plan alimenticio.'},
+  {name:'María Rodríguez',initials:'MR',color:'#ff1a1a',email:'maria.r@gmail.com',plan:'Premium',imc:31.4,imcCat:'high',status:'active',nextConsult:'Hoy 10:00am',adherence:96,objective:'Pérdida de peso',weight:82,height:162,age:38,meds:'Semaglutida 0.5mg',conditions:'Hipertensión',weeks:8,lost:8.4,summary:'Paciente con excelente adherencia. Glucosa en ayunas elevada esta semana (185 mg/dL). Requiere ajuste de dosis y revisión de plan alimenticio.'},
   {name:'Roberto Morales',initials:'RM',color:'#2563eb',email:'roberto.m@hotmail.com',plan:'Seguimiento',imc:34.1,imcCat:'high',status:'active',nextConsult:'Vie 11:30am',adherence:88,objective:'Pérdida de peso',weight:98,height:170,age:45,meds:'Semaglutida 1mg',conditions:'Ninguna',weeks:12,lost:11.2,summary:'Paciente con buena evolución. Receta vence en 3 días. Renovar antes del viernes.'},
   {name:'Ana Sánchez',initials:'AS',color:'#16a34a',email:'ana.s@gmail.com',plan:'Seguimiento',imc:33.2,imcCat:'high',status:'new',nextConsult:'2 May 2:00pm',adherence:100,objective:'Pérdida de peso',weight:89,height:164,age:34,meds:'Pendiente',conditions:'Colesterol alto',weeks:0,lost:0,summary:'Candidata nueva. Evaluación IA completada. IMC 33.2. Sin contraindicaciones identificadas. Lista para primera consulta.'},
   {name:'Jorge Hernández',initials:'JH',color:'#d97706',email:'jorge.h@empresa.com',plan:'Premium',imc:29.8,imcCat:'med',status:'active',nextConsult:'Hoy 4:30pm',adherence:79,objective:'Control diabetes',weight:88,height:172,age:52,meds:'Semaglutida + Metformina',conditions:'Diabetes T2, Hipertensión',weeks:20,lost:6.1,summary:'Paciente con diabetes T2 controlada. HbA1c bajó de 8.2% a 6.9% en 5 meses. Adherencia algo baja — reforzar compromiso.'},

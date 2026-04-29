@@ -13,11 +13,11 @@
   --card:#ffffff;
   --ink:#0f0f0f;
   --ink2:#3a3a3a;
-  --red:#c0392b;
-  --red2:#a93226;
-  --red-lt:#e74c3c;
-  --red-bg:rgba(192,57,43,0.07);
-  --red-glow:rgba(192,57,43,0.15);
+  --red:#d90000;
+  --red2:#b80000;
+  --red-lt:#ff1a1a;
+  --red-bg:rgba(217,0,0,0.07);
+  --red-glow:rgba(217,0,0,0.15);
   --green:#16a34a;
   --green-bg:rgba(22,163,74,0.09);
   --amber:#b45309;
@@ -42,7 +42,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14p
 .sb-logo svg{display:block}
 .sb-nav-item{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;transition:all .2s;position:relative;background:none;border:none;color:rgba(255,255,255,.4)}
 .sb-nav-item:hover{background:rgba(255,255,255,.08);color:rgba(255,255,255,.8)}
-.sb-nav-item.active{background:var(--red);color:#fff;box-shadow:0 4px 12px rgba(192,57,43,.4)}
+.sb-nav-item.active{background:var(--red);color:#fff;box-shadow:0 4px 12px rgba(217,0,0,.4)}
 .sb-nav-item .tooltip{position:absolute;left:calc(100% + 12px);background:var(--ink);color:#fff;font-size:.72rem;padding:.35rem .7rem;white-space:nowrap;pointer-events:none;opacity:0;transform:translateX(-4px);transition:all .2s;border-radius:4px;letter-spacing:.03em;z-index:100}
 .sb-nav-item:hover .tooltip{opacity:1;transform:translateX(0)}
 .sb-notif{width:8px;height:8px;border-radius:50%;background:var(--red);position:absolute;top:8px;right:8px}
@@ -59,7 +59,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14p
 .topbar-name{font-family:var(--serif);font-size:1.15rem;font-weight:300}
 .topbar-name em{font-style:italic;color:var(--red-lt)}
 .topbar-right{display:flex;align-items:center;gap:.75rem}
-.plan-chip{display:flex;align-items:center;gap:.5rem;background:var(--red-bg);border:1px solid rgba(192,57,43,.2);padding:.35rem .85rem;font-size:.72rem;font-weight:500;color:var(--red)}
+.plan-chip{display:flex;align-items:center;gap:.5rem;background:var(--red-bg);border:1px solid rgba(217,0,0,.2);padding:.35rem .85rem;font-size:.72rem;font-weight:500;color:var(--red)}
 .plan-chip::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 6px var(--red);animation:pls 2s infinite}
 @keyframes pls{0%,100%{opacity:1}50%{opacity:.3}}
 .btn-chat{background:var(--red);color:#fff;border:none;padding:.55rem 1.2rem;font-size:.78rem;font-weight:500;cursor:pointer;font-family:var(--sans);display:flex;align-items:center;gap:.4rem;transition:background .2s}
@@ -81,7 +81,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14p
 
 /* ── HERO PROGRESS ── */
 .hero-section{background:var(--ink);padding:1.6rem;position:relative;overflow:hidden}
-.hero-section::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(192,57,43,.2),transparent 70%)}
+.hero-section::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(217,0,0,.2),transparent 70%)}
 .hero-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1.2rem;position:relative}
 .hero-stat{padding:.3rem}
 .hs-label{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:.4rem}
@@ -234,7 +234,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14p
 
 /* ── WELCOME BANNER ── */
 .welcome-banner{background:linear-gradient(135deg,var(--ink) 0%,#1a0a08 100%);padding:1.4rem 1.6rem;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.welcome-banner::before{content:'';position:absolute;right:-30px;top:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(192,57,43,.2),transparent 70%)}
+.welcome-banner::before{content:'';position:absolute;right:-30px;top:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(217,0,0,.2),transparent 70%)}
 .wb-text{}
 .wb-title{font-family:var(--serif);font-size:1.3rem;font-weight:300;color:#fff;margin-bottom:.3rem}
 .wb-title em{font-style:italic;color:#fc9090}
@@ -253,7 +253,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14p
   <div class="sb-logo">
     <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
       <line x1="8" y1="4" x2="8" y2="28" stroke="rgba(255,255,255,.7)" stroke-width="2.5" stroke-linecap="square"/>
-      <line x1="8" y1="4" x2="18" y2="28" stroke="#c0392b" stroke-width="2.5" stroke-linecap="square"/>
+      <line x1="8" y1="4" x2="18" y2="28" stroke="#d90000" stroke-width="2.5" stroke-linecap="square"/>
       <line x1="18" y1="4" x2="18" y2="28" stroke="rgba(255,255,255,.7)" stroke-width="2.5" stroke-linecap="square"/>
     </svg>
   </div>
@@ -394,7 +394,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14p
             <div class="card-title-left">Próxima consulta</div>
             <a class="card-link" onclick="showView('consultas',null)">Ver todas →</a>
           </div>
-          <div style="background:var(--red-bg);border:1px solid rgba(192,57,43,.18);padding:1.2rem;margin-bottom:1rem">
+          <div style="background:var(--red-bg);border:1px solid rgba(217,0,0,.18);padding:1.2rem;margin-bottom:1rem">
             <div style="display:flex;align-items:center;gap:1rem">
               <div style="text-align:center;min-width:44px">
                 <div style="font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--red);line-height:1">25</div>
@@ -784,10 +784,10 @@ function renderWeightChart(){
   const pts=weightData.map((d,i)=>`${px(i).toFixed(1)},${py(d.w).toFixed(1)}`).join(' ');
   const area=`M${px(0).toFixed(1)},${H} `+weightData.map((d,i)=>`L${px(i).toFixed(1)},${py(d.w).toFixed(1)}`).join(' ')+` L${px(weightData.length-1).toFixed(1)},${H} Z`;
   wrap.innerHTML=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c0392b" stop-opacity=".15"/><stop offset="100%" stop-color="#c0392b" stop-opacity="0"/></linearGradient></defs>
+    <defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d90000" stop-opacity=".15"/><stop offset="100%" stop-color="#d90000" stop-opacity="0"/></linearGradient></defs>
     <path d="${area}" fill="url(#wg)"/>
-    <polyline points="${pts}" fill="none" stroke="#c0392b" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-    ${weightData.map((d,i)=>`<circle cx="${px(i).toFixed(1)}" cy="${py(d.w).toFixed(1)}" r="${i===weightData.length-1?5:3}" fill="${i===weightData.length-1?'#c0392b':'#e74c3c'}" stroke="white" stroke-width="1.5"/>
+    <polyline points="${pts}" fill="none" stroke="#d90000" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${weightData.map((d,i)=>`<circle cx="${px(i).toFixed(1)}" cy="${py(d.w).toFixed(1)}" r="${i===weightData.length-1?5:3}" fill="${i===weightData.length-1?'#d90000':'#ff1a1a'}" stroke="white" stroke-width="1.5"/>
     <text x="${px(i).toFixed(1)}" y="${(py(d.w)-8).toFixed(1)}" text-anchor="middle" font-size="8" fill="#888" font-family="system-ui">${d.w}</text>`).join('')}
   </svg>`;
   lblWrap.innerHTML=weightData.map(d=>`<span style="font-size:.6rem;color:var(--muted);flex:1;text-align:center">${d.l.split(' ')[1]}</span>`).join('');
